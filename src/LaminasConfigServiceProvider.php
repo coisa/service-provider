@@ -39,7 +39,7 @@ final class LaminasConfigServiceProvider implements ServiceProviderInterface
      */
     public function __construct(array $config)
     {
-        $config['dependecies']['config'] = $config;
+        $config['dependencies']['config'] = $config;
 
         foreach ($this->getDependencies($config, 'services') as $id => $service) {
             $this->factories[$id] = new Factory\ServiceFactory($service);
