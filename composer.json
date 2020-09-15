@@ -1,0 +1,58 @@
+{
+    "name": "coisa/service-provider",
+    "type": "library",
+    "description": "Interop ServiceProvider utility tools.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Felipe Sayão Lobato Abreu",
+            "email": "github@felipeabreu.com.br"
+        }
+    ],
+    "require": {
+        "php": ">=5.3",
+        "container-interop/service-provider": "^0.4.0",
+        "psr/container": "^1.0"
+    },
+    "require-dev": {
+        "coisa/php-cs-fixer": "^1.0",
+        "jakub-onderka/php-console-highlighter": "^0.3.2",
+        "jakub-onderka/php-parallel-lint": "^1.0",
+        "phpunit/phpunit": "^4.8",
+        "sensiolabs/security-checker": "^4.1",
+        "squizlabs/php_codesniffer": "^2.9"
+    },
+    "config": {
+        "prefer-stable": true,
+        "sort-packages": true
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.x-dev"
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "CoiSA\\ServiceProvider\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "CoiSA\\ServiceProvider\\": "tests/"
+        }
+    },
+    "minimum-stability": "stable",
+    "scripts": {
+        "check": [
+            "@lint",
+            "@test",
+            "@sniff",
+            "@cs-check"
+        ],
+        "cs-check": "php-cs-fixer fix --dry-run --diff",
+        "cs-fix": "php-cs-fixer fix",
+        "lint": "parallel-lint --exclude vendor .",
+        "sniff": "phpcs",
+        "test": "phpunit --color=always"
+    }
+}
