@@ -94,7 +94,7 @@ final class LaminasConfigServiceProvider implements ServiceProviderInterface
      */
     private function getDependencies($config, $type)
     {
-        if (false === \array_key_exists($type, $config)) {
+        if (false === \array_key_exists($type, $config['dependencies'])) {
             return array();
         }
 
