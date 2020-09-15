@@ -31,12 +31,4 @@ final class ServiceFactory extends AbstractFactory
             return $service;
         };
     }
-
-    /**
-     * @return callable
-     */
-    public function __invoke()
-    {
-        return $this->factory;
-    }
 }

@@ -13,6 +13,8 @@
 
 namespace CoiSA\ServiceProvider\Extension;
 
+use Psr\Container\ContainerInterface;
+
 /**
  * Class AbstractExtension
  *
@@ -26,10 +28,15 @@ abstract class AbstractExtension
     protected $extension;
 
     /**
-     * @return callable
+     * @param ContainerInterface $container
+     * @param null|mixed $previous
+     *
+     * @return mixed
      */
-    public function __invoke()
+    public function __invoke(ContainerInterface $container, $previous = null)
     {
-        return $this->extension;
+        $extension = $this->extension;
+
+        return $extension($container, $previous);
     }
 }

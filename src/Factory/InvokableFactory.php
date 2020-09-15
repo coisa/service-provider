@@ -27,6 +27,8 @@ final class InvokableFactory extends AbstractFactory
      */
     public function __construct($invokable)
     {
-        $this->factory = new $invokable();
+        $this->factory = function () use ($invokable) {
+            return new $invokable();
+        };
     }
 }
