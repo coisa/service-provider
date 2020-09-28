@@ -16,21 +16,16 @@ namespace CoiSA\ServiceProvider\Factory;
 use Psr\Container\ContainerInterface;
 
 /**
- * Class ServiceFactory
+ * Interface FactoryInterface
  *
  * @package CoiSA\ServiceProvider\Factory
  */
-final class ServiceFactory extends AbstractFactory
+interface FactoryInterface
 {
     /**
-     * ServiceFactory constructor.
+     * @param ContainerInterface $container
      *
-     * @param mixed $service
+     * @return mixed
      */
-    public function __construct($service)
-    {
-        $this->factory = function (ContainerInterface $container) use ($service) {
-            return $service;
-        };
-    }
+    public function __invoke(ContainerInterface $container);
 }

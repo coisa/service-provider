@@ -18,7 +18,7 @@ use Interop\Container\ServiceProviderInterface;
 /**
  * Class LaminasConfigServiceProvider
  *
- * @package CoiSA\LaminasConfigServiceProvider
+ * @package CoiSA\ServiceProvider
  */
 final class LaminasConfigServiceProvider implements ServiceProviderInterface
 {
@@ -36,36 +36,48 @@ final class LaminasConfigServiceProvider implements ServiceProviderInterface
      * LaminasConfigServiceProvider constructor.
      *
      * @param mixed[] $config
+     *
+     * @throws Exception\ReflectionException
      */
     public function __construct(array $config)
     {
-        $config['dependencies']['config'] = $config;
+        $dependencies = \array_merge_recursive(array(
+            'services'     => array(),
+            'factories'    => array(),
+            'invokables'   => array(),
+            'delegators'   => array(),
+            'initializers' => array(),
+            'aliases'      => array(),
+        ), $config['dependencies'] ?: array());
 
-        foreach ($this->getDependencies($config, 'services') as $id => $service) {
+        $this->factories['config']  = new Factory\ServiceFactory($config);
+        $this->extensions['config'] = new Extension\MergeConfigExtension($config);
+
+        foreach ($dependencies['services'] as $id => $service) {
             $this->factories[$id] = new Factory\ServiceFactory($service);
         }
 
-        foreach ($this->getDependencies($config, 'factories') as $id => $factory) {
+        foreach ($dependencies['factories'] as $id => $factory) {
             $this->factories[$id] = new Factory\FactoryFactory($factory);
         }
 
-        foreach ($this->getDependencies($config, 'invokables') as $id => $invokable) {
+        foreach ($dependencies['invokables'] as $id => $invokable) {
             $this->factories[$id] = new Factory\InvokableFactory($invokable);
         }
 
-        foreach ($this->getDependencies($config, 'delegators') as $id => $delegators) {
+        foreach ($dependencies['delegators'] as $id => $delegators) {
             foreach ($delegators as $delegator) {
                 $this->extensions[$id] = new Extension\DelegatorExtension($id, $delegator);
             }
         }
 
         foreach ($this->factories as $id => $factory) {
-            foreach ($this->getDependencies($config, 'initializers') as $initializer) {
+            foreach ($dependencies['initializers'] as $initializer) {
                 $this->extensions[$id] = new Extension\InitializerExtension($initializer);
             }
         }
 
-        foreach ($this->getDependencies($config, 'aliases') as $id => $alias) {
+        foreach ($dependencies['aliases'] as $id => $alias) {
             $this->factories[$id] = new Factory\AliasFactory($alias);
         }
     }
@@ -84,20 +96,5 @@ final class LaminasConfigServiceProvider implements ServiceProviderInterface
     public function getExtensions()
     {
         return $this->extensions;
-    }
-
-    /**
-     * @param mixed[] $config
-     * @param string  $type
-     *
-     * @return array
-     */
-    private function getDependencies($config, $type)
-    {
-        if (false === \array_key_exists($type, $config['dependencies'])) {
-            return array();
-        }
-
-        return $config['dependencies'][$type];
     }
 }

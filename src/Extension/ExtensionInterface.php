@@ -11,26 +11,22 @@
  * @license   https://opensource.org/licenses/MIT MIT License
  */
 
-namespace CoiSA\ServiceProvider\Factory;
+namespace CoiSA\ServiceProvider\Extension;
 
 use Psr\Container\ContainerInterface;
 
 /**
- * Class ServiceFactory
+ * Interface ExtensionInterface
  *
- * @package CoiSA\ServiceProvider\Factory
+ * @package CoiSA\ServiceProvider\Extension
  */
-final class ServiceFactory extends AbstractFactory
+interface ExtensionInterface
 {
     /**
-     * ServiceFactory constructor.
+     * @param ContainerInterface $container
+     * @param null|mixed         $previous
      *
-     * @param mixed $service
+     * @return mixed
      */
-    public function __construct($service)
-    {
-        $this->factory = function (ContainerInterface $container) use ($service) {
-            return $service;
-        };
-    }
+    public function __invoke(ContainerInterface $container, $previous = null);
 }

@@ -13,24 +13,28 @@
 
 namespace CoiSA\ServiceProvider\Factory;
 
-use Psr\Container\ContainerInterface;
+use CoiSA\ServiceProvider\Exception\InvalidArgumentException;
 
 /**
- * Class ServiceFactory
+ * Class CallableFactory
  *
  * @package CoiSA\ServiceProvider\Factory
  */
-final class ServiceFactory extends AbstractFactory
+final class CallableFactory extends AbstractFactory
 {
     /**
-     * ServiceFactory constructor.
+     * CallableFactory constructor.
      *
-     * @param mixed $service
+     * @param callable $factory
+     *
+     * @throws InvalidArgumentException
      */
-    public function __construct($service)
+    public function __construct($factory)
     {
-        $this->factory = function (ContainerInterface $container) use ($service) {
-            return $service;
-        };
+        if (false === \is_callable($factory)) {
+            throw InvalidArgumentException::forInvalidArgumentType('factory', 'callable');
+        }
+
+        $this->factory = $factory;
     }
 }

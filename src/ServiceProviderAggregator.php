@@ -13,8 +13,10 @@
 
 namespace CoiSA\ServiceProvider;
 
+use CoiSA\ServiceProvider\Extension\ExtendExtension;
+use CoiSA\ServiceProvider\Extension\ExtensionInterface;
+use CoiSA\ServiceProvider\Factory\FactoryInterface;
 use Interop\Container\ServiceProviderInterface;
-use Psr\Container\ContainerInterface;
 
 /**
  * Class ServiceProviderAggregator
@@ -27,6 +29,16 @@ final class ServiceProviderAggregator implements ServiceProviderInterface
      * @var ServiceProviderInterface[]
      */
     private $serviceProviders = array();
+
+    /**
+     * @var FactoryInterface[]
+     */
+    private $factories = array();
+
+    /**
+     * @var ExtensionInterface[]
+     */
+    private $extensions = array();
 
     /**
      * ServiceProviderAggregator constructor.
@@ -48,6 +60,7 @@ final class ServiceProviderAggregator implements ServiceProviderInterface
     public function prepend(ServiceProviderInterface $serviceProvider)
     {
         \array_unshift($this->serviceProviders, $serviceProvider);
+        $this->resetCache();
 
         return $this;
     }
@@ -60,6 +73,7 @@ final class ServiceProviderAggregator implements ServiceProviderInterface
     public function append(ServiceProviderInterface $serviceProvider)
     {
         $this->serviceProviders[] = $serviceProvider;
+        $this->resetCache();
 
         return $this;
     }
@@ -69,9 +83,36 @@ final class ServiceProviderAggregator implements ServiceProviderInterface
      */
     public function getFactories()
     {
-        $factories = \array_map(function ($serviceProvider) {
-            return $serviceProvider->getFactories();
-        }, $this->serviceProviders);
+        if (empty($this->factories)) {
+            $this->factories = $this->resolveFactories();
+        }
+
+        return $this->factories;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getExtensions()
+    {
+        if (empty($this->extensions)) {
+            $this->extensions = $this->resolveExtensions();
+        }
+
+        return $this->extensions;
+    }
+
+    /**
+     * @return FactoryInterface[]
+     */
+    private function resolveFactories()
+    {
+        $factories = \array_map(
+            function ($serviceProvider) {
+                return $serviceProvider->getFactories();
+            },
+            $this->serviceProviders
+        );
 
         return \call_user_func_array(
             'array_merge',
@@ -80,35 +121,42 @@ final class ServiceProviderAggregator implements ServiceProviderInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @return ExtensionInterface[]
      */
-    public function getExtensions()
+    private function resolveExtensions()
     {
-        $extensions = \array_map(function ($serviceProvider) {
-            return $serviceProvider->getExtensions();
-        }, $this->serviceProviders);
-
-        $merged = \call_user_func_array(
-            '\array_merge_recursive',
-            \array_reverse($extensions)
+        $serviceProvidersExtensions = \array_map(
+            function ($serviceProvider) {
+                return $serviceProvider->getExtensions();
+            },
+            $this->serviceProviders
         );
 
-        foreach ($merged as $key => $closure) {
+        $mergedExtensions = \call_user_func_array(
+            '\array_merge_recursive',
+            \array_reverse($serviceProvidersExtensions)
+        );
+
+        foreach ($mergedExtensions as $key => $closure) {
             if (\is_callable($closure)) {
                 continue;
             }
 
-            $merged[$key] = \array_reduce($closure, function ($extension, callable $current) {
-                if (!$extension) {
-                    return $current;
-                }
+            $mergedExtensions[$key] = \current($closure);
 
-                return function (ContainerInterface $container, $previous = null) use ($current, $extension) {
-                    return \call_user_func($extension, $container, $current($container, $previous));
-                };
-            });
+            while ($extension = \next($closure)) {
+                $mergedExtensions[$key] = new ExtendExtension($mergedExtensions[$key], $extension);
+            }
         }
 
-        return $merged;
+        return $mergedExtensions;
+    }
+
+    /**
+     * Reset resolved factories & extensions.
+     */
+    private function resetCache()
+    {
+        unset($this->factories, $this->extensions);
     }
 }

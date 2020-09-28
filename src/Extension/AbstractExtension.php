@@ -18,9 +18,9 @@ use Psr\Container\ContainerInterface;
 /**
  * Class AbstractExtension
  *
- * @package CoiSA\LaminasConfigServiceProvider\Factory
+ * @package CoiSA\ServiceProvider\Factory
  */
-abstract class AbstractExtension
+abstract class AbstractExtension implements ExtensionInterface
 {
     /**
      * @var callable
@@ -29,7 +29,7 @@ abstract class AbstractExtension
 
     /**
      * @param ContainerInterface $container
-     * @param null|mixed $previous
+     * @param null|mixed         $previous
      *
      * @return mixed
      */

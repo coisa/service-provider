@@ -18,9 +18,9 @@ use Psr\Container\ContainerInterface;
 /**
  * Class AbstractFactory
  *
- * @package CoiSA\LaminasConfigServiceProvider\Factory
+ * @package CoiSA\ServiceProvider\Factory
  */
-abstract class AbstractFactory
+abstract class AbstractFactory implements FactoryInterface
 {
     /**
      * @var callable

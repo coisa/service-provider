@@ -13,10 +13,13 @@
 
 namespace CoiSA\ServiceProvider\Factory;
 
+use CoiSA\ServiceProvider\Exception\InvalidArgumentException;
+use CoiSA\ServiceProvider\Exception\ReflectionException;
+
 /**
  * Class FactoryFactory
  *
- * @package CoiSA\LaminasConfigServiceProvider\Factory
+ * @package CoiSA\ServiceProvider\Factory
  */
 final class FactoryFactory extends AbstractFactory
 {
@@ -24,11 +27,22 @@ final class FactoryFactory extends AbstractFactory
      * FactoryFactory constructor.
      *
      * @param callable|string $factory
+     *
+     * @throws ReflectionException
+     * @throws InvalidArgumentException
      */
     public function __construct($factory)
     {
         if (\is_string($factory)) {
+            if (false === \class_exists($factory)) {
+                throw ReflectionException::forClassNotFound($factory);
+            }
+
             $factory = new $factory();
+        }
+
+        if (false === \is_callable($factory)) {
+            throw InvalidArgumentException::forInvalidArgumentType('factory', 'callable');
         }
 
         $this->factory = $factory;

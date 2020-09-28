@@ -13,24 +13,35 @@
 
 namespace CoiSA\ServiceProvider\Extension;
 
+use CoiSA\ServiceProvider\Exception\InvalidArgumentException;
 use CoiSA\ServiceProvider\Factory\ServiceFactory;
 use Psr\Container\ContainerInterface;
 
 /**
- * Class InitializerExtension
+ * Class DelegatorExtension
  *
- * @package CoiSA\LaminasConfigServiceProvider\Extension
+ * @package CoiSA\ServiceProvider\Extension
  */
 final class DelegatorExtension extends AbstractExtension
 {
     /**
-     * InitializerExtension constructor.
+     * DelegatorExtension constructor.
      *
      * @param string   $id
      * @param callable $delegator
+     *
+     * @throws InvalidArgumentException
      */
     public function __construct($id, $delegator)
     {
+        if (false === \is_string($id)) {
+            throw InvalidArgumentException::forInvalidArgumentType('id', 'string');
+        }
+
+        if (false === \is_callable($delegator)) {
+            throw InvalidArgumentException::forInvalidArgumentType('delegator', 'callable');
+        }
+
         $this->extension = function (ContainerInterface $container, $previous = null) use ($id, $delegator) {
             return $delegator(
                 $container,

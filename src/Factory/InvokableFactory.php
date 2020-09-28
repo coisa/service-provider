@@ -13,10 +13,14 @@
 
 namespace CoiSA\ServiceProvider\Factory;
 
+use CoiSA\ServiceProvider\Exception\InvalidArgumentException;
+use CoiSA\ServiceProvider\Exception\ReflectionException;
+use Psr\Container\ContainerInterface;
+
 /**
  * Class InvokableFactory
  *
- * @package CoiSA\LaminasConfigServiceProvider\Factory
+ * @package CoiSA\ServiceProvider\Factory
  */
 final class InvokableFactory extends AbstractFactory
 {
@@ -24,10 +28,20 @@ final class InvokableFactory extends AbstractFactory
      * InvokableFactory constructor.
      *
      * @param string $invokable
+     *
+     * @throws ReflectionException when given class was not found
      */
     public function __construct($invokable)
     {
-        $this->factory = function () use ($invokable) {
+        if (false === \is_string($invokable)) {
+            throw InvalidArgumentException::forInvalidArgumentType('invokable', 'string');
+        }
+
+        if (false === \class_exists($invokable)) {
+            throw ReflectionException::forClassNotFound($invokable);
+        }
+
+        $this->factory = function (ContainerInterface $container) use ($invokable) {
             return new $invokable();
         };
     }
