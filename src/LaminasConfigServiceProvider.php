@@ -13,25 +13,13 @@
 
 namespace CoiSA\ServiceProvider;
 
-use Interop\Container\ServiceProviderInterface;
-
 /**
  * Class LaminasConfigServiceProvider
  *
  * @package CoiSA\ServiceProvider
  */
-final class LaminasConfigServiceProvider implements ServiceProviderInterface
+final class LaminasConfigServiceProvider extends ServiceProvider
 {
-    /**
-     * @var callable[]
-     */
-    private $factories = array();
-
-    /**
-     * @var callable[]
-     */
-    private $extensions = array();
-
     /**
      * LaminasConfigServiceProvider constructor.
      *
@@ -80,21 +68,5 @@ final class LaminasConfigServiceProvider implements ServiceProviderInterface
         foreach ($dependencies['aliases'] as $id => $alias) {
             $this->factories[$id] = new Factory\AliasFactory($alias);
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getFactories()
-    {
-        return $this->factories;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getExtensions()
-    {
-        return $this->extensions;
     }
 }

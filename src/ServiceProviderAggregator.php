@@ -13,10 +13,7 @@
 
 namespace CoiSA\ServiceProvider;
 
-use CoiSA\ServiceProvider\Extension\CallableExtension;
-use CoiSA\ServiceProvider\Extension\ExtendExtension;
 use CoiSA\ServiceProvider\Extension\ExtensionInterface;
-use CoiSA\ServiceProvider\Factory\FactoryInterface;
 use Interop\Container\ServiceProviderInterface;
 
 /**
@@ -24,22 +21,12 @@ use Interop\Container\ServiceProviderInterface;
  *
  * @package CoiSA\ServiceProvider
  */
-final class ServiceProviderAggregator implements ServiceProviderInterface
+final class ServiceProviderAggregator extends ServiceProvider
 {
     /**
      * @var ServiceProviderInterface[]
      */
     private $serviceProviders = array();
-
-    /**
-     * @var FactoryInterface[]
-     */
-    private $factories = array();
-
-    /**
-     * @var ExtensionInterface[]
-     */
-    private $extensions = array();
 
     /**
      * ServiceProviderAggregator constructor.
@@ -54,6 +41,14 @@ final class ServiceProviderAggregator implements ServiceProviderInterface
     }
 
     /**
+     * @return ServiceProviderInterface[]
+     */
+    public function getServiceProviders()
+    {
+        return $this->serviceProviders;
+    }
+
+    /**
      * @param ServiceProviderInterface $serviceProvider
      *
      * @return self
@@ -61,7 +56,9 @@ final class ServiceProviderAggregator implements ServiceProviderInterface
     public function prepend(ServiceProviderInterface $serviceProvider)
     {
         \array_unshift($this->serviceProviders, $serviceProvider);
-        $this->resetCache();
+
+        $this->setFactories($serviceProvider->getFactories(), false);
+        $this->setExtensions($serviceProvider->getExtensions(), true);
 
         return $this;
     }
@@ -74,86 +71,36 @@ final class ServiceProviderAggregator implements ServiceProviderInterface
     public function append(ServiceProviderInterface $serviceProvider)
     {
         $this->serviceProviders[] = $serviceProvider;
-        $this->resetCache();
+
+        $this->setFactories($serviceProvider->getFactories(), true);
+        $this->setExtensions($serviceProvider->getExtensions(), false);
 
         return $this;
     }
 
     /**
-     * {@inheritDoc}
+     * @param array $factories
+     * @param bool  $overwrite
      */
-    public function getFactories()
+    private function setFactories(array $factories, $overwrite = false)
     {
-        if (empty($this->factories)) {
-            $this->factories = $this->resolveFactories();
-        }
-
-        return $this->factories;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getExtensions()
-    {
-        if (empty($this->extensions)) {
-            $this->extensions = $this->resolveExtensions();
-        }
-
-        return $this->extensions;
-    }
-
-    /**
-     * @return FactoryInterface[]
-     */
-    private function resolveFactories()
-    {
-        $factories = \array_map(
-            function ($serviceProvider) {
-                return $serviceProvider->getFactories();
-            },
-            $this->serviceProviders
-        );
-
-        return \call_user_func_array(
-            'array_merge',
-            \array_reverse($factories)
-        );
-    }
-
-    /**
-     * @return ExtensionInterface[]
-     */
-    private function resolveExtensions()
-    {
-        return \array_reduce($this->serviceProviders, function (
-            array $extensions,
-            ServiceProviderInterface $serviceProvider
-        ) {
-            foreach ($serviceProvider->getExtensions() as $id => $extension) {
-                if (!$extension instanceof ExtensionInterface) {
-                    $extension = new CallableExtension($extension);
-                }
-
-                if (\array_key_exists($id, $extensions)) {
-                    $extension = new ExtendExtension(
-                        $extensions[$id],
-                        $extension
-                    );
-                }
-
-                $extensions[$id] = $extension;
+        foreach ($factories as $id => $factory) {
+            if (false === $overwrite && \array_key_exists($id, $this->factories)) {
+                continue;
             }
 
-            return $extensions;
-        }, array());
+            $this->setFactory($id, $factory);
+        }
     }
 
     /**
-     * Reset resolved factories & extensions.
+     * @param callable[]|ExtensionInterface[] $extensions
+     * @param bool                            $prepend
      */
-    private function resetCache()
+    private function setExtensions(array $extensions, $prepend = false)
     {
-        unset($this->factories, $this->extensions);
+        foreach ($extensions as $id => $extension) {
+            $this->extend($id, $extension, $prepend);
+        }
     }
 }

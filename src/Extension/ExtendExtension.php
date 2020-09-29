@@ -28,10 +28,10 @@ final class ExtendExtension extends AbstractExtension
      * @param ExtensionInterface $extension
      * @param ExtensionInterface $extend
      */
-    public function __construct(ExtensionInterface $extension, ExtensionInterface $extend)
+    public function __construct(ExtensionInterface $extension, ExtensionInterface $next)
     {
-        $this->extension = function (ContainerInterface $container, $previous = null) use ($extension, $extend) {
-            return $extend(
+        $this->extension = function (ContainerInterface $container, $previous = null) use ($extension, $next) {
+            return $next(
                 $container,
                 $extension($container, $previous)
             );
