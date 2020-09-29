@@ -13,7 +13,6 @@
 
 namespace CoiSA\ServiceProvider\Extension;
 
-use CoiSA\ServiceProvider\Exception\InvalidArgumentException;
 use Psr\Container\ContainerInterface;
 
 /**
