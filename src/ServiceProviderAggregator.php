@@ -14,7 +14,7 @@
 namespace CoiSA\ServiceProvider;
 
 use CoiSA\ServiceProvider\Extension\ExtensionInterface;
-use Interop\Container\ServiceProviderInterface;
+use Interop\Container\ServiceProviderInterface as InteropServiceProvider;
 
 /**
  * Class ServiceProviderAggregator
@@ -24,14 +24,14 @@ use Interop\Container\ServiceProviderInterface;
 final class ServiceProviderAggregator extends ServiceProvider
 {
     /**
-     * @var ServiceProviderInterface[]
+     * @var InteropServiceProvider[]
      */
     private $serviceProviders = array();
 
     /**
      * ServiceProviderAggregator constructor.
      *
-     * @param ServiceProviderInterface[] $serviceProviders
+     * @param InteropServiceProvider[] $serviceProviders
      */
     public function __construct(array $serviceProviders = array())
     {
@@ -41,7 +41,7 @@ final class ServiceProviderAggregator extends ServiceProvider
     }
 
     /**
-     * @return ServiceProviderInterface[]
+     * @return InteropServiceProvider[]
      */
     public function getServiceProviders()
     {
@@ -49,11 +49,11 @@ final class ServiceProviderAggregator extends ServiceProvider
     }
 
     /**
-     * @param ServiceProviderInterface $serviceProvider
+     * @param InteropServiceProvider $serviceProvider
      *
      * @return self
      */
-    public function prepend(ServiceProviderInterface $serviceProvider)
+    public function prepend(InteropServiceProvider $serviceProvider)
     {
         \array_unshift($this->serviceProviders, $serviceProvider);
 
@@ -64,11 +64,11 @@ final class ServiceProviderAggregator extends ServiceProvider
     }
 
     /**
-     * @param ServiceProviderInterface $serviceProvider
+     * @param InteropServiceProvider $serviceProvider
      *
      * @return self
      */
-    public function append(ServiceProviderInterface $serviceProvider)
+    public function append(InteropServiceProvider $serviceProvider)
     {
         $this->serviceProviders[] = $serviceProvider;
 
