@@ -15,7 +15,6 @@ namespace CoiSA\ServiceProvider;
 
 use CoiSA\ServiceProvider\Extension\ExtensionInterface;
 use CoiSA\ServiceProvider\Factory\FactoryInterface;
-use Interop\Container\ServiceProviderInterface;
 
 /**
  * Class AbstractServiceProvider
