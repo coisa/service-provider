@@ -26,27 +26,11 @@ final class ExtendExtension extends AbstractExtension
     /**
      * ExtendExtension constructor.
      *
-     * @param callable|ExtensionInterface $extension
-     * @param callable|ExtensionInterface $extend
-     *
-     * @throws InvalidArgumentException
+     * @param ExtensionInterface $extension
+     * @param ExtensionInterface $extend
      */
-    public function __construct($extension, $extend)
+    public function __construct(ExtensionInterface $extension, ExtensionInterface $extend)
     {
-        if (false === \is_callable($extension) && !$extension instanceof ExtensionInterface) {
-            throw InvalidArgumentException::forInvalidArgumentType(
-                'extension',
-                'callable|ExtensionInterface'
-            );
-        }
-
-        if (false === \is_callable($extend) && !$extend instanceof ExtensionInterface) {
-            throw InvalidArgumentException::forInvalidArgumentType(
-                'extend',
-                'callable|ExtensionInterface'
-            );
-        }
-
         $this->extension = function (ContainerInterface $container, $previous = null) use ($extension, $extend) {
             return $extend(
                 $container,

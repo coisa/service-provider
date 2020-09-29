@@ -13,6 +13,7 @@
 
 namespace CoiSA\ServiceProvider;
 
+use CoiSA\ServiceProvider\Extension\CallableExtension;
 use CoiSA\ServiceProvider\Extension\ExtendExtension;
 use CoiSA\ServiceProvider\Extension\ExtensionInterface;
 use CoiSA\ServiceProvider\Factory\FactoryInterface;
@@ -125,31 +126,27 @@ final class ServiceProviderAggregator implements ServiceProviderInterface
      */
     private function resolveExtensions()
     {
-        $serviceProvidersExtensions = \array_map(
-            function ($serviceProvider) {
-                return $serviceProvider->getExtensions();
-            },
-            $this->serviceProviders
-        );
+        return \array_reduce($this->serviceProviders, function (
+            array $extensions,
+            ServiceProviderInterface $serviceProvider
+        ) {
+            foreach ($serviceProvider->getExtensions() as $id => $extension) {
+                if (!$extension instanceof ExtensionInterface) {
+                    $extension = new CallableExtension($extension);
+                }
 
-        $mergedExtensions = \call_user_func_array(
-            '\array_merge_recursive',
-            \array_reverse($serviceProvidersExtensions)
-        );
+                if (\array_key_exists($id, $extensions)) {
+                    $extension = new ExtendExtension(
+                        $extensions[$id],
+                        $extension
+                    );
+                }
 
-        foreach ($mergedExtensions as $key => $closure) {
-            if (\is_callable($closure)) {
-                continue;
+                $extensions[$id] = $extension;
             }
 
-            $mergedExtensions[$key] = \current($closure);
-
-            while ($extension = \next($closure)) {
-                $mergedExtensions[$key] = new ExtendExtension($mergedExtensions[$key], $extension);
-            }
-        }
-
-        return $mergedExtensions;
+            return $extensions;
+        }, array());
     }
 
     /**
