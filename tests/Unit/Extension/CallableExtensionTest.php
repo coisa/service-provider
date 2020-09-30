@@ -36,7 +36,7 @@ final class CallableExtensionTest extends AbstractExtensionTestCase
 
         $object = $this->object = new \stdClass();
 
-        $this->extension = new CallableExtension(function ($container, $previous = null) use ($object) {
+        $this->extension = new CallableExtension(function () use ($object) {
             return $object;
         });
     }

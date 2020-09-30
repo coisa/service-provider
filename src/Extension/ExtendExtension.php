@@ -26,7 +26,7 @@ final class ExtendExtension extends AbstractExtension
      * ExtendExtension constructor.
      *
      * @param ExtensionInterface $extension
-     * @param ExtensionInterface $extend
+     * @param ExtensionInterface $next
      */
     public function __construct(ExtensionInterface $extension, ExtensionInterface $next)
     {
