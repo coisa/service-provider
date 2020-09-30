@@ -21,7 +21,7 @@ use Interop\Container\ServiceProviderInterface as InteropServiceProvider;
  *
  * @package CoiSA\ServiceProvider
  */
-final class ServiceProviderAggregator extends ServiceProvider
+final class ServiceProviderAggregator extends ServiceProvider implements \IteratorAggregate
 {
     /**
      * @var InteropServiceProvider[]
@@ -46,6 +46,14 @@ final class ServiceProviderAggregator extends ServiceProvider
     public function getServiceProviders()
     {
         return $this->serviceProviders;
+    }
+
+    /**
+     * @return \ArrayIterator|\Traversable
+     */
+    public function getIterator()
+    {
+        return new \ArrayIterator($this->serviceProviders);
     }
 
     /**
