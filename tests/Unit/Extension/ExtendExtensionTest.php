@@ -28,10 +28,10 @@ final class ExtendExtensionTest extends AbstractExtensionTestCase
     /** @var ContainerInterface|ObjectProphecy */
     private $container;
 
-    /** @var ObjectProphecy|ExtensionInterface */
+    /** @var ExtensionInterface|ObjectProphecy */
     private $currentExtension;
 
-    /** @var ObjectProphecy|ExtensionInterface */
+    /** @var ExtensionInterface|ObjectProphecy */
     private $wrapperExtension;
 
     public function setUp()
@@ -53,10 +53,10 @@ final class ExtendExtensionTest extends AbstractExtensionTestCase
     public function testInvokeWithContainerWillResolveBothExtensions()
     {
         $extendExtension = $this->extension;
-        $container = $this->container->reveal();
+        $container       = $this->container->reveal();
 
         $previous = \uniqid('previous', true);
-        $return = \uniqid('return', true);
+        $return   = \uniqid('return', true);
 
         $this->currentExtension->__invoke($container, null)->shouldBeCalledOnce()->willReturn($previous);
         $this->wrapperExtension->__invoke($container, $previous)->shouldBeCalledOnce()->willReturn($return);
