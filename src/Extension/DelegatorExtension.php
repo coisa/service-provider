@@ -43,11 +43,9 @@ final class DelegatorExtension extends AbstractExtension
         }
 
         $this->extension = function (ContainerInterface $container, $previous = null) use ($id, $delegator) {
-            return $delegator(
-                $container,
-                $id,
-                new ServiceFactory($previous)
-            );
+            $previousFactory = new ServiceFactory($previous);
+
+            return \call_user_func($delegator, $container, $id, $previousFactory);
         };
     }
 }
