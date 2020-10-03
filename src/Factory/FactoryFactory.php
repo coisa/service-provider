@@ -14,6 +14,7 @@
 namespace CoiSA\ServiceProvider\Factory;
 
 use CoiSA\ServiceProvider\Exception\ReflectionException;
+use Psr\Container\ContainerInterface;
 
 /**
  * Class FactoryFactory
@@ -36,7 +37,11 @@ final class FactoryFactory extends AbstractFactory
         }
 
         if (\is_string($factory)) {
-            $factory = new $factory();
+            $factory = function (ContainerInterface $container) use ($factory) {
+                $factory = $container->has($factory) ? $container->get($factory) : new $factory();
+
+                return $factory($container);
+            };
         }
 
         $this->factory = new CallableFactory($factory);
