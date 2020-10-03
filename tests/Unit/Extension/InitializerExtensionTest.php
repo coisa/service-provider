@@ -13,8 +13,6 @@
 
 namespace CoiSA\ServiceProvider\Test\Unit\Extension;
 
-use CoiSA\ServiceProvider\Extension\ExtendExtension;
-use CoiSA\ServiceProvider\Extension\ExtensionInterface;
 use CoiSA\ServiceProvider\Extension\InitializerExtension;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Container\ContainerInterface;
@@ -35,7 +33,8 @@ final class InitializerExtensionTest extends AbstractExtensionTestCase
     {
         $this->container = $this->prophesize('Psr\\Container\\ContainerInterface');
 
-        $this->extension = new InitializerExtension(function (ContainerInterface $container, $object) {});
+        $this->extension = new InitializerExtension(function (ContainerInterface $container, $object) {
+        });
     }
 
     /**
@@ -60,7 +59,7 @@ final class InitializerExtensionTest extends AbstractExtensionTestCase
 
         $initializer = new InitializerExtension($initializerCallable);
 
-        /** @var ObjectProphecy|LoggerAwareInterface $loggerAwareProphecy */
+        /** @var LoggerAwareInterface|ObjectProphecy $loggerAwareProphecy */
         $loggerAwareProphecy = $this->prophesize('Psr\\Log\\LoggerAwareInterface');
 
         /** @var LoggerAwareInterface $loggerAware */
