@@ -38,6 +38,12 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
      */
     public function getFactories()
     {
+        $class = \get_called_class();
+
+        if (false === \array_key_exists($class, $this->factories)) {
+            $this->factories[$class] = new Factory\ServiceFactory($this);
+        }
+
         return $this->factories;
     }
 
