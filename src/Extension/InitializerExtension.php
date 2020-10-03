@@ -37,7 +37,7 @@ final class InitializerExtension extends AbstractExtension
         }
 
         $this->extension = function (ContainerInterface $container, $previous = null) use ($initializer) {
-            $initializer($container, $previous);
+            \call_user_func($initializer, $container, $previous);
 
             return $previous;
         };
