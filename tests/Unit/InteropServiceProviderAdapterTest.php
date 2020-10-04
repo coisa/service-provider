@@ -43,7 +43,6 @@ final class InteropServiceProviderAdapterTest extends AbstractServiceProviderTes
         $this->interopServiceProvider = $this->prophesize('Interop\\Container\\ServiceProviderInterface');
 
         $this->factories = array(
-            'CoiSA\\ServiceProvider\\InteropServiceProviderAdapter' => $this->serviceProvider,
             \uniqid('factory', true),
             \uniqid('factory', true),
             \uniqid('factory', true),
@@ -66,27 +65,6 @@ final class InteropServiceProviderAdapterTest extends AbstractServiceProviderTes
         self::assertEquals(
             $this->factories,
             $this->serviceProvider->getFactories()
-        );
-    }
-
-    public function testGetFactoriesWillAddSelfReferenceThroughServiceFactory()
-    {
-        $this->interopServiceProvider->getFactories()->willReturn(array());
-
-        $serviceProvider = new InteropServiceProviderAdapter($this->interopServiceProvider->reveal());
-        $factories       = $serviceProvider->getFactories();
-
-        self::assertInstanceOf(
-            'CoiSA\\ServiceProvider\\Factory\\ServiceFactory',
-            $factories['CoiSA\\ServiceProvider\\InteropServiceProviderAdapter']
-        );
-
-        self::assertSame(
-            $serviceProvider,
-            \call_user_func(
-                $factories['CoiSA\\ServiceProvider\\InteropServiceProviderAdapter'],
-                $this->container->reveal()
-            )
         );
     }
 
