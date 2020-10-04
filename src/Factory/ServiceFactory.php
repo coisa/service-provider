@@ -27,7 +27,7 @@ final class ServiceFactory extends AbstractFactory
      *
      * @param mixed $service
      */
-    public function __construct($service)
+    public function __construct($service = null)
     {
         $this->factory = function (ContainerInterface $container) use ($service) {
             return $service;
