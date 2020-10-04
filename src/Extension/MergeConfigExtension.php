@@ -30,8 +30,8 @@ final class MergeConfigExtension extends AbstractExtension
      */
     public function __construct(array $config)
     {
-        $this->extension = function (ContainerInterface $container, $previous = array()) use ($config) {
-            $previous = $previous ?: array();
+        $this->extension = function (ContainerInterface $container, $previous = null) use ($config) {
+            $previous = null === $previous ? array() : $previous;
 
             if (false === \is_array($previous)) {
                 throw InvalidArgumentException::forInvalidArgumentType('previous', 'array');
