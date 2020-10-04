@@ -41,4 +41,11 @@ final class ServiceFactoryTest extends AbstractFactoryTestCase
     {
         self::assertSame($this->service, \call_user_func($this->factory, $this->container->reveal()));
     }
+
+    public function testInvokeWithoutConstructorArgumentWillReturnNull()
+    {
+        $factory = new ServiceFactory();
+
+        self::assertNull(\call_user_func($factory, $this->container->reveal()));
+    }
 }
