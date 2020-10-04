@@ -33,8 +33,14 @@ final class InitializerExtensionTest extends AbstractExtensionTestCase
     {
         $this->container = $this->prophesize('Psr\\Container\\ContainerInterface');
 
-        $this->extension = new InitializerExtension(function (ContainerInterface $container, $object) {
-        });
+        $this->extension = new InitializerExtension(array($this, 'createInitializerCallable'));
+    }
+
+    public function createInitializerCallable()
+    {
+        return function (ContainerInterface $container, $object) {
+            // noop
+        };
     }
 
     /**
