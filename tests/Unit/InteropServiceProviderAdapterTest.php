@@ -25,9 +25,6 @@ use Psr\Container\ContainerInterface;
  */
 final class InteropServiceProviderAdapterTest extends AbstractServiceProviderTestCase
 {
-    /** @var ContainerInterface|ObjectProphecy */
-    private $container;
-
     /** @var ObjectProphecy|ServiceProviderInterface */
     private $interopServiceProvider;
 
@@ -39,7 +36,6 @@ final class InteropServiceProviderAdapterTest extends AbstractServiceProviderTes
 
     public function setUp()
     {
-        $this->container              = $this->prophesize('Psr\\Container\\ContainerInterface');
         $this->interopServiceProvider = $this->prophesize('Interop\\Container\\ServiceProviderInterface');
 
         $this->factories = array(
