@@ -37,7 +37,7 @@ final class MergeConfigExtension extends AbstractExtension
                 throw InvalidArgumentException::forInvalidArgumentType('previous', 'array');
             }
 
-            return self::merge($previous, $config);
+            return MergeConfigExtension::merge($previous, $config);
         };
     }
 
@@ -46,8 +46,10 @@ final class MergeConfigExtension extends AbstractExtension
      * @param array $merge
      *
      * @return array
+     *
+     * @internal
      */
-    private static function merge(array $previous, array $config)
+    public static function merge(array $previous, array $config)
     {
         foreach ($config as $key => $value) {
             if (false === \array_key_exists($key, $previous)) {

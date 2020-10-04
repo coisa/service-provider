@@ -24,8 +24,10 @@
         "squizlabs/php_codesniffer": "^2.9"
     },
     "config": {
-        "prefer-stable": true,
-        "sort-packages": true
+        "sort-packages": true,
+        "platform": {
+            "php": "5.3.29"
+        }
     },
     "extra": {
         "branch-alias": {
