@@ -92,4 +92,94 @@ abstract class ServiceProviderTestCase extends AbstractServiceProviderTestCase
             \call_user_func($this->serviceProvider->getFactory($alias), $container->reveal())
         );
     }
+
+    public function testExtendWithExtensionObjectWillSetExtension()
+    {
+        $id        = \uniqid('id', true);
+        $extension = $this->prophesize('CoiSA\\ServiceProvider\\Extension\\ExtensionInterface')->reveal();
+
+        $this->serviceProvider->extend($id, $extension);
+
+        self::assertSame($extension, $this->serviceProvider->getExtension($id));
+    }
+
+    public function testExtendWithCallableWillSetCallableExtensionToGivenId()
+    {
+        $id               = \uniqid('id', true);
+        $previous         = new \stdClass();
+        $previous->uniqid = \uniqid('test', true);
+        $extension        = function (ContainerInterface $container, $previous = null) {
+            return $previous;
+        };
+
+        $this->serviceProvider->extend($id, $extension);
+
+        self::assertInstanceOf(
+            'CoiSA\\ServiceProvider\\Extension\\CallableExtension',
+            $this->serviceProvider->getExtension($id)
+        );
+
+        $container = $this->prophesize('Psr\\Container\\ContainerInterface')->reveal();
+
+        self::assertSame(
+            $previous,
+            \call_user_func($this->serviceProvider->getExtension($id), $container, $previous)
+        );
+    }
+
+    public function testExtendWithAlreadySetIdWillExtendExtension()
+    {
+        $id         = \uniqid('id', true);
+        $return1    = \uniqid('return1', true);
+        $extension1 = function (ContainerInterface $container, $previous = null) use ($return1) {
+            return $previous . $return1;
+        };
+        $return2    = \uniqid('return2', true);
+        $extension2 = function (ContainerInterface $container, $previous = null) use ($return2) {
+            return $previous . $return2;
+        };
+
+        $this->serviceProvider->extend($id, $extension1, false);
+        $this->serviceProvider->extend($id, $extension2, false);
+
+        self::assertInstanceOf(
+            'CoiSA\\ServiceProvider\\Extension\\ExtendExtension',
+            $this->serviceProvider->getExtension($id)
+        );
+
+        $container = $this->prophesize('Psr\\Container\\ContainerInterface')->reveal();
+
+        self::assertEquals(
+            $return1 . $return2,
+            \call_user_func($this->serviceProvider->getExtension($id), $container)
+        );
+    }
+
+    public function testExtendWithPrependAndAlreadySetIdWillPrependExtendExtension()
+    {
+        $id         = \uniqid('id', true);
+        $return1    = \uniqid('return1', true);
+        $extension1 = function (ContainerInterface $container, $previous = null) use ($return1) {
+            return $previous . $return1;
+        };
+        $return2    = \uniqid('return2', true);
+        $extension2 = function (ContainerInterface $container, $previous = null) use ($return2) {
+            return $previous . $return2;
+        };
+
+        $this->serviceProvider->extend($id, $extension1, true);
+        $this->serviceProvider->extend($id, $extension2, true);
+
+        self::assertInstanceOf(
+            'CoiSA\\ServiceProvider\\Extension\\ExtendExtension',
+            $this->serviceProvider->getExtension($id)
+        );
+
+        $container = $this->prophesize('Psr\\Container\\ContainerInterface')->reveal();
+
+        self::assertEquals(
+            $return2 . $return1,
+            \call_user_func($this->serviceProvider->getExtension($id), $container)
+        );
+    }
 }
