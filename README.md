@@ -17,7 +17,7 @@ $ composer require coisa/service-provider
 
 ## License
 
-Please see [License File](LICENSE.md) for more information.
+Please see [License File](LICENSE) for more information.
 
 [ico-version]: https://img.shields.io/packagist/v/coisa/service-provider.svg?style=flat-square
 [ico-php]: https://img.shields.io/packagist/php-v/coisa/service-provider.svg?style=flat-square
