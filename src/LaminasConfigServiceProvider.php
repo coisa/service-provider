@@ -29,14 +29,17 @@ final class LaminasConfigServiceProvider extends ServiceProvider
      */
     public function __construct(array $config)
     {
-        $dependencies = \array_merge_recursive(array(
-            'services'     => array(),
-            'factories'    => array(),
-            'invokables'   => array(),
-            'delegators'   => array(),
-            'initializers' => array(),
-            'aliases'      => array(),
-        ), $config['dependencies'] ?: array());
+        $dependencies = \array_merge_recursive(
+            array(
+                'services'     => array(),
+                'factories'    => array(),
+                'invokables'   => array(),
+                'delegators'   => array(),
+                'initializers' => array(),
+                'aliases'      => array(),
+            ),
+            \array_key_exists('dependencies', $config) ? $config['dependencies'] : array()
+        );
 
         $this->factories['config']  = new Factory\ServiceFactory($config);
         $this->extensions['config'] = new Extension\MergeConfigExtension($config);
