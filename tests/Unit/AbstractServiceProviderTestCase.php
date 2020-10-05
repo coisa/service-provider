@@ -33,11 +33,6 @@ abstract class AbstractServiceProviderTestCase extends TestCase
         self::assertInstanceOf('CoiSA\\ServiceProvider\\ServiceProviderInterface', $this->serviceProvider);
     }
 
-    public function testServiceProviderExtendServiceProvider()
-    {
-        self::assertInstanceOf('CoiSA\\ServiceProvider\\ServiceProvider', $this->serviceProvider);
-    }
-
     public function testServiceProviderExtendAbstractServiceProvider()
     {
         self::assertInstanceOf('CoiSA\\ServiceProvider\\AbstractServiceProvider', $this->serviceProvider);

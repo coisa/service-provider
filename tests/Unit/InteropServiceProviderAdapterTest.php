@@ -16,14 +16,13 @@ namespace CoiSA\ServiceProvider\Test\Unit;
 use CoiSA\ServiceProvider\InteropServiceProviderAdapter;
 use Interop\Container\ServiceProviderInterface;
 use Prophecy\Prophecy\ObjectProphecy;
-use Psr\Container\ContainerInterface;
 
 /**
  * Class InteropServiceProviderAdapterTest
  *
  * @package CoiSA\ServiceProvider\Test\Unit
  */
-final class InteropServiceProviderAdapterTest extends AbstractServiceProviderTestCase
+final class InteropServiceProviderAdapterTest extends ServiceProviderTestCase
 {
     /** @var ObjectProphecy|ServiceProviderInterface */
     private $interopServiceProvider;
