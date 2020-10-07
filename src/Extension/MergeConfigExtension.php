@@ -66,7 +66,7 @@ final class MergeConfigExtension extends AbstractExtension
             }
 
             if (\is_array($value) && \is_array($previous[$key])) {
-                $previous[$key] = self::merge($previous[$key], $value);
+                $previous[$key] = $this->merge($previous[$key], $value);
 
                 continue;
             }
