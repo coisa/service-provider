@@ -30,7 +30,7 @@ abstract class AbstractFactoryTestCase extends TestCase
 
     public function testFactoryImplementsFactoryInterface()
     {
-        self::assertInstanceOf('CoiSA\\ServiceProvider\\Factory\\FactoryInterface', $this->factory);
+        self::assertInstanceOf('CoiSA\\ServiceProvider\\Factory\\ServiceProviderFactoryInterface', $this->factory);
     }
 
     public function testFactoryExtendAbstractFactory()

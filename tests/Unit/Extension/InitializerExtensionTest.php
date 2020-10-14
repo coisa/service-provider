@@ -44,7 +44,7 @@ final class InitializerExtensionTest extends AbstractExtensionTestCase
     }
 
     /**
-     * @expectedException \CoiSA\ServiceProvider\Exception\InvalidArgumentException
+     * @expectedException \CoiSA\ServiceProvider\Exception\ServiceProviderInvalidArgumentException
      */
     public function testConstructWithNotCallableArgumentWillThrowInvalidArgumentException()
     {

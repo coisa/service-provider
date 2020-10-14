@@ -50,7 +50,7 @@ final class InvokableFactoryTest extends AbstractFactoryTestCase
 
     /**
      * @dataProvider provideNonStringArgument
-     * @expectedException \CoiSA\ServiceProvider\Exception\InvalidArgumentException
+     * @expectedException \CoiSA\ServiceProvider\Exception\ServiceProviderInvalidArgumentException
      *
      * @param mixed $invokable
      */
@@ -60,7 +60,7 @@ final class InvokableFactoryTest extends AbstractFactoryTestCase
     }
 
     /**
-     * @expectedException \CoiSA\ServiceProvider\Exception\ReflectionException
+     * @expectedException \CoiSA\ServiceProvider\Exception\ServiceProviderReflectionException
      */
     public function testConstructWithNonExistentClassArgumentWillThrowReflectionException()
     {

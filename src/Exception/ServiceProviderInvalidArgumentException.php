@@ -11,21 +11,14 @@
  * @license   https://opensource.org/licenses/MIT MIT License
  */
 
-namespace CoiSA\ServiceProvider\Factory;
-
-use Psr\Container\ContainerInterface;
+namespace CoiSA\ServiceProvider\Exception;
 
 /**
- * Interface FactoryInterface
+ * Class ServiceProviderInvalidArgumentException
  *
- * @package CoiSA\ServiceProvider\Factory
+ * @package CoiSA\ServiceProvider\Exception
  */
-interface FactoryInterface
+final class ServiceProviderInvalidArgumentException extends \CoiSA\Exception\Spl\InvalidArgumentException implements
+    ServiceProviderExceptionInterface
 {
-    /**
-     * @param ContainerInterface $container
-     *
-     * @return mixed
-     */
-    public function __invoke(ContainerInterface $container);
 }

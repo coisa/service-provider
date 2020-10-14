@@ -13,7 +13,7 @@
 
 namespace CoiSA\ServiceProvider;
 
-use CoiSA\ServiceProvider\Extension\ExtensionInterface;
+use CoiSA\ServiceProvider\Extension\ServiceProviderExtensionInterface;
 use Interop\Container\ServiceProviderInterface as InteropServiceProvider;
 
 /**
@@ -102,7 +102,7 @@ final class ServiceProviderAggregator extends ServiceProvider implements \Iterat
     }
 
     /**
-     * @param callable[]|ExtensionInterface[] $extensions
+     * @param callable[]|ServiceProviderExtensionInterface[] $extensions
      * @param bool                            $prepend
      */
     private function setExtensions(array $extensions, $prepend = false)

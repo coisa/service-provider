@@ -30,7 +30,7 @@ abstract class ServiceProviderTestCase extends AbstractServiceProviderTestCase
     public function testSetFactoryWithFactoryObjectWillSetSameFactoryInstance()
     {
         $id      = \uniqid('id', true);
-        $factory = $this->prophesize('CoiSA\\ServiceProvider\\Factory\\FactoryInterface')->reveal();
+        $factory = $this->prophesize('CoiSA\\ServiceProvider\\Factory\\ServiceProviderFactoryInterface')->reveal();
 
         $this->serviceProvider->setFactory($id, $factory);
 
@@ -96,7 +96,7 @@ abstract class ServiceProviderTestCase extends AbstractServiceProviderTestCase
     public function testExtendWithExtensionObjectWillSetExtension()
     {
         $id        = \uniqid('id', true);
-        $extension = $this->prophesize('CoiSA\\ServiceProvider\\Extension\\ExtensionInterface')->reveal();
+        $extension = $this->prophesize('CoiSA\\ServiceProvider\\Extension\\ServiceProviderExtensionInterface')->reveal();
 
         $this->serviceProvider->extend($id, $extension);
 

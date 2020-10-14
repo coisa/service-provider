@@ -13,8 +13,8 @@
 
 namespace CoiSA\ServiceProvider;
 
-use CoiSA\ServiceProvider\Extension\ExtensionInterface;
-use CoiSA\ServiceProvider\Factory\FactoryInterface;
+use CoiSA\ServiceProvider\Extension\ServiceProviderExtensionInterface;
+use CoiSA\ServiceProvider\Factory\ServiceProviderFactoryInterface;
 
 /**
  * Class AbstractServiceProvider
@@ -24,12 +24,12 @@ use CoiSA\ServiceProvider\Factory\FactoryInterface;
 abstract class AbstractServiceProvider implements ServiceProviderInterface
 {
     /**
-     * @var callable[]|FactoryInterface[]
+     * @var callable[]|ServiceProviderFactoryInterface[]
      */
     protected $factories = array();
 
     /**
-     * @var callable[]|ExtensionInterface[]
+     * @var callable[]|ServiceProviderExtensionInterface[]
      */
     protected $extensions = array();
 

@@ -13,7 +13,7 @@
 
 namespace CoiSA\ServiceProvider\Factory;
 
-use CoiSA\ServiceProvider\Exception\ReflectionException;
+use CoiSA\ServiceProvider\Exception\ServiceProviderReflectionException;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -28,12 +28,12 @@ final class FactoryFactory extends AbstractFactory
      *
      * @param callable|string $factory
      *
-     * @throws ReflectionException
+     * @throws ServiceProviderReflectionException
      */
     public function __construct($factory)
     {
         if (\is_string($factory) && false === \class_exists($factory)) {
-            throw ReflectionException::forClassNotFound($factory);
+            throw ServiceProviderReflectionException::forClassNotFound($factory);
         }
 
         if (\is_string($factory)) {

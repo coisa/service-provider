@@ -16,11 +16,11 @@ namespace CoiSA\ServiceProvider\Extension;
 use Psr\Container\ContainerInterface;
 
 /**
- * Interface ExtensionInterface
+ * Interface ServiceProviderExtensionInterface
  *
  * @package CoiSA\ServiceProvider\Extension
  */
-interface ExtensionInterface
+interface ServiceProviderExtensionInterface
 {
     /**
      * @param ContainerInterface $container

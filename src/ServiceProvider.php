@@ -15,10 +15,10 @@ namespace CoiSA\ServiceProvider;
 
 use CoiSA\ServiceProvider\Extension\CallableExtension;
 use CoiSA\ServiceProvider\Extension\ExtendExtension;
-use CoiSA\ServiceProvider\Extension\ExtensionInterface;
+use CoiSA\ServiceProvider\Extension\ServiceProviderExtensionInterface;
 use CoiSA\ServiceProvider\Factory\AliasFactory;
 use CoiSA\ServiceProvider\Factory\FactoryFactory;
-use CoiSA\ServiceProvider\Factory\FactoryInterface;
+use CoiSA\ServiceProvider\Factory\ServiceProviderFactoryInterface;
 
 /**
  * Class ServiceProvider
@@ -29,11 +29,11 @@ class ServiceProvider extends AbstractServiceProvider
 {
     /**
      * @param string                           $id
-     * @param callable|FactoryInterface|string $factory
+     * @param callable|ServiceProviderFactoryInterface|string $factory
      */
     public function setFactory($id, $factory)
     {
-        if (!$factory instanceof FactoryInterface) {
+        if (!$factory instanceof ServiceProviderFactoryInterface) {
             $factory = new FactoryFactory($factory);
         }
 
@@ -43,7 +43,7 @@ class ServiceProvider extends AbstractServiceProvider
     /**
      * @param string $id
      *
-     * @return FactoryInterface
+     * @return ServiceProviderFactoryInterface
      */
     public function getFactory($id)
     {
@@ -61,12 +61,12 @@ class ServiceProvider extends AbstractServiceProvider
 
     /**
      * @param string                      $id
-     * @param callable|ExtensionInterface $extension
+     * @param callable|ServiceProviderExtensionInterface $extension
      * @param bool                        $prepend
      */
     public function extend($id, $extension, $prepend = false)
     {
-        if (!$extension instanceof ExtensionInterface) {
+        if (!$extension instanceof ServiceProviderExtensionInterface) {
             $extension = new CallableExtension($extension);
         }
 
@@ -85,7 +85,7 @@ class ServiceProvider extends AbstractServiceProvider
     /**
      * @param string $id
      *
-     * @return ExtensionInterface
+     * @return ServiceProviderExtensionInterface
      */
     public function getExtension($id)
     {

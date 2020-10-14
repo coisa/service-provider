@@ -14,7 +14,7 @@
 namespace CoiSA\ServiceProvider\Test\Unit\Extension;
 
 use CoiSA\ServiceProvider\Extension\ExtendExtension;
-use CoiSA\ServiceProvider\Extension\ExtensionInterface;
+use CoiSA\ServiceProvider\Extension\ServiceProviderExtensionInterface;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Container\ContainerInterface;
 
@@ -28,20 +28,20 @@ final class ExtendExtensionTest extends AbstractExtensionTestCase
     /** @var ContainerInterface|ObjectProphecy */
     private $container;
 
-    /** @var ExtensionInterface|ObjectProphecy */
+    /** @var ServiceProviderExtensionInterface|ObjectProphecy */
     private $currentExtension;
 
-    /** @var ExtensionInterface|ObjectProphecy */
+    /** @var ServiceProviderExtensionInterface|ObjectProphecy */
     private $wrapperExtension;
 
     public function setUp()
     {
         $this->container        = $this->prophesize('Psr\\Container\\ContainerInterface');
         $this->currentExtension = $this->prophesize(
-            'CoiSA\\ServiceProvider\\Extension\\ExtensionInterface'
+            'CoiSA\\ServiceProvider\\Extension\\ServiceProviderExtensionInterface'
         );
         $this->wrapperExtension = $this->prophesize(
-            'CoiSA\\ServiceProvider\\Extension\\ExtensionInterface'
+            'CoiSA\\ServiceProvider\\Extension\\ServiceProviderExtensionInterface'
         );
 
         $this->extension = new ExtendExtension(

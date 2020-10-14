@@ -50,7 +50,7 @@ final class AliasFactoryTest extends AbstractFactoryTestCase
 
     /**
      * @dataProvider provideNonStringValues
-     * @expectedException \CoiSA\ServiceProvider\Exception\InvalidArgumentException
+     * @expectedException \CoiSA\ServiceProvider\Exception\ServiceProviderInvalidArgumentException
      *
      * @param mixed $service
      */

@@ -20,7 +20,7 @@ use Psr\Container\ContainerInterface;
  *
  * @package CoiSA\ServiceProvider\Factory
  */
-abstract class AbstractExtension implements ExtensionInterface
+abstract class AbstractExtension implements ServiceProviderExtensionInterface
 {
     /**
      * @var callable

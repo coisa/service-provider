@@ -14,10 +14,11 @@
 namespace CoiSA\ServiceProvider\Exception;
 
 /**
- * Class ReflectionException
+ * Class ServiceProviderReflectionException
  *
  * @package CoiSA\ServiceProvider\Exception
  */
-final class ReflectionException extends \CoiSA\Exception\Spl\ReflectionException
+final class ServiceProviderReflectionException extends \CoiSA\Exception\Spl\ReflectionException implements
+    ServiceProviderExceptionInterface
 {
 }
