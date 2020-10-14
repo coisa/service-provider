@@ -34,12 +34,11 @@ final class ServiceFactoryTest extends AbstractFactoryTestCase
     {
         $this->container = $this->prophesize('Psr\\Container\\ContainerInterface');
         $this->service   = new \stdClass();
-        $this->factory   = new ServiceFactory($this->service);
     }
 
     public function testInvokeWillReturnService()
     {
-        self::assertSame($this->service, \call_user_func($this->factory, $this->container->reveal()));
+        self::assertSame($this->service, \call_user_func($this->getFactory(), $this->container->reveal()));
     }
 
     public function testInvokeWithoutConstructorArgumentWillReturnNull()
@@ -47,5 +46,13 @@ final class ServiceFactoryTest extends AbstractFactoryTestCase
         $factory = new ServiceFactory();
 
         self::assertNull(\call_user_func($factory, $this->container->reveal()));
+    }
+
+    /**
+     * @return ServiceFactory
+     */
+    protected function getFactory()
+    {
+        return new ServiceFactory($this->service);
     }
 }

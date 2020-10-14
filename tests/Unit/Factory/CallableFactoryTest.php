@@ -38,8 +38,6 @@ final class CallableFactoryTest extends AbstractFactoryTestCase
         $this->callable = function(ContainerInterface $container) use ($result) {
             return $result;
         };
-
-        $this->factory   = new CallableFactory($this->callable);
     }
 
     public function provideNonCallableValues()
@@ -69,6 +67,14 @@ final class CallableFactoryTest extends AbstractFactoryTestCase
     {
         $result = \call_user_func($this->callable, $this->container->reveal());
 
-        self::assertEquals($result, \call_user_func($this->factory, $this->container->reveal()));
+        self::assertEquals($result, \call_user_func($this->getFactory(), $this->container->reveal()));
+    }
+
+    /**
+     * @return CallableFactory
+     */
+    protected function getFactory()
+    {
+        return new CallableFactory($this->callable);
     }
 }

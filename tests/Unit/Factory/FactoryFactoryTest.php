@@ -35,7 +35,6 @@ final class FactoryFactoryTest extends AbstractFactoryTestCase
     {
         $this->container = $this->prophesize('Psr\\Container\\ContainerInterface');
         $this->service   = 'CoiSA\\ServiceProvider\\Factory\\ServiceFactory';
-        $this->factory   = new FactoryFactory($this->service);
     }
 
     /**
@@ -54,13 +53,23 @@ final class FactoryFactoryTest extends AbstractFactoryTestCase
         $this->container->has($this->service)->willReturn(true);
         $this->container->get($this->service)->willReturn(new ServiceFactory($instance));
 
-        self::assertSame($instance, \call_user_func($this->factory, $this->container->reveal()));
+        self::assertSame($instance, \call_user_func($this->getFactory(), $this->container->reveal()));
     }
 
     public function testInvokeWithoutFactoryClassInsideContainerWillInvokeIntoNewInstanceOfFactory()
     {
         $this->container->has($this->service)->willReturn(false);
 
-        self::assertNull(\call_user_func($this->factory, $this->container->reveal()));
+        self::assertNull(\call_user_func($this->getFactory(), $this->container->reveal()));
+    }
+
+    /**
+     * @throws \CoiSA\ServiceProvider\Exception\ReflectionException
+     *
+     * @return FactoryFactory
+     */
+    protected function getFactory()
+    {
+        return new FactoryFactory($this->service);
     }
 }

@@ -34,7 +34,6 @@ final class AliasFactoryTest extends AbstractFactoryTestCase
     {
         $this->container = $this->prophesize('Psr\\Container\\ContainerInterface');
         $this->service   = \uniqid('test', true);
-        $this->factory   = new AliasFactory($this->service);
     }
 
     public function provideNonStringValues()
@@ -66,6 +65,14 @@ final class AliasFactoryTest extends AbstractFactoryTestCase
 
         $this->container->get($this->service)->shouldBeCalledOnce()->willReturn($object);
 
-        self::assertSame($object, \call_user_func($this->factory, $this->container->reveal()));
+        self::assertSame($object, \call_user_func($this->getFactory(), $this->container->reveal()));
+    }
+
+    /**
+     * @return AliasFactory
+     */
+    protected function getFactory()
+    {
+        return new AliasFactory($this->service);
     }
 }

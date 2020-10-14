@@ -34,7 +34,6 @@ final class InvokableFactoryTest extends AbstractFactoryTestCase
     {
         $this->container = $this->prophesize('Psr\\Container\\ContainerInterface');
         $this->invokable = 'stdClass';
-        $this->factory   = new InvokableFactory($this->invokable);
     }
 
     public function provideNonStringArgument()
@@ -69,6 +68,16 @@ final class InvokableFactoryTest extends AbstractFactoryTestCase
 
     public function testInvokeWillReturnNewInstanceOfGivenInvokableClassNamespace()
     {
-        self::assertInstanceOf('stdClass', \call_user_func($this->factory, $this->container->reveal()));
+        self::assertInstanceOf('stdClass', \call_user_func($this->getFactory(), $this->container->reveal()));
+    }
+
+    /**
+     * @throws \CoiSA\ServiceProvider\Exception\ReflectionException
+     *
+     * @return InvokableFactory
+     */
+    protected function getFactory()
+    {
+        return new InvokableFactory($this->invokable);
     }
 }

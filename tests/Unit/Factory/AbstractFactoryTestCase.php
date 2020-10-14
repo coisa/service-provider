@@ -23,18 +23,21 @@ use PHPUnit\Framework\TestCase;
  */
 abstract class AbstractFactoryTestCase extends TestCase
 {
-    /**
-     * @var FactoryInterface
-     */
-    protected $factory;
-
     public function testFactoryImplementsFactoryInterface()
     {
-        self::assertInstanceOf('CoiSA\\ServiceProvider\\Factory\\ServiceProviderFactoryInterface', $this->factory);
+        self::assertInstanceOf(
+            'CoiSA\\ServiceProvider\\Factory\\ServiceProviderFactoryInterface',
+            $this->getFactory()
+        );
     }
 
     public function testFactoryExtendAbstractFactory()
     {
-        self::assertInstanceOf('CoiSA\\ServiceProvider\\Factory\\AbstractFactory', $this->factory);
+        self::assertInstanceOf('CoiSA\\ServiceProvider\\Factory\\AbstractFactory', $this->getFactory());
     }
+
+    /**
+     * @return FactoryInterface
+     */
+    abstract protected function getFactory();
 }
