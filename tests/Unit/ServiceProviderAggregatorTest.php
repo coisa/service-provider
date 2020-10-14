@@ -21,7 +21,7 @@ use CoiSA\ServiceProvider\ServiceProviderAggregator;
  *
  * @package CoiSA\ServiceProvider\Test\Unit
  */
-final class ServiceProviderAggregatorTest extends AbstractServiceProviderTestCase
+final class ServiceProviderAggregatorTest extends ServiceProviderTestCase
 {
     public function testGetServiceProvidersWillReturnGivenServiceProviders()
     {

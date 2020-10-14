@@ -13,6 +13,7 @@
 
 namespace CoiSA\ServiceProvider;
 
+use CoiSA\ServiceProvider\Exception\UnexpectedValueException;
 use CoiSA\ServiceProvider\Extension\CallableExtension;
 use CoiSA\ServiceProvider\Extension\ExtendExtension;
 use CoiSA\ServiceProvider\Extension\ServiceProviderExtensionInterface;
@@ -47,7 +48,11 @@ class ServiceProvider extends AbstractServiceProvider
      */
     public function getFactory($id)
     {
-        return \array_key_exists($id, $this->factories) ? $this->factories[$id] : null;
+        if (false === \array_key_exists($id, $this->factories)) {
+            throw UnexpectedValueException::forFactoryNotFound($id);
+        }
+
+        return $this->factories[$id];
     }
 
     /**
@@ -89,6 +94,10 @@ class ServiceProvider extends AbstractServiceProvider
      */
     public function getExtension($id)
     {
-        return \array_key_exists($id, $this->extensions) ? $this->extensions[$id] : null;
+        if (false === \array_key_exists($id, $this->extensions)) {
+            throw UnexpectedValueException::forExtensionNotFound($id);
+        }
+
+        return $this->extensions[$id];
     }
 }

@@ -27,6 +27,22 @@ abstract class ServiceProviderTestCase extends AbstractServiceProviderTestCase
         self::assertInstanceOf('CoiSA\\ServiceProvider\\ServiceProvider', $this->getServiceProvider());
     }
 
+    /**
+     * @expectedException \UnexpectedValueException
+     */
+    public function testGetFactoryWithoutGivenFactoryWillThrowUnexpectedValueException()
+    {
+        $this->getServiceProvider()->getFactory(\uniqid('test', true));
+    }
+
+    /**
+     * @expectedException \UnexpectedValueException
+     */
+    public function testGetExtensionWithoutGivenExtensionWillThrowUnexpectedValueException()
+    {
+        $this->getServiceProvider()->getExtension(\uniqid('test', true));
+    }
+
     public function testSetFactoryWithFactoryObjectWillSetSameFactoryInstance()
     {
         $id      = \uniqid('id', true);
