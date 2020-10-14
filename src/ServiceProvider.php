@@ -43,11 +43,11 @@ class ServiceProvider extends AbstractServiceProvider
     /**
      * @param string $id
      *
-     * @return ServiceProviderFactoryInterface
+     * @return null|ServiceProviderFactoryInterface
      */
     public function getFactory($id)
     {
-        return $this->factories[$id];
+        return \array_key_exists($id, $this->factories) ? $this->factories[$id] : null;
     }
 
     /**
@@ -85,10 +85,10 @@ class ServiceProvider extends AbstractServiceProvider
     /**
      * @param string $id
      *
-     * @return ServiceProviderExtensionInterface
+     * @return null|ServiceProviderExtensionInterface
      */
     public function getExtension($id)
     {
-        return $this->extensions[$id];
+        return \array_key_exists($id, $this->extensions) ? $this->extensions[$id] : null;
     }
 }
