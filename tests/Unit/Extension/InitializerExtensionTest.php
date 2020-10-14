@@ -32,8 +32,6 @@ final class InitializerExtensionTest extends AbstractExtensionTestCase
     public function setUp()
     {
         $this->container = $this->prophesize('Psr\\Container\\ContainerInterface');
-
-        $this->extension = new InitializerExtension(array($this, 'createInitializerCallable'));
     }
 
     public function createInitializerCallable()
@@ -76,5 +74,13 @@ final class InitializerExtensionTest extends AbstractExtensionTestCase
         $previous = \call_user_func($initializer, $this->container->reveal(), $loggerAware);
 
         self::assertSame($loggerAware, $previous);
+    }
+
+    /**
+     * @return InitializerExtension
+     */
+    protected function getExtension()
+    {
+        return new InitializerExtension(array($this, 'createInitializerCallable'));
     }
 }

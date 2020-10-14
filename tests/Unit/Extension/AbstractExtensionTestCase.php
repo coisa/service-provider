@@ -23,21 +23,21 @@ use PHPUnit\Framework\TestCase;
  */
 abstract class AbstractExtensionTestCase extends TestCase
 {
-    /**
-     * @var ServiceProviderExtensionInterface
-     */
-    protected $extension;
-
     public function testExtensionImplementsExtensionInterface()
     {
         self::assertInstanceOf(
             'CoiSA\\ServiceProvider\\Extension\\ServiceProviderExtensionInterface',
-            $this->extension
+            $this->getExtension()
         );
     }
 
     public function testExtensionExtendAbstractExtension()
     {
-        self::assertInstanceOf('CoiSA\\ServiceProvider\\Extension\\AbstractExtension', $this->extension);
+        self::assertInstanceOf('CoiSA\\ServiceProvider\\Extension\\AbstractExtension', $this->getExtension());
     }
+
+    /**
+     * @return ServiceProviderExtensionInterface
+     */
+    abstract protected function getExtension();
 }

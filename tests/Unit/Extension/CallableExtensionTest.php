@@ -27,18 +27,19 @@ final class CallableExtensionTest extends AbstractExtensionTestCase
     /** @var ContainerInterface|ObjectProphecy */
     private $container;
 
-    /** @var \stdClass */
-    private $object;
+    /** @var callable */
+    private $callable;
 
     public function setUp()
     {
         $this->container = $this->prophesize('Psr\\Container\\ContainerInterface');
 
-        $object = $this->object = new \stdClass();
+        $object         = new \stdClass();
+        $object->uniqid = \uniqid('test', true);
 
-        $this->extension = new CallableExtension(function() use ($object) {
+        $this->callable = function() use ($object) {
             return $object;
-        });
+        };
     }
 
     public function provideInvalidConstructorArgument()
@@ -65,8 +66,17 @@ final class CallableExtensionTest extends AbstractExtensionTestCase
 
     public function testInvokeWillReturnCallableResult()
     {
-        $callableExtension = $this->extension;
+        self::assertSame(
+            \call_user_func($this->callable),
+            \call_user_func($this->getExtension(), $this->container->reveal())
+        );
+    }
 
-        self::assertSame($this->object, $callableExtension($this->container->reveal()));
+    /**
+     * @return CallableExtension
+     */
+    protected function getExtension()
+    {
+        return new CallableExtension($this->callable);
     }
 }

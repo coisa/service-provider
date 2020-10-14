@@ -30,7 +30,6 @@ final class MergeConfigExtensionTest extends AbstractExtensionTestCase
     public function setUp()
     {
         $this->container = $this->prophesize('Psr\\Container\\ContainerInterface');
-        $this->extension = new MergeConfigExtension(array());
     }
 
     public function provideNotArrayValues()
@@ -52,7 +51,7 @@ final class MergeConfigExtensionTest extends AbstractExtensionTestCase
      */
     public function testInvokeWithNotArrayPreviousWillReturnInvalidArgumentException($previous)
     {
-        \call_user_func($this->extension, $this->container->reveal(), $previous);
+        \call_user_func($this->getExtension(), $this->container->reveal(), $previous);
     }
 
     public function providePreviousConfigExpectedValue()
@@ -158,5 +157,13 @@ final class MergeConfigExtensionTest extends AbstractExtensionTestCase
         $extension = new MergeConfigExtension($config);
 
         self::assertEquals($expected, $extension($this->container->reveal(), $previous));
+    }
+
+    /**
+     * @return MergeConfigExtension
+     */
+    protected function getExtension()
+    {
+        return new MergeConfigExtension(array());
     }
 }

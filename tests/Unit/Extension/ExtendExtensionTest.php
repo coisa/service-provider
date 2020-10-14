@@ -29,38 +29,46 @@ final class ExtendExtensionTest extends AbstractExtensionTestCase
     private $container;
 
     /** @var ObjectProphecy|ServiceProviderExtensionInterface */
-    private $currentExtension;
+    private $extension;
 
     /** @var ObjectProphecy|ServiceProviderExtensionInterface */
-    private $wrapperExtension;
+    private $wrapper;
 
     public function setUp()
     {
-        $this->container        = $this->prophesize('Psr\\Container\\ContainerInterface');
-        $this->currentExtension = $this->prophesize(
+        $this->container = $this->prophesize('Psr\\Container\\ContainerInterface');
+        $this->extension = $this->prophesize(
             'CoiSA\\ServiceProvider\\Extension\\ServiceProviderExtensionInterface'
         );
-        $this->wrapperExtension = $this->prophesize(
+        $this->wrapper = $this->prophesize(
             'CoiSA\\ServiceProvider\\Extension\\ServiceProviderExtensionInterface'
-        );
-
-        $this->extension = new ExtendExtension(
-            $this->currentExtension->reveal(),
-            $this->wrapperExtension->reveal()
         );
     }
 
     public function testInvokeWithContainerWillResolveBothExtensions()
     {
-        $extendExtension = $this->extension;
-        $container       = $this->container->reveal();
+        $container = $this->container->reveal();
 
         $previous = \uniqid('previous', true);
         $return   = \uniqid('return', true);
 
-        $this->currentExtension->__invoke($container, null)->shouldBeCalledOnce()->willReturn($previous);
-        $this->wrapperExtension->__invoke($container, $previous)->shouldBeCalledOnce()->willReturn($return);
+        $this->extension->__invoke($container, null)->shouldBeCalledOnce()->willReturn($previous);
+        $this->wrapper->__invoke($container, $previous)->shouldBeCalledOnce()->willReturn($return);
 
-        self::assertEquals($return, $extendExtension($container));
+        self::assertEquals(
+            $return,
+            \call_user_func($this->getExtension(), $container)
+        );
+    }
+
+    /**
+     * @return ExtendExtension
+     */
+    protected function getExtension()
+    {
+        return new ExtendExtension(
+            $this->extension->reveal(),
+            $this->wrapper->reveal()
+        );
     }
 }
