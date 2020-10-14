@@ -51,15 +51,13 @@ final class InteropServiceProviderAdapterTest extends ServiceProviderTestCase
 
         $this->interopServiceProvider->getFactories()->willReturn($this->factories);
         $this->interopServiceProvider->getExtensions()->willReturn($this->extensions);
-
-        $this->serviceProvider = new InteropServiceProviderAdapter($this->interopServiceProvider->reveal());
     }
 
     public function testGetFactoriesWillReturnSameFactoriesFromGivenInteropServiceProvider()
     {
         self::assertEquals(
             $this->factories,
-            $this->serviceProvider->getFactories()
+            $this->getServiceProvider()->getFactories()
         );
     }
 
@@ -67,7 +65,15 @@ final class InteropServiceProviderAdapterTest extends ServiceProviderTestCase
     {
         self::assertEquals(
             $this->extensions,
-            $this->serviceProvider->getExtensions()
+            $this->getServiceProvider()->getExtensions()
         );
+    }
+
+    /**
+     * @return InteropServiceProviderAdapter
+     */
+    protected function createServiceProvider()
+    {
+        return new InteropServiceProviderAdapter($this->interopServiceProvider->reveal());
     }
 }

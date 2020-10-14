@@ -22,8 +22,11 @@ use CoiSA\ServiceProvider\ServiceProvider;
  */
 final class ServiceProviderTest extends ServiceProviderTestCase
 {
-    public function setUp()
+    /**
+     * @return ServiceProvider
+     */
+    protected function createServiceProvider()
     {
-        $this->serviceProvider = new ServiceProvider();
+        return new ServiceProvider();
     }
 }

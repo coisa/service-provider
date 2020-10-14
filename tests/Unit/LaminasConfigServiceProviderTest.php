@@ -22,11 +22,6 @@ use CoiSA\ServiceProvider\LaminasConfigServiceProvider;
  */
 final class LaminasConfigServiceProviderTest extends ServiceProviderTestCase
 {
-    public function setUp()
-    {
-        $this->serviceProvider = new LaminasConfigServiceProvider(array());
-    }
-
     public function testConstructWillAddConfigToFactories()
     {
         $config          = array(
@@ -253,5 +248,15 @@ final class LaminasConfigServiceProviderTest extends ServiceProviderTestCase
                 $factory
             );
         }
+    }
+
+    /**
+     * @throws \CoiSA\ServiceProvider\Exception\ReflectionException
+     *
+     * @return LaminasConfigServiceProvider
+     */
+    protected function createServiceProvider()
+    {
+        return new LaminasConfigServiceProvider(array());
     }
 }

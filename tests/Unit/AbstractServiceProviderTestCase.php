@@ -23,18 +23,36 @@ use PHPUnit\Framework\TestCase;
  */
 abstract class AbstractServiceProviderTestCase extends TestCase
 {
-    /**
-     * @var AbstractServiceProvider
-     */
-    protected $serviceProvider;
+    /** @var AbstractServiceProvider */
+    private $serviceProvider;
 
     public function testServiceProviderImplementsServiceProviderInterface()
     {
-        self::assertInstanceOf('CoiSA\\ServiceProvider\\ServiceProviderInterface', $this->serviceProvider);
+        self::assertInstanceOf(
+            'CoiSA\\ServiceProvider\\ServiceProviderInterface',
+            $this->getServiceProvider()
+        );
     }
 
     public function testServiceProviderExtendAbstractServiceProvider()
     {
-        self::assertInstanceOf('CoiSA\\ServiceProvider\\AbstractServiceProvider', $this->serviceProvider);
+        self::assertInstanceOf('CoiSA\\ServiceProvider\\AbstractServiceProvider', $this->getServiceProvider());
     }
+
+    /**
+     * @return AbstractServiceProvider
+     */
+    protected function getServiceProvider()
+    {
+        if (!$this->serviceProvider) {
+            $this->serviceProvider = $this->createServiceProvider();
+        }
+
+        return $this->serviceProvider;
+    }
+
+    /**
+     * @return AbstractServiceProvider
+     */
+    abstract protected function createServiceProvider();
 }
