@@ -25,7 +25,7 @@ final class LaminasConfigServiceProvider extends ServiceProvider
      *
      * @param mixed[] $config
      *
-     * @throws Exception\ServiceProviderReflectionException
+     * @throws Exception\ReflectionException
      */
     public function __construct(array $config)
     {

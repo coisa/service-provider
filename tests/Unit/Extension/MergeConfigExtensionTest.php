@@ -46,7 +46,7 @@ final class MergeConfigExtensionTest extends AbstractExtensionTestCase
 
     /**
      * @dataProvider provideNotArrayValues
-     * @expectedException \CoiSA\ServiceProvider\Exception\ServiceProviderInvalidArgumentException
+     * @expectedException \CoiSA\ServiceProvider\Exception\InvalidArgumentException
      *
      * @param mixed $previous
      */

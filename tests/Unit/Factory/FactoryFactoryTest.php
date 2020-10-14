@@ -39,7 +39,7 @@ final class FactoryFactoryTest extends AbstractFactoryTestCase
     }
 
     /**
-     * @expectedException  \CoiSA\ServiceProvider\Exception\ServiceProviderReflectionException
+     * @expectedException  \CoiSA\ServiceProvider\Exception\ReflectionException
      */
     public function testConstructWithStringNonExistentClassWillThrowReflectionException()
     {

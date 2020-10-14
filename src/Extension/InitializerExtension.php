@@ -13,7 +13,7 @@
 
 namespace CoiSA\ServiceProvider\Extension;
 
-use CoiSA\ServiceProvider\Exception\ServiceProviderInvalidArgumentException;
+use CoiSA\ServiceProvider\Exception\InvalidArgumentException;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -28,12 +28,12 @@ final class InitializerExtension extends AbstractExtension
      *
      * @param callable $initializer
      *
-     * @throws ServiceProviderInvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function __construct($initializer)
     {
         if (false === \is_callable($initializer)) {
-            throw ServiceProviderInvalidArgumentException::forInvalidArgumentType('initializer', 'callable');
+            throw InvalidArgumentException::forInvalidArgumentType('initializer', 'callable');
         }
 
         $this->extension = function (ContainerInterface $container, $previous = null) use ($initializer) {

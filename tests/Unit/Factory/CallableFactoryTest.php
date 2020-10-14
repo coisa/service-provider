@@ -56,7 +56,7 @@ final class CallableFactoryTest extends AbstractFactoryTestCase
 
     /**
      * @dataProvider provideNonCallableValues
-     * @expectedException \CoiSA\ServiceProvider\Exception\ServiceProviderInvalidArgumentException
+     * @expectedException \CoiSA\ServiceProvider\Exception\InvalidArgumentException
      *
      * @param mixed $callable
      */

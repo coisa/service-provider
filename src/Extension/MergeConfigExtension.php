@@ -13,7 +13,7 @@
 
 namespace CoiSA\ServiceProvider\Extension;
 
-use CoiSA\ServiceProvider\Exception\ServiceProviderInvalidArgumentException;
+use CoiSA\ServiceProvider\Exception\InvalidArgumentException;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -35,7 +35,7 @@ final class MergeConfigExtension extends AbstractExtension
             $previous = null === $previous ? array() : $previous;
 
             if (false === \is_array($previous)) {
-                throw ServiceProviderInvalidArgumentException::forInvalidArgumentType('previous', 'array');
+                throw InvalidArgumentException::forInvalidArgumentType('previous', 'array');
             }
 
             return $self->merge($previous, $config);

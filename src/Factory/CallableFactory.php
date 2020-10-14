@@ -13,7 +13,7 @@
 
 namespace CoiSA\ServiceProvider\Factory;
 
-use CoiSA\ServiceProvider\Exception\ServiceProviderInvalidArgumentException;
+use CoiSA\ServiceProvider\Exception\InvalidArgumentException;
 
 /**
  * Class CallableFactory
@@ -27,12 +27,12 @@ final class CallableFactory extends AbstractFactory
      *
      * @param callable $factory
      *
-     * @throws ServiceProviderInvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function __construct($factory)
     {
         if (false === \is_callable($factory)) {
-            throw ServiceProviderInvalidArgumentException::forInvalidArgumentType('factory', 'callable');
+            throw InvalidArgumentException::forInvalidArgumentType('factory', 'callable');
         }
 
         $this->factory = $factory;

@@ -13,7 +13,7 @@
 
 namespace CoiSA\ServiceProvider\Extension;
 
-use CoiSA\ServiceProvider\Exception\ServiceProviderInvalidArgumentException;
+use CoiSA\ServiceProvider\Exception\InvalidArgumentException;
 
 /**
  * Class CallableExtension
@@ -27,12 +27,12 @@ final class CallableExtension extends AbstractExtension
      *
      * @param callable $extension
      *
-     * @throws ServiceProviderInvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function __construct($extension)
     {
         if (false === \is_callable($extension)) {
-            throw ServiceProviderInvalidArgumentException::forInvalidArgumentType('extension', 'callable');
+            throw InvalidArgumentException::forInvalidArgumentType('extension', 'callable');
         }
 
         $this->extension = $extension;

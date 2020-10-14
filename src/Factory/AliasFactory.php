@@ -13,7 +13,7 @@
 
 namespace CoiSA\ServiceProvider\Factory;
 
-use CoiSA\ServiceProvider\Exception\ServiceProviderInvalidArgumentException;
+use CoiSA\ServiceProvider\Exception\InvalidArgumentException;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -28,12 +28,12 @@ final class AliasFactory extends AbstractFactory
      *
      * @param string $service
      *
-     * @throws ServiceProviderInvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function __construct($service)
     {
         if (false === \is_string($service)) {
-            throw ServiceProviderInvalidArgumentException::forInvalidArgumentType('service', 'string');
+            throw InvalidArgumentException::forInvalidArgumentType('service', 'string');
         }
 
         $this->factory = function (ContainerInterface $container) use ($service) {

@@ -14,11 +14,11 @@
 namespace CoiSA\ServiceProvider\Exception;
 
 /**
- * Class ServiceProviderInvalidArgumentException
+ * Class ReflectionException
  *
  * @package CoiSA\ServiceProvider\Exception
  */
-final class ServiceProviderInvalidArgumentException extends \CoiSA\Exception\Spl\InvalidArgumentException implements
+final class ReflectionException extends \CoiSA\Exception\Spl\ReflectionException implements
     ServiceProviderExceptionInterface
 {
 }
