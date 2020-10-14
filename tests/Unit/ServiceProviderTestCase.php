@@ -56,7 +56,7 @@ abstract class ServiceProviderTestCase extends AbstractServiceProviderTestCase
         $object         = new \stdClass();
         $object->uniqid = \uniqid('test', true);
 
-        $factory = function (ContainerInterface $container) use ($object) {
+        $factory = function(ContainerInterface $container) use ($object) {
             return $object;
         };
 
@@ -108,7 +108,7 @@ abstract class ServiceProviderTestCase extends AbstractServiceProviderTestCase
         $id               = \uniqid('id', true);
         $previous         = new \stdClass();
         $previous->uniqid = \uniqid('test', true);
-        $extension        = function (ContainerInterface $container, $previous = null) {
+        $extension        = function(ContainerInterface $container, $previous = null) {
             return $previous;
         };
 
@@ -131,11 +131,11 @@ abstract class ServiceProviderTestCase extends AbstractServiceProviderTestCase
     {
         $id         = \uniqid('id', true);
         $return1    = \uniqid('return1', true);
-        $extension1 = function (ContainerInterface $container, $previous = null) use ($return1) {
+        $extension1 = function(ContainerInterface $container, $previous = null) use ($return1) {
             return $previous . $return1;
         };
         $return2    = \uniqid('return2', true);
-        $extension2 = function (ContainerInterface $container, $previous = null) use ($return2) {
+        $extension2 = function(ContainerInterface $container, $previous = null) use ($return2) {
             return $previous . $return2;
         };
 
@@ -159,11 +159,11 @@ abstract class ServiceProviderTestCase extends AbstractServiceProviderTestCase
     {
         $id         = \uniqid('id', true);
         $return1    = \uniqid('return1', true);
-        $extension1 = function (ContainerInterface $container, $previous = null) use ($return1) {
+        $extension1 = function(ContainerInterface $container, $previous = null) use ($return1) {
             return $previous . $return1;
         };
         $return2    = \uniqid('return2', true);
-        $extension2 = function (ContainerInterface $container, $previous = null) use ($return2) {
+        $extension2 = function(ContainerInterface $container, $previous = null) use ($return2) {
             return $previous . $return2;
         };
 

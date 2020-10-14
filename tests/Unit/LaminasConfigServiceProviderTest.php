@@ -74,7 +74,7 @@ final class LaminasConfigServiceProviderTest extends ServiceProviderTestCase
     {
         $config = array(
             'dependencies' => array(
-                'services' => array()
+                'services' => array(),
             ),
         );
 
@@ -106,7 +106,7 @@ final class LaminasConfigServiceProviderTest extends ServiceProviderTestCase
     {
         $config = array(
             'dependencies' => array(
-                'factories' => array()
+                'factories' => array(),
             ),
         );
 
@@ -138,7 +138,7 @@ final class LaminasConfigServiceProviderTest extends ServiceProviderTestCase
     {
         $config = array(
             'dependencies' => array(
-                'invokables' => array()
+                'invokables' => array(),
             ),
         );
 
@@ -170,7 +170,7 @@ final class LaminasConfigServiceProviderTest extends ServiceProviderTestCase
     {
         $config = array(
             'dependencies' => array(
-                'aliases' => array()
+                'aliases' => array(),
             ),
         );
 

@@ -29,7 +29,7 @@ final class ServiceFactory extends AbstractFactory
      */
     public function __construct($service = null)
     {
-        $this->factory = function (ContainerInterface $container) use ($service) {
+        $this->factory = function(ContainerInterface $container) use ($service) {
             return $service;
         };
     }

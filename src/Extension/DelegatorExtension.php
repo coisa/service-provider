@@ -42,7 +42,7 @@ final class DelegatorExtension extends AbstractExtension
             throw InvalidArgumentException::forInvalidArgumentType('delegator', 'callable');
         }
 
-        $this->extension = function (ContainerInterface $container, $previous = null) use ($id, $delegator) {
+        $this->extension = function(ContainerInterface $container, $previous = null) use ($id, $delegator) {
             $previousFactory = new ServiceFactory($previous);
 
             return \call_user_func($delegator, $container, $id, $previousFactory);

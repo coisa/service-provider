@@ -41,7 +41,7 @@ final class InvokableFactory extends AbstractFactory
             throw ReflectionException::forClassNotFound($invokable);
         }
 
-        $this->factory = function (ContainerInterface $container) use ($invokable) {
+        $this->factory = function(ContainerInterface $container) use ($invokable) {
             return new $invokable();
         };
     }

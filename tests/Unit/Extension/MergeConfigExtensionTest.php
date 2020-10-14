@@ -88,46 +88,46 @@ final class MergeConfigExtensionTest extends AbstractExtensionTestCase
                     6     => array(
                         'd' => 'd',
                     ),
-                )
+                ),
             ),
             'merge-arrays-recursively' => array(
                 array(
                     'foo' => array(
-                        'baz'
-                    )
+                        'baz',
+                    ),
                 ),
                 array(
                     'foo' => array(
-                        'baz'
-                    )
+                        'baz',
+                    ),
                 ),
                 array(
                     'foo' => array(
                         0 => 'baz',
-                        1 => 'baz'
-                    )
-                )
+                        1 => 'baz',
+                    ),
+                ),
             ),
             'replace-string-keys' => array(
                 array(
                     'foo' => 'bar',
-                    'bar' => array()
+                    'bar' => array(),
                 ),
                 array(
                     'foo' => 'baz',
-                    'bar' => 'bat'
+                    'bar' => 'bat',
                 ),
                 array(
                     'foo' => 'baz',
-                    'bar' => 'bat'
-                )
+                    'bar' => 'bat',
+                ),
             ),
             'merge-with-null' => array(
                 array(
                     'foo' => null,
                     null  => 'rod',
                     'cat' => 'bar',
-                    'god' => 'rad'
+                    'god' => 'rad',
                 ),
                 array(
                     'foo' => 'baz',
@@ -141,7 +141,7 @@ final class MergeConfigExtensionTest extends AbstractExtensionTestCase
                     'cat' => 'bar',
                     'god' => null,
                     'dad' => 'bad',
-                )
+                ),
             ),
         );
     }

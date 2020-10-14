@@ -36,7 +36,7 @@ final class InitializerExtension extends AbstractExtension
             throw InvalidArgumentException::forInvalidArgumentType('initializer', 'callable');
         }
 
-        $this->extension = function (ContainerInterface $container, $previous = null) use ($initializer) {
+        $this->extension = function(ContainerInterface $container, $previous = null) use ($initializer) {
             \call_user_func($initializer, $container, $previous);
 
             return $previous;

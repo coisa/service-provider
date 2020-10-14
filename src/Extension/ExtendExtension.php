@@ -30,7 +30,7 @@ final class ExtendExtension extends AbstractExtension
      */
     public function __construct(ServiceProviderExtensionInterface $extension, ServiceProviderExtensionInterface $next)
     {
-        $this->extension = function (ContainerInterface $container, $previous = null) use ($extension, $next) {
+        $this->extension = function(ContainerInterface $container, $previous = null) use ($extension, $next) {
             return $next(
                 $container,
                 $extension($container, $previous)

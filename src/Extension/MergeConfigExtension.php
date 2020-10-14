@@ -31,7 +31,7 @@ final class MergeConfigExtension extends AbstractExtension
     public function __construct(array $config)
     {
         $self            = $this;
-        $this->extension = function (ContainerInterface $container, $previous = null) use ($config, $self) {
+        $this->extension = function(ContainerInterface $container, $previous = null) use ($config, $self) {
             $previous = null === $previous ? array() : $previous;
 
             if (false === \is_array($previous)) {

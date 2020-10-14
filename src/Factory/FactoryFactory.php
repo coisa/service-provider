@@ -37,7 +37,7 @@ final class FactoryFactory extends AbstractFactory
         }
 
         if (\is_string($factory)) {
-            $factory = function (ContainerInterface $container) use ($factory) {
+            $factory = function(ContainerInterface $container) use ($factory) {
                 $factory = $container->has($factory) ? $container->get($factory) : new $factory();
 
                 return $factory($container);

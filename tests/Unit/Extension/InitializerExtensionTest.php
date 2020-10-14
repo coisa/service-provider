@@ -38,7 +38,7 @@ final class InitializerExtensionTest extends AbstractExtensionTestCase
 
     public function createInitializerCallable()
     {
-        return function (ContainerInterface $container, $object) {
+        return function(ContainerInterface $container, $object) {
             // noop
         };
     }
@@ -56,7 +56,7 @@ final class InitializerExtensionTest extends AbstractExtensionTestCase
         /** @var LoggerInterface $logger */
         $logger = $this->prophesize('Psr\\Log\\LoggerInterface')->reveal();
 
-        $initializerCallable = function (
+        $initializerCallable = function(
             ContainerInterface $container,
             LoggerAwareInterface $object
         ) use ($logger) {

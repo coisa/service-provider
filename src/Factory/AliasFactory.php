@@ -36,7 +36,7 @@ final class AliasFactory extends AbstractFactory
             throw InvalidArgumentException::forInvalidArgumentType('service', 'string');
         }
 
-        $this->factory = function (ContainerInterface $container) use ($service) {
+        $this->factory = function(ContainerInterface $container) use ($service) {
             return $container->get($service);
         };
     }
