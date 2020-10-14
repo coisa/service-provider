@@ -41,35 +41,35 @@ final class LaminasConfigServiceProvider extends ServiceProvider
             \array_key_exists('dependencies', $config) ? $config['dependencies'] : array()
         );
 
-        $this->factories['config']  = new Factory\ServiceFactory($config);
-        $this->extensions['config'] = new Extension\MergeConfigExtension($config);
+        $this->setFactory('config', new Factory\ServiceFactory($config));
+        $this->extend('config', new Extension\MergeConfigExtension($config));
 
         foreach ($dependencies['services'] as $id => $service) {
-            $this->factories[$id] = new Factory\ServiceFactory($service);
+            $this->setFactory($id, new Factory\ServiceFactory($service));
         }
 
         foreach ($dependencies['factories'] as $id => $factory) {
-            $this->factories[$id] = new Factory\FactoryFactory($factory);
+            $this->setFactory($id, $factory);
         }
 
         foreach ($dependencies['invokables'] as $id => $invokable) {
-            $this->factories[$id] = new Factory\InvokableFactory($invokable);
+            $this->setFactory($id, new Factory\InvokableFactory($invokable));
         }
 
         foreach ($dependencies['delegators'] as $id => $delegators) {
             foreach ($delegators as $delegator) {
-                $this->extensions[$id] = new Extension\DelegatorExtension($id, $delegator);
+                $this->extend($id, new Extension\DelegatorExtension($id, $delegator));
             }
         }
 
         foreach ($this->factories as $id => $factory) {
             foreach ($dependencies['initializers'] as $initializer) {
-                $this->extensions[$id] = new Extension\InitializerExtension($initializer);
+                $this->extend($id, new Extension\InitializerExtension($initializer));
             }
         }
 
         foreach ($dependencies['aliases'] as $id => $alias) {
-            $this->factories[$id] = new Factory\AliasFactory($alias);
+            $this->setFactory($id, new Factory\AliasFactory($alias));
         }
     }
 }
