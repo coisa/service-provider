@@ -28,7 +28,7 @@ use CoiSA\ServiceProvider\Factory\ServiceProviderFactoryInterface;
 class ServiceProvider extends AbstractServiceProvider
 {
     /**
-     * @param string                           $id
+     * @param string                                          $id
      * @param callable|ServiceProviderFactoryInterface|string $factory
      */
     public function setFactory($id, $factory)
@@ -60,9 +60,9 @@ class ServiceProvider extends AbstractServiceProvider
     }
 
     /**
-     * @param string                      $id
+     * @param string                                     $id
      * @param callable|ServiceProviderExtensionInterface $extension
-     * @param bool                        $prepend
+     * @param bool                                       $prepend
      */
     public function extend($id, $extension, $prepend = false)
     {

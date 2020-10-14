@@ -28,10 +28,10 @@ final class ExtendExtensionTest extends AbstractExtensionTestCase
     /** @var ContainerInterface|ObjectProphecy */
     private $container;
 
-    /** @var ServiceProviderExtensionInterface|ObjectProphecy */
+    /** @var ObjectProphecy|ServiceProviderExtensionInterface */
     private $currentExtension;
 
-    /** @var ServiceProviderExtensionInterface|ObjectProphecy */
+    /** @var ObjectProphecy|ServiceProviderExtensionInterface */
     private $wrapperExtension;
 
     public function setUp()

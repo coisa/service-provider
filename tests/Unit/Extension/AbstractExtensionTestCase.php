@@ -30,7 +30,10 @@ abstract class AbstractExtensionTestCase extends TestCase
 
     public function testExtensionImplementsExtensionInterface()
     {
-        self::assertInstanceOf('CoiSA\\ServiceProvider\\Extension\\ServiceProviderExtensionInterface', $this->extension);
+        self::assertInstanceOf(
+            'CoiSA\\ServiceProvider\\Extension\\ServiceProviderExtensionInterface',
+            $this->extension
+        );
     }
 
     public function testExtensionExtendAbstractExtension()

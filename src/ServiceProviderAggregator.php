@@ -103,7 +103,7 @@ final class ServiceProviderAggregator extends ServiceProvider implements \Iterat
 
     /**
      * @param callable[]|ServiceProviderExtensionInterface[] $extensions
-     * @param bool                            $prepend
+     * @param bool                                           $prepend
      */
     private function setExtensions(array $extensions, $prepend = false)
     {
