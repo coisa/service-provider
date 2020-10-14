@@ -14,6 +14,7 @@
 namespace CoiSA\ServiceProvider\Test\Unit\Extension;
 
 use CoiSA\ServiceProvider\Extension\DelegatorExtension;
+use PHPUnit\Framework\Assert;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -35,8 +36,8 @@ final class DelegatorExtensionTest extends AbstractExtensionTestCase
 
         $this->id        = $id;
         $this->delegator = function(ContainerInterface $container, $name, $callable) use ($id) {
-            self::assertEquals($id, $name);
-            self::assertInstanceOf('CoiSA\\ServiceProvider\\Factory\\ServiceFactory', $callable);
+            Assert::assertEquals($id, $name);
+            Assert::assertInstanceOf('CoiSA\\ServiceProvider\\Factory\\ServiceFactory', $callable);
         };
     }
 
