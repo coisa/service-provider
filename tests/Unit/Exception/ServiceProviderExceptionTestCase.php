@@ -7,17 +7,17 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
+ *
  * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
-
 namespace CoiSA\ServiceProvider\Test\Unit\Exception;
 
 use CoiSA\ServiceProvider\Exception\ServiceProviderExceptionInterface;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class ServiceProviderExceptionTestCase
+ * Class ServiceProviderExceptionTestCase.
  *
  * @package CoiSA\ServiceProvider\Test\Unit\Exception
  */

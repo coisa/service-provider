@@ -7,10 +7,10 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
+ *
  * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
-
 namespace CoiSA\ServiceProvider\Test\Unit;
 
 use CoiSA\ServiceProvider\InteropServiceProviderAdapter;
@@ -18,7 +18,7 @@ use Interop\Container\ServiceProviderInterface;
 use Prophecy\Prophecy\ObjectProphecy;
 
 /**
- * Class InteropServiceProviderAdapterTest
+ * Class InteropServiceProviderAdapterTest.
  *
  * @package CoiSA\ServiceProvider\Test\Unit
  */

@@ -7,10 +7,10 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
+ *
  * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
-
 namespace CoiSA\ServiceProvider\Test\Unit\Factory;
 
 use CoiSA\ServiceProvider\Factory\InvokableFactory;
@@ -18,7 +18,7 @@ use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Container\ContainerInterface;
 
 /**
- * Class InvokableFactoryTest
+ * Class InvokableFactoryTest.
  *
  * @package CoiSA\ServiceProvider\Test\Unit\Factory
  */
