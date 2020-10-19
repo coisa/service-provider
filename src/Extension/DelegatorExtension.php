@@ -7,10 +7,10 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
+ *
  * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
-
 namespace CoiSA\ServiceProvider\Extension;
 
 use CoiSA\ServiceProvider\Exception\InvalidArgumentException;
@@ -18,7 +18,7 @@ use CoiSA\ServiceProvider\Factory\ServiceFactory;
 use Psr\Container\ContainerInterface;
 
 /**
- * Class DelegatorExtension
+ * Class DelegatorExtension.
  *
  * @package CoiSA\ServiceProvider\Extension
  */

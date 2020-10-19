@@ -7,10 +7,10 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
+ *
  * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
-
 namespace CoiSA\ServiceProvider;
 
 use CoiSA\ServiceProvider\Exception\UnexpectedValueException;
@@ -22,7 +22,7 @@ use CoiSA\ServiceProvider\Factory\FactoryFactory;
 use CoiSA\ServiceProvider\Factory\ServiceProviderFactoryInterface;
 
 /**
- * Class ServiceProvider
+ * Class ServiceProvider.
  *
  * @package CoiSA\ServiceProvider
  */

@@ -7,10 +7,10 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
+ *
  * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
-
 namespace CoiSA\ServiceProvider\Test\Unit\Extension;
 
 use CoiSA\ServiceProvider\Extension\InitializerExtension;
@@ -20,7 +20,7 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 
 /**
- * Class InitializerExtensionTest
+ * Class InitializerExtensionTest.
  *
  * @package CoiSA\ServiceProvider\Test\Unit\Extension
  */
