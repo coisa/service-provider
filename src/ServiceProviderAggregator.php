@@ -13,7 +13,6 @@
  */
 namespace CoiSA\ServiceProvider;
 
-use CoiSA\ServiceProvider\Extension\ServiceProviderExtensionInterface;
 use Interop\Container\ServiceProviderInterface as InteropServiceProvider;
 
 /**
@@ -65,9 +64,6 @@ final class ServiceProviderAggregator extends ServiceProvider implements \Iterat
     {
         \array_unshift($this->serviceProviders, $serviceProvider);
 
-        $this->setFactories($serviceProvider->getFactories(), false);
-        $this->setExtensions($serviceProvider->getExtensions(), true);
-
         return $this;
     }
 
@@ -80,35 +76,78 @@ final class ServiceProviderAggregator extends ServiceProvider implements \Iterat
     {
         $this->serviceProviders[] = $serviceProvider;
 
-        $this->setFactories($serviceProvider->getFactories(), true);
-        $this->setExtensions($serviceProvider->getExtensions(), false);
-
         return $this;
     }
 
     /**
-     * @param array $factories
-     * @param bool  $overwrite
+     * {@inheritdoc}
      */
-    private function setFactories(array $factories, $overwrite = false)
+    public function getFactories()
     {
-        foreach ($factories as $id => $factory) {
-            if (false === $overwrite && \array_key_exists($id, $this->factories)) {
-                continue;
-            }
+        $serviceProvider = $this->resolveServiceProvider();
 
-            $this->setFactory($id, $factory);
-        }
+        return $serviceProvider->getFactories();
     }
 
     /**
-     * @param callable[]|ServiceProviderExtensionInterface[] $extensions
-     * @param bool                                           $prepend
+     * {@inheritdoc}
      */
-    private function setExtensions(array $extensions, $prepend = false)
+    public function getFactory($id)
     {
-        foreach ($extensions as $id => $extension) {
-            $this->extend($id, $extension, $prepend);
+        $serviceProvider = $this->resolveServiceProvider();
+
+        return $serviceProvider->getFactory($id);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getExtensions()
+    {
+        $serviceProvider = $this->resolveServiceProvider();
+
+        return $serviceProvider->getExtensions();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getExtension($id)
+    {
+        $serviceProvider = $this->resolveServiceProvider();
+
+        return $serviceProvider->getExtension($id);
+    }
+
+    /**
+     * @return ServiceProvider
+     */
+    private function resolveServiceProvider()
+    {
+        $serviceProvider  = new ServiceProvider();
+
+        list($factories, $extensions) = \array_reduce(
+            $this->serviceProviders,
+            function($carry, $serviceProvider) {
+                return array(
+                    \array_merge($carry[0], $serviceProvider->getFactories()),
+                    \array_merge($carry[1], $serviceProvider->getExtensions()),
+                );
+            },
+            array(array(), array())
+        );
+
+        $factories  = \array_merge($factories, $this->factories);
+        $extensions = \array_merge($extensions, $this->extensions);
+
+        foreach ($factories as $id => $factory) {
+            $serviceProvider->setFactory($id, $factory);
         }
+
+        foreach ($extensions as $id => $extension) {
+            $serviceProvider->extend($id, $extension);
+        }
+
+        return $serviceProvider;
     }
 }
