@@ -11,14 +11,15 @@
  * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
-namespace CoiSA\ServiceProvider;
+namespace CoiSA\ServiceProvider\Adapter;
 
+use CoiSA\ServiceProvider\ServiceProvider;
 use Interop\Container\ServiceProviderInterface as InteropServiceProvider;
 
 /**
  * Class InteropServiceProviderAdapter.
  *
- * @package CoiSA\ServiceProvider
+ * @package CoiSA\ServiceProvider\Adapter
  */
 final class InteropServiceProviderAdapter extends ServiceProvider
 {

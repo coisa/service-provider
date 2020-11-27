@@ -16,11 +16,11 @@ namespace CoiSA\ServiceProvider;
 use Interop\Container\ServiceProviderInterface as InteropServiceProvider;
 
 /**
- * Class ServiceProviderAggregator.
+ * Class AggregateServiceProvider.
  *
  * @package CoiSA\ServiceProvider
  */
-final class ServiceProviderAggregator extends ServiceProvider implements \IteratorAggregate
+final class AggregateServiceProvider extends ServiceProvider implements \IteratorAggregate
 {
     /**
      * @var InteropServiceProvider[]
@@ -28,7 +28,7 @@ final class ServiceProviderAggregator extends ServiceProvider implements \Iterat
     private $serviceProviders = array();
 
     /**
-     * ServiceProviderAggregator constructor.
+     * AggregateServiceProvider constructor.
      *
      * @param InteropServiceProvider[] $serviceProviders
      */
