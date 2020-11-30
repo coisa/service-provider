@@ -18,7 +18,7 @@ namespace CoiSA\ServiceProvider;
  *
  * @package CoiSA\ServiceProvider
  */
-final class LaminasConfigServiceProvider extends ServiceProvider
+class LaminasConfigServiceProvider extends ServiceProvider
 {
     /**
      * LaminasConfigServiceProvider constructor.

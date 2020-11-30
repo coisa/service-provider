@@ -20,7 +20,7 @@ use Interop\Container\ServiceProviderInterface as InteropServiceProvider;
  *
  * @package CoiSA\ServiceProvider
  */
-final class AggregateServiceProvider extends ServiceProvider implements \IteratorAggregate
+class AggregateServiceProvider extends ServiceProvider implements \IteratorAggregate
 {
     /**
      * @var InteropServiceProvider[]
