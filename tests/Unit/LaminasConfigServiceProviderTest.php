@@ -7,13 +7,21 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
- *
- * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2021 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
+
 namespace CoiSA\ServiceProvider\Test\Unit;
 
+use CoiSA\ServiceProvider\Extension\DelegatorExtension;
+use CoiSA\ServiceProvider\Extension\ExtendExtension;
+use CoiSA\ServiceProvider\Extension\MergeConfigExtension;
+use CoiSA\ServiceProvider\Factory\AliasFactory;
+use CoiSA\ServiceProvider\Factory\FactoryFactory;
+use CoiSA\ServiceProvider\Factory\InvokableFactory;
+use CoiSA\ServiceProvider\Factory\ServiceFactory;
 use CoiSA\ServiceProvider\LaminasConfigServiceProvider;
+use Psr\Container\ContainerInterface;
 
 /**
  * Class LaminasConfigServiceProviderTest.
@@ -24,17 +32,12 @@ final class LaminasConfigServiceProviderTest extends ServiceProviderTestCase
 {
     public function testConstructWillAddConfigToFactories()
     {
-        $config          = array(
-            \uniqid('config', true),
-        );
+        $config          = [uniqid('config', true)];
         $serviceProvider = new LaminasConfigServiceProvider($config);
 
-        self::assertInstanceOf(
-            'CoiSA\\ServiceProvider\\Factory\\ServiceFactory',
-            $serviceProvider->getFactory('config')
-        );
+        self::assertInstanceOf(ServiceFactory::class, $serviceProvider->getFactory('config'));
 
-        $container = $this->prophesize('Psr\\Container\\ContainerInterface')->reveal();
+        $container = $this->prophesize(ContainerInterface::class)->reveal();
 
         self::assertEquals(
             $config,
@@ -44,39 +47,36 @@ final class LaminasConfigServiceProviderTest extends ServiceProviderTestCase
 
     public function testConstructWillAddConfigToExtensions()
     {
-        $previous        = array(
-            \uniqid('previous', true),
-        );
-        $config          = array(
-            \uniqid('config', true),
-        );
+        $previous        = [
+            uniqid('previous', true),
+        ];
+        $config          = [
+            uniqid('config', true),
+        ];
         $serviceProvider = new LaminasConfigServiceProvider($config);
 
-        self::assertInstanceOf(
-            'CoiSA\\ServiceProvider\\Extension\\MergeConfigExtension',
-            $serviceProvider->getExtension('config')
-        );
+        self::assertInstanceOf(MergeConfigExtension::class, $serviceProvider->getExtension('config'));
 
-        $container = $this->prophesize('Psr\\Container\\ContainerInterface')->reveal();
+        $container = $this->prophesize(ContainerInterface::class)->reveal();
 
         self::assertEquals(
-            \array_merge($previous, $config),
+            array_merge($previous, $config),
             \call_user_func($serviceProvider->getExtension('config'), $container, $previous)
         );
     }
 
     public function testConstructWithServicesDependenciesWillAddServiceFactoryForEachGivenService()
     {
-        $config = array(
-            'dependencies' => array(
-                'services' => array(),
-            ),
-        );
+        $config = [
+            'dependencies' => [
+                'services' => [],
+            ],
+        ];
 
-        $total = \mt_rand(5, 20);
+        $total = mt_rand(5, 20);
         for ($i = 0; $i < $total; $i++) {
-            $id                                      = \uniqid('id', true);
-            $config['dependencies']['services'][$id] = \uniqid('service', true);
+            $id                                      = uniqid('id', true);
+            $config['dependencies']['services'][$id] = uniqid('service', true);
         }
 
         $serviceProvider = new LaminasConfigServiceProvider($config);
@@ -87,24 +87,21 @@ final class LaminasConfigServiceProviderTest extends ServiceProviderTestCase
         self::assertCount($total, $factories);
 
         foreach ($factories as $factory) {
-            self::assertInstanceOf(
-                'CoiSA\\ServiceProvider\\Factory\\ServiceFactory',
-                $factory
-            );
+            self::assertInstanceOf(ServiceFactory::class, $factory);
         }
     }
 
     public function testConstructWithFactoriesDependenciesWillAddFactoryFactoryForEachGivenFactory()
     {
-        $config = array(
-            'dependencies' => array(
-                'factories' => array(),
-            ),
-        );
+        $config = [
+            'dependencies' => [
+                'factories' => [],
+            ],
+        ];
 
-        $total = \mt_rand(5, 20);
+        $total = mt_rand(5, 20);
         for ($i = 0; $i < $total; $i++) {
-            $id                                       = \uniqid('id', true);
+            $id                                       = uniqid('id', true);
             $config['dependencies']['factories'][$id] = 'stdClass';
         }
 
@@ -116,24 +113,21 @@ final class LaminasConfigServiceProviderTest extends ServiceProviderTestCase
         self::assertCount($total, $factories);
 
         foreach ($factories as $factory) {
-            self::assertInstanceOf(
-                'CoiSA\\ServiceProvider\\Factory\\FactoryFactory',
-                $factory
-            );
+            self::assertInstanceOf(FactoryFactory::class, $factory);
         }
     }
 
     public function testConstructWithInvokablesDependenciesWillAddInvokableFactoryForEachGivenInvokable()
     {
-        $config = array(
-            'dependencies' => array(
-                'invokables' => array(),
-            ),
-        );
+        $config = [
+            'dependencies' => [
+                'invokables' => [],
+            ],
+        ];
 
-        $total = \mt_rand(5, 20);
+        $total = mt_rand(5, 20);
         for ($i = 0; $i < $total; $i++) {
-            $id                                        = \uniqid('id', true);
+            $id                                        = uniqid('id', true);
             $config['dependencies']['invokables'][$id] = 'stdClass';
         }
 
@@ -145,29 +139,26 @@ final class LaminasConfigServiceProviderTest extends ServiceProviderTestCase
         self::assertCount($total, $factories);
 
         foreach ($factories as $factory) {
-            self::assertInstanceOf(
-                'CoiSA\\ServiceProvider\\Factory\\InvokableFactory',
-                $factory
-            );
+            self::assertInstanceOf(InvokableFactory::class, $factory);
         }
     }
 
     public function testConstructWithDelegatorsDependenciesWillAddDelegatorExtensionForEachGivenDelegator()
     {
-        $config = array(
-            'dependencies' => array(
-                'delegators' => array(),
-            ),
-        );
+        $config = [
+            'dependencies' => [
+                'delegators' => [],
+            ],
+        ];
 
-        $total = \mt_rand(5, 20);
+        $total = mt_rand(5, 20);
         for ($i = 0; $i < $total; $i++) {
-            $id                                        = \uniqid('id', true);
-            $config['dependencies']['delegators'][$id] = array(
-                \uniqid('delegator', true) => function() {
+            $id                                        = uniqid('id', true);
+            $config['dependencies']['delegators'][$id] = [
+                uniqid('delegator', true) => function() {
                     return true;
                 },
-            );
+            ];
         }
 
         $serviceProvider = new LaminasConfigServiceProvider($config);
@@ -178,26 +169,23 @@ final class LaminasConfigServiceProviderTest extends ServiceProviderTestCase
         self::assertCount($total, $extensions);
 
         foreach ($extensions as $extension) {
-            self::assertInstanceOf(
-                'CoiSA\\ServiceProvider\\Extension\\DelegatorExtension',
-                $extension
-            );
+            self::assertInstanceOf(DelegatorExtension::class, $extension);
         }
     }
 
     public function testConstructWithInitializersDependenciesWillAddInitializerExtensionForEveryFactory()
     {
-        $config = array(
-            'dependencies' => array(
-                'services'     => array(),
-                'initializers' => array(),
-            ),
-        );
+        $config = [
+            'dependencies' => [
+                'services'     => [],
+                'initializers' => [],
+            ],
+        ];
 
-        $total = \mt_rand(5, 20);
+        $total = mt_rand(5, 20);
         for ($i = 0; $i < $total; $i++) {
-            $id                                       = \uniqid('id', true);
-            $config['dependencies']['services'][$id]  = \uniqid('service', true);
+            $id                                       = uniqid('id', true);
+            $config['dependencies']['services'][$id]  = uniqid('service', true);
             $config['dependencies']['initializers'][] = function() {
                 return true;
             };
@@ -211,25 +199,22 @@ final class LaminasConfigServiceProviderTest extends ServiceProviderTestCase
         self::assertCount($total, $extensions);
 
         foreach ($extensions as $extension) {
-            self::assertInstanceOf(
-                'CoiSA\\ServiceProvider\\Extension\\ExtendExtension',
-                $extension
-            );
+            self::assertInstanceOf(ExtendExtension::class, $extension);
         }
     }
 
     public function testConstructWithAliasesDependenciesWillAddAliasFactoryForEachGivenAlias()
     {
-        $config = array(
-            'dependencies' => array(
-                'aliases' => array(),
-            ),
-        );
+        $config = [
+            'dependencies' => [
+                'aliases' => [],
+            ],
+        ];
 
-        $total = \mt_rand(5, 20);
+        $total = mt_rand(5, 20);
         for ($i = 0; $i <= $total; $i++) {
-            $id                                     = \uniqid('id', true);
-            $config['dependencies']['aliases'][$id] = \uniqid('alias', true);
+            $id                                     = uniqid('id', true);
+            $config['dependencies']['aliases'][$id] = uniqid('alias', true);
         }
 
         $serviceProvider = new LaminasConfigServiceProvider($config);
@@ -243,10 +228,7 @@ final class LaminasConfigServiceProviderTest extends ServiceProviderTestCase
         );
 
         foreach ($factories as $factory) {
-            self::assertInstanceOf(
-                'CoiSA\\ServiceProvider\\Factory\\AliasFactory',
-                $factory
-            );
+            self::assertInstanceOf(AliasFactory::class, $factory);
         }
     }
 
@@ -257,6 +239,6 @@ final class LaminasConfigServiceProviderTest extends ServiceProviderTestCase
      */
     protected function createServiceProvider()
     {
-        return new LaminasConfigServiceProvider(array());
+        return new LaminasConfigServiceProvider([]);
     }
 }

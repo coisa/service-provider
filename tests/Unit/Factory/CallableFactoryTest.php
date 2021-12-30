@@ -7,12 +7,13 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
- *
- * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2021 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
+
 namespace CoiSA\ServiceProvider\Test\Unit\Factory;
 
+use CoiSA\ServiceProvider\Exception\InvalidArgumentException;
 use CoiSA\ServiceProvider\Factory\CallableFactory;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Container\ContainerInterface;
@@ -30,11 +31,11 @@ final class CallableFactoryTest extends AbstractFactoryTestCase
     /** @var callable */
     private $callable;
 
-    public function setUp()
+    public function setUp(): void
     {
-        $this->container = $this->prophesize('Psr\\Container\\ContainerInterface');
+        $this->container = $this->prophesize(ContainerInterface::class);
 
-        $result         = \uniqid('callable', true);
+        $result         = uniqid('callable', true);
         $this->callable = function(ContainerInterface $container) use ($result) {
             return $result;
         };
@@ -42,24 +43,25 @@ final class CallableFactoryTest extends AbstractFactoryTestCase
 
     public function provideNonCallableValues()
     {
-        return array(
-            array(true),
-            array(false),
-            array(\uniqid('test', true)),
-            array(array(\uniqid('test', true))),
-            array(\mt_rand(1, 100)),
-            array(new \stdClass()),
-        );
+        return [
+            [true],
+            [false],
+            [uniqid('test', true)],
+            [[uniqid('test', true)]],
+            [mt_rand(1, 100)],
+            [new \stdClass()],
+        ];
     }
 
     /**
      * @dataProvider provideNonCallableValues
-     * @expectedException \CoiSA\ServiceProvider\Exception\InvalidArgumentException
      *
      * @param mixed $callable
      */
     public function testConstructWithNonCallableArgumentWillThrowInvalidArgumentException($callable)
     {
+        $this->expectException(InvalidArgumentException::class);
+
         new CallableFactory($callable);
     }
 

@@ -7,12 +7,13 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
- *
- * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2021 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
+
 namespace CoiSA\ServiceProvider\Test\Unit\Extension;
 
+use CoiSA\ServiceProvider\Exception\InvalidArgumentException;
 use CoiSA\ServiceProvider\Extension\InitializerExtension;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Container\ContainerInterface;
@@ -29,9 +30,9 @@ final class InitializerExtensionTest extends AbstractExtensionTestCase
     /** @var ContainerInterface|ObjectProphecy */
     private $container;
 
-    public function setUp()
+    public function setUp(): void
     {
-        $this->container = $this->prophesize('Psr\\Container\\ContainerInterface');
+        $this->container = $this->prophesize(ContainerInterface::class);
     }
 
     public function createInitializerCallable()
@@ -41,18 +42,17 @@ final class InitializerExtensionTest extends AbstractExtensionTestCase
         };
     }
 
-    /**
-     * @expectedException \CoiSA\ServiceProvider\Exception\InvalidArgumentException
-     */
     public function testConstructWithNotCallableArgumentWillThrowInvalidArgumentException()
     {
-        new InitializerExtension(\uniqid('test', true));
+        $this->expectException(InvalidArgumentException::class);
+
+        new InitializerExtension(uniqid('test', true));
     }
 
     public function testInvokeWillCallInitializerCallableAndReturnPreviousInstance()
     {
         /** @var LoggerInterface $logger */
-        $logger = $this->prophesize('Psr\\Log\\LoggerInterface')->reveal();
+        $logger = $this->prophesize(LoggerInterface::class)->reveal();
 
         $initializerCallable = function(
             ContainerInterface $container,
@@ -64,7 +64,7 @@ final class InitializerExtensionTest extends AbstractExtensionTestCase
         $initializer = new InitializerExtension($initializerCallable);
 
         /** @var LoggerAwareInterface|ObjectProphecy $loggerAwareProphecy */
-        $loggerAwareProphecy = $this->prophesize('Psr\\Log\\LoggerAwareInterface');
+        $loggerAwareProphecy = $this->prophesize(LoggerAwareInterface::class);
 
         /** @var LoggerAwareInterface $loggerAware */
         $loggerAware = $loggerAwareProphecy->reveal();
@@ -81,6 +81,6 @@ final class InitializerExtensionTest extends AbstractExtensionTestCase
      */
     protected function getExtension()
     {
-        return new InitializerExtension(array($this, 'createInitializerCallable'));
+        return new InitializerExtension([$this, 'createInitializerCallable']);
     }
 }

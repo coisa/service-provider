@@ -7,12 +7,14 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
- *
- * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2021 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
+
 namespace CoiSA\ServiceProvider;
 
+use CoiSA\ServiceProvider\Extension\ServiceProviderExtensionInterface;
+use CoiSA\ServiceProvider\Factory\ServiceProviderFactoryInterface;
 use Interop\Container\ServiceProviderInterface as InteropServiceProvider;
 
 /**
@@ -25,14 +27,14 @@ class AggregateServiceProvider extends ServiceProvider implements \IteratorAggre
     /**
      * @var InteropServiceProvider[]
      */
-    private $serviceProviders = array();
+    private $serviceProviders = [];
 
     /**
      * AggregateServiceProvider constructor.
      *
      * @param InteropServiceProvider[] $serviceProviders
      */
-    public function __construct(array $serviceProviders = array())
+    public function __construct(array $serviceProviders = [])
     {
         foreach ($serviceProviders as $serviceProvider) {
             $this->append($serviceProvider);
@@ -60,9 +62,9 @@ class AggregateServiceProvider extends ServiceProvider implements \IteratorAggre
      *
      * @return self
      */
-    public function prepend(InteropServiceProvider $serviceProvider)
+    public function prepend(InteropServiceProvider $serviceProvider): self
     {
-        \array_unshift($this->serviceProviders, $serviceProvider);
+        array_unshift($this->serviceProviders, $serviceProvider);
 
         return $this;
     }
@@ -72,7 +74,7 @@ class AggregateServiceProvider extends ServiceProvider implements \IteratorAggre
      *
      * @return self
      */
-    public function append(InteropServiceProvider $serviceProvider)
+    public function append(InteropServiceProvider $serviceProvider): self
     {
         $this->serviceProviders[] = $serviceProvider;
 
@@ -82,7 +84,7 @@ class AggregateServiceProvider extends ServiceProvider implements \IteratorAggre
     /**
      * {@inheritdoc}
      */
-    public function getFactories()
+    public function getFactories(): array
     {
         $serviceProvider = $this->resolveServiceProvider();
 
@@ -92,7 +94,7 @@ class AggregateServiceProvider extends ServiceProvider implements \IteratorAggre
     /**
      * {@inheritdoc}
      */
-    public function getFactory($id)
+    public function getFactory(string $id): ?ServiceProviderFactoryInterface
     {
         $serviceProvider = $this->resolveServiceProvider();
 
@@ -102,7 +104,7 @@ class AggregateServiceProvider extends ServiceProvider implements \IteratorAggre
     /**
      * {@inheritdoc}
      */
-    public function getExtensions()
+    public function getExtensions(): array
     {
         $serviceProvider = $this->resolveServiceProvider();
 
@@ -112,7 +114,7 @@ class AggregateServiceProvider extends ServiceProvider implements \IteratorAggre
     /**
      * {@inheritdoc}
      */
-    public function getExtension($id)
+    public function getExtension(string $id): ?ServiceProviderExtensionInterface
     {
         $serviceProvider = $this->resolveServiceProvider();
 
@@ -122,23 +124,23 @@ class AggregateServiceProvider extends ServiceProvider implements \IteratorAggre
     /**
      * @return ServiceProvider
      */
-    private function resolveServiceProvider()
+    private function resolveServiceProvider(): ServiceProvider
     {
         $serviceProvider  = new ServiceProvider();
 
-        list($factories, $extensions) = \array_reduce(
+        [$factories, $extensions] = array_reduce(
             $this->serviceProviders,
             function($carry, $serviceProvider) {
-                return array(
-                    \array_merge($carry[0], $serviceProvider->getFactories()),
-                    \array_merge($carry[1], $serviceProvider->getExtensions()),
-                );
+                return [
+                    array_merge($carry[0], $serviceProvider->getFactories()),
+                    array_merge($carry[1], $serviceProvider->getExtensions()),
+                ];
             },
-            array(array(), array())
+            [[], []]
         );
 
-        $factories  = \array_merge($factories, $this->factories);
-        $extensions = \array_merge($extensions, $this->extensions);
+        $factories  = array_merge($factories, $this->factories);
+        $extensions = array_merge($extensions, $this->extensions);
 
         foreach ($factories as $id => $factory) {
             $serviceProvider->setFactory($id, $factory);

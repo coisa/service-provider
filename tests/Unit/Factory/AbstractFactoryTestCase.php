@@ -7,13 +7,15 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
- *
- * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2021 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
+
 namespace CoiSA\ServiceProvider\Test\Unit\Factory;
 
+use CoiSA\ServiceProvider\Factory\AbstractFactory;
 use CoiSA\ServiceProvider\Factory\FactoryInterface;
+use CoiSA\ServiceProvider\Factory\ServiceProviderFactoryInterface;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -25,15 +27,12 @@ abstract class AbstractFactoryTestCase extends TestCase
 {
     public function testFactoryImplementsFactoryInterface()
     {
-        self::assertInstanceOf(
-            'CoiSA\\ServiceProvider\\Factory\\ServiceProviderFactoryInterface',
-            $this->getFactory()
-        );
+        self::assertInstanceOf(ServiceProviderFactoryInterface::class, $this->getFactory());
     }
 
     public function testFactoryExtendAbstractFactory()
     {
-        self::assertInstanceOf('CoiSA\\ServiceProvider\\Factory\\AbstractFactory', $this->getFactory());
+        self::assertInstanceOf(AbstractFactory::class, $this->getFactory());
     }
 
     /**

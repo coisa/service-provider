@@ -7,12 +7,13 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
- *
- * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2021 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
+
 namespace CoiSA\ServiceProvider\Test\Unit\Extension;
 
+use CoiSA\ServiceProvider\Exception\InvalidArgumentException;
 use CoiSA\ServiceProvider\Extension\CallableExtension;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Container\ContainerInterface;
@@ -30,12 +31,12 @@ final class CallableExtensionTest extends AbstractExtensionTestCase
     /** @var callable */
     private $callable;
 
-    public function setUp()
+    public function setUp(): void
     {
-        $this->container = $this->prophesize('Psr\\Container\\ContainerInterface');
+        $this->container = $this->prophesize(ContainerInterface::class);
 
         $object         = new \stdClass();
-        $object->uniqid = \uniqid('test', true);
+        $object->uniqid = uniqid('test', true);
 
         $this->callable = function() use ($object) {
             return $object;
@@ -44,23 +45,23 @@ final class CallableExtensionTest extends AbstractExtensionTestCase
 
     public function provideInvalidConstructorArgument()
     {
-        return array(
-            array(null),
-            array(false),
-            array(true),
-            array(\uniqid('string', true)),
-            array(\mt_rand(1, 1000)),
-        );
+        return [
+            [null],
+            [false],
+            [true],
+            [uniqid('string', true)],
+            [mt_rand(1, 1000)],
+        ];
     }
 
     /**
      * @dataProvider provideInvalidConstructorArgument
-     * @expectedException \InvalidArgumentException
      *
      * @param mixed $invalidArgument
      */
     public function testConstructWithInvalidArgumentWillThrowInvalidArgumentException($invalidArgument)
     {
+        $this->expectException(InvalidArgumentException::class);
         new CallableExtension($invalidArgument);
     }
 

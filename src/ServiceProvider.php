@@ -7,12 +7,14 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
- *
- * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2021 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
+
 namespace CoiSA\ServiceProvider;
 
+use CoiSA\ServiceProvider\Exception\InvalidArgumentException;
+use CoiSA\ServiceProvider\Exception\ReflectionException;
 use CoiSA\ServiceProvider\Exception\UnexpectedValueException;
 use CoiSA\ServiceProvider\Extension\CallableExtension;
 use CoiSA\ServiceProvider\Extension\ExtendExtension;
@@ -31,8 +33,11 @@ class ServiceProvider extends AbstractServiceProvider
     /**
      * @param string                                          $id
      * @param callable|ServiceProviderFactoryInterface|string $factory
+     *
+     * @throws ReflectionException      When the string factory class name does not exist
+     * @throws InvalidArgumentException When the factory is not callable
      */
-    public function setFactory($id, $factory)
+    public function setFactory(string $id, $factory): void
     {
         if (!$factory instanceof ServiceProviderFactoryInterface) {
             $factory = new FactoryFactory($factory);
@@ -44,9 +49,11 @@ class ServiceProvider extends AbstractServiceProvider
     /**
      * @param string $id
      *
+     * @throws UnexpectedValueException Not found factory
+     *
      * @return null|ServiceProviderFactoryInterface
      */
-    public function getFactory($id)
+    public function getFactory(string $id): ?ServiceProviderFactoryInterface
     {
         if (false === \array_key_exists($id, $this->factories)) {
             throw UnexpectedValueException::forFactoryNotFound($id);
@@ -59,7 +66,7 @@ class ServiceProvider extends AbstractServiceProvider
      * @param string $alias
      * @param string $id
      */
-    public function setAlias($alias, $id)
+    public function setAlias(string $alias, string $id): void
     {
         $this->factories[$alias] = new AliasFactory($id);
     }
@@ -68,8 +75,10 @@ class ServiceProvider extends AbstractServiceProvider
      * @param string                                     $id
      * @param callable|ServiceProviderExtensionInterface $extension
      * @param bool                                       $prepend
+     *
+     * @throws InvalidArgumentException When the extension is not callable
      */
-    public function extend($id, $extension, $prepend = false)
+    public function extend(string $id, $extension, bool $prepend = false): void
     {
         if (!$extension instanceof ServiceProviderExtensionInterface) {
             $extension = new CallableExtension($extension);
@@ -90,9 +99,11 @@ class ServiceProvider extends AbstractServiceProvider
     /**
      * @param string $id
      *
+     * @throws UnexpectedValueException Not found extension
+     *
      * @return null|ServiceProviderExtensionInterface
      */
-    public function getExtension($id)
+    public function getExtension(string $id): ?ServiceProviderExtensionInterface
     {
         if (false === \array_key_exists($id, $this->extensions)) {
             throw UnexpectedValueException::forExtensionNotFound($id);

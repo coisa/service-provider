@@ -7,10 +7,10 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
- *
- * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2021 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
+
 namespace CoiSA\ServiceProvider\Test\Unit\Extension;
 
 use CoiSA\ServiceProvider\Extension\ExtendExtension;
@@ -34,23 +34,19 @@ final class ExtendExtensionTest extends AbstractExtensionTestCase
     /** @var ObjectProphecy|ServiceProviderExtensionInterface */
     private $wrapper;
 
-    public function setUp()
+    public function setUp(): void
     {
-        $this->container = $this->prophesize('Psr\\Container\\ContainerInterface');
-        $this->extension = $this->prophesize(
-            'CoiSA\\ServiceProvider\\Extension\\ServiceProviderExtensionInterface'
-        );
-        $this->wrapper = $this->prophesize(
-            'CoiSA\\ServiceProvider\\Extension\\ServiceProviderExtensionInterface'
-        );
+        $this->container = $this->prophesize(ContainerInterface::class);
+        $this->extension = $this->prophesize(ServiceProviderExtensionInterface::class);
+        $this->wrapper   = $this->prophesize(ServiceProviderExtensionInterface::class);
     }
 
     public function testInvokeWithContainerWillResolveBothExtensions()
     {
         $container = $this->container->reveal();
 
-        $previous = \uniqid('previous', true);
-        $return   = \uniqid('return', true);
+        $previous = uniqid('previous', true);
+        $return   = uniqid('return', true);
 
         $this->extension->__invoke($container, null)->shouldBeCalledOnce()->willReturn($previous);
         $this->wrapper->__invoke($container, $previous)->shouldBeCalledOnce()->willReturn($return);

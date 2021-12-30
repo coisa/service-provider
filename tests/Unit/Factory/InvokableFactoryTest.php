@@ -7,12 +7,14 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
- *
- * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2021 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
+
 namespace CoiSA\ServiceProvider\Test\Unit\Factory;
 
+use CoiSA\ServiceProvider\Exception\InvalidArgumentException;
+use CoiSA\ServiceProvider\Exception\ReflectionException;
 use CoiSA\ServiceProvider\Factory\InvokableFactory;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Container\ContainerInterface;
@@ -30,45 +32,48 @@ final class InvokableFactoryTest extends AbstractFactoryTestCase
     /** @var string */
     private $invokable;
 
-    public function setUp()
+    public function setUp(): void
     {
-        $this->container = $this->prophesize('Psr\\Container\\ContainerInterface');
+        $this->container = $this->prophesize(ContainerInterface::class);
         $this->invokable = 'stdClass';
     }
 
     public function provideNonStringArgument()
     {
-        return array(
-            array(true),
-            array(false),
-            array(array(\uniqid('test', true))),
-            array(\mt_rand(1, 100)),
-            array(new \stdClass()),
-        );
+        return [
+            [true],
+            [false],
+            [[uniqid('test', true)]],
+            [mt_rand(1, 100)],
+            [new \stdClass()],
+        ];
     }
 
     /**
      * @dataProvider provideNonStringArgument
-     * @expectedException \CoiSA\ServiceProvider\Exception\InvalidArgumentException
      *
      * @param mixed $invokable
      */
     public function testConstructWithNonStringInvokableWillThrowInvalidArgumentException($invokable)
     {
+        $this->expectException(InvalidArgumentException::class);
+
         new InvokableFactory($invokable);
     }
 
-    /**
-     * @expectedException \CoiSA\ServiceProvider\Exception\ReflectionException
-     */
     public function testConstructWithNonExistentClassArgumentWillThrowReflectionException()
     {
-        new InvokableFactory(\uniqid('invokable', true));
+        $this->expectException(ReflectionException::class);
+
+        new InvokableFactory(uniqid('invokable', true));
     }
 
     public function testInvokeWillReturnNewInstanceOfGivenInvokableClassNamespace()
     {
-        self::assertInstanceOf('stdClass', \call_user_func($this->getFactory(), $this->container->reveal()));
+        self::assertInstanceOf(
+            \stdClass::class,
+            \call_user_func($this->getFactory(), $this->container->reveal())
+        );
     }
 
     /**

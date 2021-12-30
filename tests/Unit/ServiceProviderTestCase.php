@@ -7,12 +7,19 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
- *
- * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2021 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
+
 namespace CoiSA\ServiceProvider\Test\Unit;
 
+use CoiSA\ServiceProvider\Exception\UnexpectedValueException;
+use CoiSA\ServiceProvider\Extension\CallableExtension;
+use CoiSA\ServiceProvider\Extension\ExtendExtension;
+use CoiSA\ServiceProvider\Extension\ServiceProviderExtensionInterface;
+use CoiSA\ServiceProvider\Factory\FactoryFactory;
+use CoiSA\ServiceProvider\Factory\ServiceProviderFactoryInterface;
+use CoiSA\ServiceProvider\ServiceProvider;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -24,29 +31,25 @@ abstract class ServiceProviderTestCase extends AbstractServiceProviderTestCase
 {
     public function testServiceProviderExtendServiceProvider()
     {
-        self::assertInstanceOf('CoiSA\\ServiceProvider\\ServiceProvider', $this->getServiceProvider());
+        self::assertInstanceOf(ServiceProvider::class, $this->getServiceProvider());
     }
 
-    /**
-     * @expectedException \UnexpectedValueException
-     */
     public function testGetFactoryWithoutGivenFactoryWillThrowUnexpectedValueException()
     {
-        $this->getServiceProvider()->getFactory(\uniqid('test', true));
+        $this->expectException(UnexpectedValueException::class);
+        $this->getServiceProvider()->getFactory(uniqid('test', true));
     }
 
-    /**
-     * @expectedException \UnexpectedValueException
-     */
     public function testGetExtensionWithoutGivenExtensionWillThrowUnexpectedValueException()
     {
-        $this->getServiceProvider()->getExtension(\uniqid('test', true));
+        $this->expectException(UnexpectedValueException::class);
+        $this->getServiceProvider()->getExtension(uniqid('test', true));
     }
 
     public function testSetFactoryWithFactoryObjectWillSetSameFactoryInstance()
     {
-        $id      = \uniqid('id', true);
-        $factory = $this->prophesize('CoiSA\\ServiceProvider\\Factory\\ServiceProviderFactoryInterface')->reveal();
+        $id      = uniqid('id', true);
+        $factory = $this->prophesize(ServiceProviderFactoryInterface::class)->reveal();
 
         $this->getServiceProvider()->setFactory($id, $factory);
 
@@ -55,22 +58,19 @@ abstract class ServiceProviderTestCase extends AbstractServiceProviderTestCase
 
     public function testSetFactoryWithStringFactoryWillSetFactoryFactoryInstanceForGivenString()
     {
-        $id      = \uniqid('id', true);
+        $id      = uniqid('id', true);
         $factory = 'stdClass';
 
         $this->getServiceProvider()->setFactory($id, $factory);
 
-        self::assertInstanceOf(
-            'CoiSA\\ServiceProvider\\Factory\\FactoryFactory',
-            $this->getServiceProvider()->getFactory($id)
-        );
+        self::assertInstanceOf(FactoryFactory::class, $this->getServiceProvider()->getFactory($id));
     }
 
     public function testSetFactoryWithCallableWillSetFactoryFactoryForGivenCallable()
     {
-        $id             = \uniqid('id', true);
+        $id             = uniqid('id', true);
         $object         = new \stdClass();
-        $object->uniqid = \uniqid('test', true);
+        $object->uniqid = uniqid('test', true);
 
         $factory = function(ContainerInterface $container) use ($object) {
             return $object;
@@ -78,12 +78,9 @@ abstract class ServiceProviderTestCase extends AbstractServiceProviderTestCase
 
         $this->getServiceProvider()->setFactory($id, $factory);
 
-        self::assertInstanceOf(
-            'CoiSA\\ServiceProvider\\Factory\\FactoryFactory',
-            $this->getServiceProvider()->getFactory($id)
-        );
+        self::assertInstanceOf(FactoryFactory::class, $this->getServiceProvider()->getFactory($id));
 
-        $container = $this->prophesize('Psr\\Container\\ContainerInterface')->reveal();
+        $container = $this->prophesize(ContainerInterface::class)->reveal();
 
         self::assertSame(
             $object,
@@ -93,14 +90,14 @@ abstract class ServiceProviderTestCase extends AbstractServiceProviderTestCase
 
     public function testSetAliasWillSetAliasForContainerGet()
     {
-        $id             = \uniqid('id', true);
-        $alias          = \uniqid('alias', true);
+        $id             = uniqid('id', true);
+        $alias          = uniqid('alias', true);
         $object         = new \stdClass();
-        $object->uniqid = \uniqid('test', true);
+        $object->uniqid = uniqid('test', true);
 
         $this->getServiceProvider()->setAlias($alias, $id);
 
-        $container = $this->prophesize('Psr\\Container\\ContainerInterface');
+        $container = $this->prophesize(ContainerInterface::class);
         $container->get($id)->willReturn($object);
 
         self::assertSame(
@@ -111,8 +108,8 @@ abstract class ServiceProviderTestCase extends AbstractServiceProviderTestCase
 
     public function testExtendWithExtensionObjectWillSetExtension()
     {
-        $id        = \uniqid('id', true);
-        $extension = $this->prophesize('CoiSA\\ServiceProvider\\Extension\\ServiceProviderExtensionInterface')->reveal();
+        $id        = uniqid('id', true);
+        $extension = $this->prophesize(ServiceProviderExtensionInterface::class)->reveal();
 
         $this->getServiceProvider()->extend($id, $extension);
 
@@ -121,21 +118,18 @@ abstract class ServiceProviderTestCase extends AbstractServiceProviderTestCase
 
     public function testExtendWithCallableWillSetCallableExtensionToGivenId()
     {
-        $id               = \uniqid('id', true);
+        $id               = uniqid('id', true);
         $previous         = new \stdClass();
-        $previous->uniqid = \uniqid('test', true);
+        $previous->uniqid = uniqid('test', true);
         $extension        = function(ContainerInterface $container, $previous = null) {
             return $previous;
         };
 
         $this->getServiceProvider()->extend($id, $extension);
 
-        self::assertInstanceOf(
-            'CoiSA\\ServiceProvider\\Extension\\CallableExtension',
-            $this->getServiceProvider()->getExtension($id)
-        );
+        self::assertInstanceOf(CallableExtension::class, $this->getServiceProvider()->getExtension($id));
 
-        $container = $this->prophesize('Psr\\Container\\ContainerInterface')->reveal();
+        $container = $this->prophesize(ContainerInterface::class)->reveal();
 
         self::assertSame(
             $previous,
@@ -145,12 +139,12 @@ abstract class ServiceProviderTestCase extends AbstractServiceProviderTestCase
 
     public function testExtendWithAlreadySetIdWillExtendExtension()
     {
-        $id         = \uniqid('id', true);
-        $return1    = \uniqid('return1', true);
+        $id         = uniqid('id', true);
+        $return1    = uniqid('return1', true);
         $extension1 = function(ContainerInterface $container, $previous = null) use ($return1) {
             return $previous . $return1;
         };
-        $return2    = \uniqid('return2', true);
+        $return2    = uniqid('return2', true);
         $extension2 = function(ContainerInterface $container, $previous = null) use ($return2) {
             return $previous . $return2;
         };
@@ -158,12 +152,9 @@ abstract class ServiceProviderTestCase extends AbstractServiceProviderTestCase
         $this->getServiceProvider()->extend($id, $extension1, false);
         $this->getServiceProvider()->extend($id, $extension2, false);
 
-        self::assertInstanceOf(
-            'CoiSA\\ServiceProvider\\Extension\\ExtendExtension',
-            $this->getServiceProvider()->getExtension($id)
-        );
+        self::assertInstanceOf(ExtendExtension::class, $this->getServiceProvider()->getExtension($id));
 
-        $container = $this->prophesize('Psr\\Container\\ContainerInterface')->reveal();
+        $container = $this->prophesize(ContainerInterface::class)->reveal();
 
         self::assertEquals(
             $return1 . $return2,
@@ -173,12 +164,12 @@ abstract class ServiceProviderTestCase extends AbstractServiceProviderTestCase
 
     public function testExtendWithPrependAndAlreadySetIdWillPrependExtendExtension()
     {
-        $id         = \uniqid('id', true);
-        $return1    = \uniqid('return1', true);
+        $id         = uniqid('id', true);
+        $return1    = uniqid('return1', true);
         $extension1 = function(ContainerInterface $container, $previous = null) use ($return1) {
             return $previous . $return1;
         };
-        $return2    = \uniqid('return2', true);
+        $return2    = uniqid('return2', true);
         $extension2 = function(ContainerInterface $container, $previous = null) use ($return2) {
             return $previous . $return2;
         };
@@ -186,12 +177,9 @@ abstract class ServiceProviderTestCase extends AbstractServiceProviderTestCase
         $this->getServiceProvider()->extend($id, $extension1, true);
         $this->getServiceProvider()->extend($id, $extension2, true);
 
-        self::assertInstanceOf(
-            'CoiSA\\ServiceProvider\\Extension\\ExtendExtension',
-            $this->getServiceProvider()->getExtension($id)
-        );
+        self::assertInstanceOf(ExtendExtension::class, $this->getServiceProvider()->getExtension($id));
 
-        $container = $this->prophesize('Psr\\Container\\ContainerInterface')->reveal();
+        $container = $this->prophesize(ContainerInterface::class)->reveal();
 
         self::assertEquals(
             $return2 . $return1,

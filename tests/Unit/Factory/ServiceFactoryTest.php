@@ -7,10 +7,10 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
- *
- * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2021 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
+
 namespace CoiSA\ServiceProvider\Test\Unit\Factory;
 
 use CoiSA\ServiceProvider\Factory\ServiceFactory;
@@ -30,9 +30,9 @@ final class ServiceFactoryTest extends AbstractFactoryTestCase
     /** @var \stdClass */
     private $service;
 
-    public function setUp()
+    public function setUp(): void
     {
-        $this->container = $this->prophesize('Psr\\Container\\ContainerInterface');
+        $this->container = $this->prophesize(ContainerInterface::class);
         $this->service   = new \stdClass();
     }
 

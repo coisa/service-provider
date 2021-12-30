@@ -7,10 +7,10 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
- *
- * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2021 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
+
 namespace CoiSA\ServiceProvider\Adapter;
 
 use CoiSA\ServiceProvider\ServiceProvider;
@@ -29,9 +29,34 @@ abstract class AbstractLazyLoadServiceProviderAdapter extends ServiceProvider
     private $serviceProvider;
 
     /**
+     * @return {@inheritdoc}
+     */
+    public function getFactories(): array
+    {
+        $this->lazyLoadServiceProvider();
+
+        return parent::getFactories();
+    }
+
+    /**
+     * @return {@inheritdoc}
+     */
+    public function getExtensions(): array
+    {
+        $this->lazyLoadServiceProvider();
+
+        return parent::getExtensions();
+    }
+
+    /**
+     * @return ServiceProviderInterface
+     */
+    abstract protected function getLazyLoadServiceProvider(): ServiceProviderInterface;
+
+    /**
      * Initialize the adapter.
      */
-    private function lazyLoadServiceProvider()
+    private function lazyLoadServiceProvider(): void
     {
         if ($this->serviceProvider) {
             return;
@@ -49,29 +74,4 @@ abstract class AbstractLazyLoadServiceProviderAdapter extends ServiceProvider
             $this->serviceProvider->getExtensions()
         );
     }
-
-    /**
-     * @return {@inheritdoc}
-     */
-    public function getFactories()
-    {
-        $this->lazyLoadServiceProvider();
-
-        return parent::getFactories();
-    }
-
-    /**
-     * @return {@inheritdoc}
-     */
-    public function getExtensions()
-    {
-        $this->lazyLoadServiceProvider();
-
-        return parent::getExtensions();
-    }
-
-    /**
-     * @return ServiceProviderInterface
-     */
-    abstract protected function getLazyLoadServiceProvider();
 }

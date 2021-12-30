@@ -7,10 +7,10 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
- *
- * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2021 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
+
 namespace CoiSA\ServiceProvider\Test\Unit;
 
 use CoiSA\ServiceProvider\InteropServiceProviderAdapter;
@@ -33,21 +33,21 @@ final class InteropServiceProviderAdapterTest extends ServiceProviderTestCase
     /** @var mixed[] */
     private $extensions;
 
-    public function setUp()
+    public function setUp(): void
     {
-        $this->interopServiceProvider = $this->prophesize('Interop\\Container\\ServiceProviderInterface');
+        $this->interopServiceProvider = $this->prophesize(ServiceProviderInterface::class);
 
-        $this->factories = array(
-            \uniqid('factory', true),
-            \uniqid('factory', true),
-            \uniqid('factory', true),
-        );
+        $this->factories = [
+            uniqid('factory', true),
+            uniqid('factory', true),
+            uniqid('factory', true),
+        ];
 
-        $this->extensions = array(
-            \uniqid('extension', true),
-            \uniqid('extension', true),
-            \uniqid('extension', true),
-        );
+        $this->extensions = [
+            uniqid('extension', true),
+            uniqid('extension', true),
+            uniqid('extension', true),
+        ];
 
         $this->interopServiceProvider->getFactories()->willReturn($this->factories);
         $this->interopServiceProvider->getExtensions()->willReturn($this->extensions);

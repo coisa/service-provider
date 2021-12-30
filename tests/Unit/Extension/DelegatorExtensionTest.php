@@ -7,13 +7,15 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
- *
- * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2021 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
+
 namespace CoiSA\ServiceProvider\Test\Unit\Extension;
 
+use CoiSA\ServiceProvider\Exception\InvalidArgumentException;
 use CoiSA\ServiceProvider\Extension\DelegatorExtension;
+use CoiSA\ServiceProvider\Factory\ServiceFactory;
 use PHPUnit\Framework\Assert;
 use Psr\Container\ContainerInterface;
 
@@ -30,49 +32,50 @@ final class DelegatorExtensionTest extends AbstractExtensionTestCase
     /** @var callable */
     private $delegator;
 
-    public function setUp()
+    public function setUp(): void
     {
-        $id = \uniqid('id', true);
+        $id = uniqid('id', true);
 
         $this->id        = $id;
         $this->delegator = function(ContainerInterface $container, $name, $callable) use ($id) {
             Assert::assertEquals($id, $name);
-            Assert::assertInstanceOf('CoiSA\\ServiceProvider\\Factory\\ServiceFactory', $callable);
+            Assert::assertInstanceOf(ServiceFactory::class, $callable);
         };
     }
 
     public function provideInvalidIdArgument()
     {
-        return array(
-            array(null),
-            array(false),
-            array(true),
-            array(function() {
+        return [
+            [null],
+            [false],
+            [true],
+            [function() {
                 return true;
-            }),
-            array(\mt_rand(1, 1000)),
-        );
+            }],
+            [mt_rand(1, 1000)],
+        ];
     }
 
     public function provideInvalidDelegatorArgument()
     {
-        return array(
-            array(null),
-            array(false),
-            array(true),
-            array(\uniqid('test', true)),
-            array(\mt_rand(1, 1000)),
-        );
+        return [
+            [null],
+            [false],
+            [true],
+            [uniqid('test', true)],
+            [mt_rand(1, 1000)],
+        ];
     }
 
     /**
      * @dataProvider provideInvalidIdArgument
-     * @expectedException \InvalidArgumentException
      *
      * @param mixed $invalidId
      */
     public function testConstructWithNotStringIdArgumentWillThrowInvalidArgumentException($invalidId)
     {
+        $this->expectException(InvalidArgumentException::class);
+
         new DelegatorExtension($invalidId, function() {
             return true;
         });
@@ -80,18 +83,19 @@ final class DelegatorExtensionTest extends AbstractExtensionTestCase
 
     /**
      * @dataProvider provideInvalidDelegatorArgument
-     * @expectedException \InvalidArgumentException
      *
      * @param mixed $invalidDelegator
      */
     public function testConstructWithNotStringDelegatorArgumentWillThrowInvalidArgumentException($invalidDelegator)
     {
-        new DelegatorExtension(\uniqid('id', true), $invalidDelegator);
+        $this->expectException(InvalidArgumentException::class);
+
+        new DelegatorExtension(uniqid('id', true), $invalidDelegator);
     }
 
     public function testInvokeWillCallDelegatorWithGivenIdAndCallableServiceFactory()
     {
-        $container = $this->prophesize('Psr\\Container\\ContainerInterface')->reveal();
+        $container = $this->prophesize(ContainerInterface::class)->reveal();
 
         \call_user_func($this->getExtension(), $container);
     }
