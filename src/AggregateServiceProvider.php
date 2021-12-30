@@ -13,6 +13,8 @@
 
 namespace CoiSA\ServiceProvider;
 
+use CoiSA\ServiceProvider\Extension\ServiceProviderExtensionInterface;
+use CoiSA\ServiceProvider\Factory\ServiceProviderFactoryInterface;
 use Interop\Container\ServiceProviderInterface as InteropServiceProvider;
 
 /**
@@ -60,7 +62,7 @@ class AggregateServiceProvider extends ServiceProvider implements \IteratorAggre
      *
      * @return self
      */
-    public function prepend(InteropServiceProvider $serviceProvider)
+    public function prepend(InteropServiceProvider $serviceProvider): self
     {
         array_unshift($this->serviceProviders, $serviceProvider);
 
@@ -72,7 +74,7 @@ class AggregateServiceProvider extends ServiceProvider implements \IteratorAggre
      *
      * @return self
      */
-    public function append(InteropServiceProvider $serviceProvider)
+    public function append(InteropServiceProvider $serviceProvider): self
     {
         $this->serviceProviders[] = $serviceProvider;
 
@@ -82,7 +84,7 @@ class AggregateServiceProvider extends ServiceProvider implements \IteratorAggre
     /**
      * {@inheritdoc}
      */
-    public function getFactories()
+    public function getFactories(): array
     {
         $serviceProvider = $this->resolveServiceProvider();
 
@@ -92,7 +94,7 @@ class AggregateServiceProvider extends ServiceProvider implements \IteratorAggre
     /**
      * {@inheritdoc}
      */
-    public function getFactory($id)
+    public function getFactory(string $id): ?ServiceProviderFactoryInterface
     {
         $serviceProvider = $this->resolveServiceProvider();
 
@@ -102,7 +104,7 @@ class AggregateServiceProvider extends ServiceProvider implements \IteratorAggre
     /**
      * {@inheritdoc}
      */
-    public function getExtensions()
+    public function getExtensions(): array
     {
         $serviceProvider = $this->resolveServiceProvider();
 
@@ -112,7 +114,7 @@ class AggregateServiceProvider extends ServiceProvider implements \IteratorAggre
     /**
      * {@inheritdoc}
      */
-    public function getExtension($id)
+    public function getExtension(string $id): ?ServiceProviderExtensionInterface
     {
         $serviceProvider = $this->resolveServiceProvider();
 
@@ -122,7 +124,7 @@ class AggregateServiceProvider extends ServiceProvider implements \IteratorAggre
     /**
      * @return ServiceProvider
      */
-    private function resolveServiceProvider()
+    private function resolveServiceProvider(): ServiceProvider
     {
         $serviceProvider  = new ServiceProvider();
 

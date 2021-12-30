@@ -27,7 +27,7 @@ final class MergeConfigExtensionTest extends AbstractExtensionTestCase
     /** @var ContainerInterface|ObjectProphecy */
     private $container;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->container = $this->prophesize('Psr\\Container\\ContainerInterface');
     }

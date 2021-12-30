@@ -36,7 +36,7 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getFactories()
+    public function getFactories(): array
     {
         return $this->factories;
     }
@@ -44,7 +44,7 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getExtensions()
+    public function getExtensions(): array
     {
         return $this->extensions;
     }

@@ -14,6 +14,7 @@
 namespace CoiSA\ServiceProvider\Adapter;
 
 use CoiSA\ServiceProvider\LaminasConfigServiceProvider;
+use Interop\Container\ServiceProviderInterface;
 
 /**
  * Class AbstractLaminasConfigProviderAdapter.
@@ -25,12 +26,12 @@ abstract class AbstractLaminasConfigProviderAdapter extends AbstractLazyLoadServ
     /**
      * @return callable laminas ConfigProvider instance
      */
-    abstract protected function getConfigProvider();
+    abstract protected function getConfigProvider(): callable;
 
     /**
      * {@inheritDoc}
      */
-    protected function getLazyLoadServiceProvider()
+    protected function getLazyLoadServiceProvider(): ServiceProviderInterface
     {
         $configProvider = $this->getConfigProvider();
 

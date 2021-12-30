@@ -30,7 +30,7 @@ final class InvokableFactoryTest extends AbstractFactoryTestCase
     /** @var string */
     private $invokable;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->container = $this->prophesize('Psr\\Container\\ContainerInterface');
         $this->invokable = 'stdClass';

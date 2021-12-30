@@ -34,7 +34,7 @@ final class ExtendExtensionTest extends AbstractExtensionTestCase
     /** @var ObjectProphecy|ServiceProviderExtensionInterface */
     private $wrapper;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->container = $this->prophesize('Psr\\Container\\ContainerInterface');
         $this->extension = $this->prophesize(

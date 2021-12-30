@@ -31,7 +31,7 @@ final class FactoryFactoryTest extends AbstractFactoryTestCase
     /** @var string */
     private $service;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->container = $this->prophesize('Psr\\Container\\ContainerInterface');
         $this->service   = 'CoiSA\\ServiceProvider\\Factory\\ServiceFactory';

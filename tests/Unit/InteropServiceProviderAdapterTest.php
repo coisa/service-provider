@@ -33,7 +33,7 @@ final class InteropServiceProviderAdapterTest extends ServiceProviderTestCase
     /** @var mixed[] */
     private $extensions;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->interopServiceProvider = $this->prophesize('Interop\\Container\\ServiceProviderInterface');
 

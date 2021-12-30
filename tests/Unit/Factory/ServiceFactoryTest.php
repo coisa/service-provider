@@ -30,7 +30,7 @@ final class ServiceFactoryTest extends AbstractFactoryTestCase
     /** @var \stdClass */
     private $service;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->container = $this->prophesize('Psr\\Container\\ContainerInterface');
         $this->service   = new \stdClass();

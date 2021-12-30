@@ -31,7 +31,7 @@ abstract class AbstractLazyLoadServiceProviderAdapter extends ServiceProvider
     /**
      * @return {@inheritdoc}
      */
-    public function getFactories()
+    public function getFactories(): array
     {
         $this->lazyLoadServiceProvider();
 
@@ -41,7 +41,7 @@ abstract class AbstractLazyLoadServiceProviderAdapter extends ServiceProvider
     /**
      * @return {@inheritdoc}
      */
-    public function getExtensions()
+    public function getExtensions(): array
     {
         $this->lazyLoadServiceProvider();
 
@@ -51,12 +51,12 @@ abstract class AbstractLazyLoadServiceProviderAdapter extends ServiceProvider
     /**
      * @return ServiceProviderInterface
      */
-    abstract protected function getLazyLoadServiceProvider();
+    abstract protected function getLazyLoadServiceProvider(): ServiceProviderInterface;
 
     /**
      * Initialize the adapter.
      */
-    private function lazyLoadServiceProvider()
+    private function lazyLoadServiceProvider(): void
     {
         if ($this->serviceProvider) {
             return;

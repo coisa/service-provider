@@ -13,6 +13,7 @@
 
 namespace CoiSA\ServiceProvider\Adapter;
 
+use Interop\Container\ServiceProviderInterface;
 use Interop\Container\ServiceProviderInterface as InteropServiceProvider;
 
 /**
@@ -40,7 +41,7 @@ final class InteropServiceProviderAdapter extends AbstractLazyLoadServiceProvide
     /**
      * {@inheritdoc}
      */
-    protected function getLazyLoadServiceProvider()
+    protected function getLazyLoadServiceProvider(): ServiceProviderInterface
     {
         return $this->serviceProvider;
     }

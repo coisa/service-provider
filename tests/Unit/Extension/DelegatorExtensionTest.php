@@ -30,7 +30,7 @@ final class DelegatorExtensionTest extends AbstractExtensionTestCase
     /** @var callable */
     private $delegator;
 
-    public function setUp()
+    public function setUp(): void
     {
         $id = uniqid('id', true);
 
