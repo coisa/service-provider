@@ -15,6 +15,7 @@ namespace CoiSA\ServiceProvider\Test\Unit\Extension;
 
 use CoiSA\ServiceProvider\Exception\InvalidArgumentException;
 use CoiSA\ServiceProvider\Extension\DelegatorExtension;
+use CoiSA\ServiceProvider\Factory\ServiceFactory;
 use PHPUnit\Framework\Assert;
 use Psr\Container\ContainerInterface;
 
@@ -38,7 +39,7 @@ final class DelegatorExtensionTest extends AbstractExtensionTestCase
         $this->id        = $id;
         $this->delegator = function(ContainerInterface $container, $name, $callable) use ($id) {
             Assert::assertEquals($id, $name);
-            Assert::assertInstanceOf('CoiSA\\ServiceProvider\\Factory\\ServiceFactory', $callable);
+            Assert::assertInstanceOf(ServiceFactory::class, $callable);
         };
     }
 
@@ -94,7 +95,7 @@ final class DelegatorExtensionTest extends AbstractExtensionTestCase
 
     public function testInvokeWillCallDelegatorWithGivenIdAndCallableServiceFactory()
     {
-        $container = $this->prophesize('Psr\\Container\\ContainerInterface')->reveal();
+        $container = $this->prophesize(ContainerInterface::class)->reveal();
 
         \call_user_func($this->getExtension(), $container);
     }

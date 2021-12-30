@@ -14,6 +14,7 @@
 namespace CoiSA\ServiceProvider\Test\Unit;
 
 use CoiSA\ServiceProvider\AbstractServiceProvider;
+use CoiSA\ServiceProvider\ServiceProviderInterface;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -28,15 +29,12 @@ abstract class AbstractServiceProviderTestCase extends TestCase
 
     public function testServiceProviderImplementsServiceProviderInterface()
     {
-        self::assertInstanceOf(
-            'CoiSA\\ServiceProvider\\ServiceProviderInterface',
-            $this->getServiceProvider()
-        );
+        self::assertInstanceOf(ServiceProviderInterface::class, $this->getServiceProvider());
     }
 
     public function testServiceProviderExtendAbstractServiceProvider()
     {
-        self::assertInstanceOf('CoiSA\\ServiceProvider\\AbstractServiceProvider', $this->getServiceProvider());
+        self::assertInstanceOf(AbstractServiceProvider::class, $this->getServiceProvider());
     }
 
     /**

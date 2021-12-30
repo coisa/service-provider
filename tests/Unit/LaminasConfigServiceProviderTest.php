@@ -13,7 +13,15 @@
 
 namespace CoiSA\ServiceProvider\Test\Unit;
 
+use CoiSA\ServiceProvider\Extension\DelegatorExtension;
+use CoiSA\ServiceProvider\Extension\ExtendExtension;
+use CoiSA\ServiceProvider\Extension\MergeConfigExtension;
+use CoiSA\ServiceProvider\Factory\AliasFactory;
+use CoiSA\ServiceProvider\Factory\FactoryFactory;
+use CoiSA\ServiceProvider\Factory\InvokableFactory;
+use CoiSA\ServiceProvider\Factory\ServiceFactory;
 use CoiSA\ServiceProvider\LaminasConfigServiceProvider;
+use Psr\Container\ContainerInterface;
 
 /**
  * Class LaminasConfigServiceProviderTest.
@@ -24,17 +32,12 @@ final class LaminasConfigServiceProviderTest extends ServiceProviderTestCase
 {
     public function testConstructWillAddConfigToFactories()
     {
-        $config          = [
-            uniqid('config', true),
-        ];
+        $config          = [uniqid('config', true)];
         $serviceProvider = new LaminasConfigServiceProvider($config);
 
-        self::assertInstanceOf(
-            'CoiSA\\ServiceProvider\\Factory\\ServiceFactory',
-            $serviceProvider->getFactory('config')
-        );
+        self::assertInstanceOf(ServiceFactory::class, $serviceProvider->getFactory('config'));
 
-        $container = $this->prophesize('Psr\\Container\\ContainerInterface')->reveal();
+        $container = $this->prophesize(ContainerInterface::class)->reveal();
 
         self::assertEquals(
             $config,
@@ -52,12 +55,9 @@ final class LaminasConfigServiceProviderTest extends ServiceProviderTestCase
         ];
         $serviceProvider = new LaminasConfigServiceProvider($config);
 
-        self::assertInstanceOf(
-            'CoiSA\\ServiceProvider\\Extension\\MergeConfigExtension',
-            $serviceProvider->getExtension('config')
-        );
+        self::assertInstanceOf(MergeConfigExtension::class, $serviceProvider->getExtension('config'));
 
-        $container = $this->prophesize('Psr\\Container\\ContainerInterface')->reveal();
+        $container = $this->prophesize(ContainerInterface::class)->reveal();
 
         self::assertEquals(
             array_merge($previous, $config),
@@ -87,10 +87,7 @@ final class LaminasConfigServiceProviderTest extends ServiceProviderTestCase
         self::assertCount($total, $factories);
 
         foreach ($factories as $factory) {
-            self::assertInstanceOf(
-                'CoiSA\\ServiceProvider\\Factory\\ServiceFactory',
-                $factory
-            );
+            self::assertInstanceOf(ServiceFactory::class, $factory);
         }
     }
 
@@ -116,10 +113,7 @@ final class LaminasConfigServiceProviderTest extends ServiceProviderTestCase
         self::assertCount($total, $factories);
 
         foreach ($factories as $factory) {
-            self::assertInstanceOf(
-                'CoiSA\\ServiceProvider\\Factory\\FactoryFactory',
-                $factory
-            );
+            self::assertInstanceOf(FactoryFactory::class, $factory);
         }
     }
 
@@ -145,10 +139,7 @@ final class LaminasConfigServiceProviderTest extends ServiceProviderTestCase
         self::assertCount($total, $factories);
 
         foreach ($factories as $factory) {
-            self::assertInstanceOf(
-                'CoiSA\\ServiceProvider\\Factory\\InvokableFactory',
-                $factory
-            );
+            self::assertInstanceOf(InvokableFactory::class, $factory);
         }
     }
 
@@ -178,10 +169,7 @@ final class LaminasConfigServiceProviderTest extends ServiceProviderTestCase
         self::assertCount($total, $extensions);
 
         foreach ($extensions as $extension) {
-            self::assertInstanceOf(
-                'CoiSA\\ServiceProvider\\Extension\\DelegatorExtension',
-                $extension
-            );
+            self::assertInstanceOf(DelegatorExtension::class, $extension);
         }
     }
 
@@ -211,10 +199,7 @@ final class LaminasConfigServiceProviderTest extends ServiceProviderTestCase
         self::assertCount($total, $extensions);
 
         foreach ($extensions as $extension) {
-            self::assertInstanceOf(
-                'CoiSA\\ServiceProvider\\Extension\\ExtendExtension',
-                $extension
-            );
+            self::assertInstanceOf(ExtendExtension::class, $extension);
         }
     }
 
@@ -243,10 +228,7 @@ final class LaminasConfigServiceProviderTest extends ServiceProviderTestCase
         );
 
         foreach ($factories as $factory) {
-            self::assertInstanceOf(
-                'CoiSA\\ServiceProvider\\Factory\\AliasFactory',
-                $factory
-            );
+            self::assertInstanceOf(AliasFactory::class, $factory);
         }
     }
 

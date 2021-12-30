@@ -13,6 +13,8 @@
 
 namespace CoiSA\ServiceProvider\Test\Unit\Exception;
 
+use CoiSA\Exception\ExceptionInterface;
+use CoiSA\Exception\Throwable;
 use CoiSA\ServiceProvider\Exception\ServiceProviderExceptionInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -25,25 +27,22 @@ abstract class ServiceProviderExceptionTestCase extends TestCase
 {
     public function testClassImplementsServiceProviderExceptionInterface()
     {
-        self::assertInstanceOf(
-            'CoiSA\\ServiceProvider\\Exception\\ServiceProviderExceptionInterface',
-            $this->getException()
-        );
+        self::assertInstanceOf(ServiceProviderExceptionInterface::class, $this->getException());
     }
 
     public function testClassImplementsExceptionInterface()
     {
-        self::assertInstanceOf('CoiSA\\Exception\\ExceptionInterface', $this->getException());
+        self::assertInstanceOf(ExceptionInterface::class, $this->getException());
     }
 
     public function testClassImplementsThrowableInterface()
     {
-        self::assertInstanceOf('CoiSA\\Exception\\Throwable', $this->getException());
+        self::assertInstanceOf(Throwable::class, $this->getException());
     }
 
     public function testClassImplementsThrowable()
     {
-        self::assertInstanceOf('Throwable', $this->getException());
+        self::assertInstanceOf(\Throwable::class, $this->getException());
     }
 
     /**

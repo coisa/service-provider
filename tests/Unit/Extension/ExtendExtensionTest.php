@@ -36,13 +36,9 @@ final class ExtendExtensionTest extends AbstractExtensionTestCase
 
     public function setUp(): void
     {
-        $this->container = $this->prophesize('Psr\\Container\\ContainerInterface');
-        $this->extension = $this->prophesize(
-            'CoiSA\\ServiceProvider\\Extension\\ServiceProviderExtensionInterface'
-        );
-        $this->wrapper = $this->prophesize(
-            'CoiSA\\ServiceProvider\\Extension\\ServiceProviderExtensionInterface'
-        );
+        $this->container = $this->prophesize(ContainerInterface::class);
+        $this->extension = $this->prophesize(ServiceProviderExtensionInterface::class);
+        $this->wrapper   = $this->prophesize(ServiceProviderExtensionInterface::class);
     }
 
     public function testInvokeWithContainerWillResolveBothExtensions()

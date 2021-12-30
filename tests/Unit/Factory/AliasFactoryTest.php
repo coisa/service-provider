@@ -33,7 +33,7 @@ final class AliasFactoryTest extends AbstractFactoryTestCase
 
     public function setUp(): void
     {
-        $this->container = $this->prophesize('Psr\\Container\\ContainerInterface');
+        $this->container = $this->prophesize(ContainerInterface::class);
         $this->service   = uniqid('test', true);
     }
 

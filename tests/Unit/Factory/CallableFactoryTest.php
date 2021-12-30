@@ -33,7 +33,7 @@ final class CallableFactoryTest extends AbstractFactoryTestCase
 
     public function setUp(): void
     {
-        $this->container = $this->prophesize('Psr\\Container\\ContainerInterface');
+        $this->container = $this->prophesize(ContainerInterface::class);
 
         $result         = uniqid('callable', true);
         $this->callable = function(ContainerInterface $container) use ($result) {

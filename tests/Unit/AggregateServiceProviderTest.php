@@ -14,7 +14,9 @@
 namespace CoiSA\ServiceProvider\Test\Unit;
 
 use CoiSA\ServiceProvider\AggregateServiceProvider;
+use CoiSA\ServiceProvider\Extension\ServiceProviderExtensionInterface;
 use CoiSA\ServiceProvider\Factory\CallableFactory;
+use CoiSA\ServiceProvider\ServiceProvider;
 
 /**
  * Class AggregateServiceProviderTest.
@@ -29,7 +31,7 @@ final class AggregateServiceProviderTest extends ServiceProviderTestCase
         $serviceProviders = [];
 
         for ($i = 0; $i <= $total; $i++) {
-            $serviceProvider = $this->prophesize('CoiSA\\ServiceProvider\\ServiceProvider');
+            $serviceProvider = $this->prophesize(ServiceProvider::class);
             $serviceProvider->getFactories()->willReturn([]);
             $serviceProvider->getExtensions()->willReturn([]);
 
@@ -47,7 +49,7 @@ final class AggregateServiceProviderTest extends ServiceProviderTestCase
         $serviceProviders = [];
 
         for ($i = 0; $i <= $total; $i++) {
-            $serviceProvider = $this->prophesize('CoiSA\\ServiceProvider\\ServiceProvider');
+            $serviceProvider = $this->prophesize(ServiceProvider::class);
             $serviceProvider->getFactories()->willReturn([]);
             $serviceProvider->getExtensions()->willReturn([]);
 
@@ -64,7 +66,7 @@ final class AggregateServiceProviderTest extends ServiceProviderTestCase
 
     public function testAppendWillAppendServiceProvider()
     {
-        $serviceProvider = $this->prophesize('CoiSA\\ServiceProvider\\ServiceProvider');
+        $serviceProvider = $this->prophesize(ServiceProvider::class);
         $serviceProvider->getFactories()->willReturn([]);
         $serviceProvider->getExtensions()->willReturn([]);
 
@@ -76,7 +78,7 @@ final class AggregateServiceProviderTest extends ServiceProviderTestCase
 
     public function testAppendWillExtendGivenServiceProviderExtensions()
     {
-        $serviceProvider = $this->prophesize('CoiSA\\ServiceProvider\\ServiceProvider');
+        $serviceProvider = $this->prophesize(ServiceProvider::class);
         $serviceProvider->getFactories()->willReturn([]);
         $serviceProvider->getExtensions()->willReturn(['id' => function() {
         }]);
@@ -85,7 +87,7 @@ final class AggregateServiceProviderTest extends ServiceProviderTestCase
         $serviceProviderAggregator->append($serviceProvider->reveal());
 
         self::assertInstanceOf(
-            'CoiSA\\ServiceProvider\\Extension\\ServiceProviderExtensionInterface',
+            ServiceProviderExtensionInterface::class,
             $serviceProviderAggregator->getExtension('id')
         );
     }
@@ -99,11 +101,11 @@ final class AggregateServiceProviderTest extends ServiceProviderTestCase
             return 2;
         });
 
-        $serviceProvider1 = $this->prophesize('CoiSA\\ServiceProvider\\ServiceProvider');
+        $serviceProvider1 = $this->prophesize(ServiceProvider::class);
         $serviceProvider1->getFactories()->willReturn(['test' => $factory1]);
         $serviceProvider1->getExtensions()->willReturn([]);
 
-        $serviceProvider2 = $this->prophesize('CoiSA\\ServiceProvider\\ServiceProvider');
+        $serviceProvider2 = $this->prophesize(ServiceProvider::class);
         $serviceProvider2->getFactories()->willReturn(['test' => $factory2]);
         $serviceProvider2->getExtensions()->willReturn([]);
 
@@ -119,11 +121,11 @@ final class AggregateServiceProviderTest extends ServiceProviderTestCase
 
     public function testPrependWillPrependServiceProvider()
     {
-        $serviceProviderAppend = $this->prophesize('CoiSA\\ServiceProvider\\ServiceProvider');
+        $serviceProviderAppend = $this->prophesize(ServiceProvider::class);
         $serviceProviderAppend->getFactories()->willReturn([]);
         $serviceProviderAppend->getExtensions()->willReturn([]);
 
-        $serviceProviderPrepend = $this->prophesize('CoiSA\\ServiceProvider\\ServiceProvider');
+        $serviceProviderPrepend = $this->prophesize(ServiceProvider::class);
         $serviceProviderPrepend->getFactories()->willReturn([]);
         $serviceProviderPrepend->getExtensions()->willReturn([]);
 
@@ -146,11 +148,11 @@ final class AggregateServiceProviderTest extends ServiceProviderTestCase
             return 2;
         });
 
-        $serviceProvider1 = $this->prophesize('CoiSA\\ServiceProvider\\ServiceProvider');
+        $serviceProvider1 = $this->prophesize(ServiceProvider::class);
         $serviceProvider1->getFactories()->willReturn(['test' => $factory1]);
         $serviceProvider1->getExtensions()->willReturn([]);
 
-        $serviceProvider2 = $this->prophesize('CoiSA\\ServiceProvider\\ServiceProvider');
+        $serviceProvider2 = $this->prophesize(ServiceProvider::class);
         $serviceProvider2->getFactories()->willReturn(['test' => $factory2]);
         $serviceProvider2->getExtensions()->willReturn([]);
 
@@ -166,7 +168,7 @@ final class AggregateServiceProviderTest extends ServiceProviderTestCase
 
     public function testPrependWillExtendGivenServiceProviderExtensions()
     {
-        $serviceProvider = $this->prophesize('CoiSA\\ServiceProvider\\ServiceProvider');
+        $serviceProvider = $this->prophesize(ServiceProvider::class);
         $serviceProvider->getFactories()->willReturn([]);
         $serviceProvider->getExtensions()->willReturn(['id' => function() {
         }]);
@@ -175,7 +177,7 @@ final class AggregateServiceProviderTest extends ServiceProviderTestCase
         $serviceProviderAggregator->prepend($serviceProvider->reveal());
 
         self::assertInstanceOf(
-            'CoiSA\\ServiceProvider\\Extension\\ServiceProviderExtensionInterface',
+            ServiceProviderExtensionInterface::class,
             $serviceProviderAggregator->getExtension('id')
         );
     }

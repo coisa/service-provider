@@ -32,7 +32,7 @@ final class InitializerExtensionTest extends AbstractExtensionTestCase
 
     public function setUp(): void
     {
-        $this->container = $this->prophesize('Psr\\Container\\ContainerInterface');
+        $this->container = $this->prophesize(ContainerInterface::class);
     }
 
     public function createInitializerCallable()
@@ -52,7 +52,7 @@ final class InitializerExtensionTest extends AbstractExtensionTestCase
     public function testInvokeWillCallInitializerCallableAndReturnPreviousInstance()
     {
         /** @var LoggerInterface $logger */
-        $logger = $this->prophesize('Psr\\Log\\LoggerInterface')->reveal();
+        $logger = $this->prophesize(LoggerInterface::class)->reveal();
 
         $initializerCallable = function(
             ContainerInterface $container,
@@ -64,7 +64,7 @@ final class InitializerExtensionTest extends AbstractExtensionTestCase
         $initializer = new InitializerExtension($initializerCallable);
 
         /** @var LoggerAwareInterface|ObjectProphecy $loggerAwareProphecy */
-        $loggerAwareProphecy = $this->prophesize('Psr\\Log\\LoggerAwareInterface');
+        $loggerAwareProphecy = $this->prophesize(LoggerAwareInterface::class);
 
         /** @var LoggerAwareInterface $loggerAware */
         $loggerAware = $loggerAwareProphecy->reveal();

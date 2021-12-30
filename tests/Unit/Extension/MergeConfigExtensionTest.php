@@ -30,7 +30,7 @@ final class MergeConfigExtensionTest extends AbstractExtensionTestCase
 
     public function setUp(): void
     {
-        $this->container = $this->prophesize('Psr\\Container\\ContainerInterface');
+        $this->container = $this->prophesize(ContainerInterface::class);
     }
 
     public function provideNotArrayValues()

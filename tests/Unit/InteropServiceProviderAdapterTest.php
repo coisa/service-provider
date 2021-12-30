@@ -35,7 +35,7 @@ final class InteropServiceProviderAdapterTest extends ServiceProviderTestCase
 
     public function setUp(): void
     {
-        $this->interopServiceProvider = $this->prophesize('Interop\\Container\\ServiceProviderInterface');
+        $this->interopServiceProvider = $this->prophesize(ServiceProviderInterface::class);
 
         $this->factories = [
             uniqid('factory', true),

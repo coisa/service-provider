@@ -34,8 +34,8 @@ final class FactoryFactoryTest extends AbstractFactoryTestCase
 
     public function setUp(): void
     {
-        $this->container = $this->prophesize('Psr\\Container\\ContainerInterface');
-        $this->service   = 'CoiSA\\ServiceProvider\\Factory\\ServiceFactory';
+        $this->container = $this->prophesize(ContainerInterface::class);
+        $this->service   = ServiceFactory::class;
     }
 
     public function testConstructWithStringNonExistentClassWillThrowReflectionException()

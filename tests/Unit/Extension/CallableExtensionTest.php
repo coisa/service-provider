@@ -33,7 +33,7 @@ final class CallableExtensionTest extends AbstractExtensionTestCase
 
     public function setUp(): void
     {
-        $this->container = $this->prophesize('Psr\\Container\\ContainerInterface');
+        $this->container = $this->prophesize(ContainerInterface::class);
 
         $object         = new \stdClass();
         $object->uniqid = uniqid('test', true);
