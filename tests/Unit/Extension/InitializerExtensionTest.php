@@ -13,6 +13,7 @@
 
 namespace CoiSA\ServiceProvider\Test\Unit\Extension;
 
+use CoiSA\ServiceProvider\Exception\InvalidArgumentException;
 use CoiSA\ServiceProvider\Extension\InitializerExtension;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Container\ContainerInterface;
@@ -41,11 +42,10 @@ final class InitializerExtensionTest extends AbstractExtensionTestCase
         };
     }
 
-    /**
-     * @expectedException \CoiSA\ServiceProvider\Exception\InvalidArgumentException
-     */
     public function testConstructWithNotCallableArgumentWillThrowInvalidArgumentException()
     {
+        $this->expectException(InvalidArgumentException::class);
+
         new InitializerExtension(uniqid('test', true));
     }
 

@@ -13,6 +13,7 @@
 
 namespace CoiSA\ServiceProvider\Test\Unit\Factory;
 
+use CoiSA\ServiceProvider\Exception\ReflectionException;
 use CoiSA\ServiceProvider\Factory\FactoryFactory;
 use CoiSA\ServiceProvider\Factory\ServiceFactory;
 use Prophecy\Prophecy\ObjectProphecy;
@@ -37,11 +38,10 @@ final class FactoryFactoryTest extends AbstractFactoryTestCase
         $this->service   = 'CoiSA\\ServiceProvider\\Factory\\ServiceFactory';
     }
 
-    /**
-     * @expectedException  \CoiSA\ServiceProvider\Exception\ReflectionException
-     */
     public function testConstructWithStringNonExistentClassWillThrowReflectionException()
     {
+        $this->expectException(ReflectionException::class);
+
         new FactoryFactory(uniqid('factory', true));
     }
 

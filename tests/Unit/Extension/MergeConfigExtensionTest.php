@@ -13,6 +13,7 @@
 
 namespace CoiSA\ServiceProvider\Test\Unit\Extension;
 
+use CoiSA\ServiceProvider\Exception\InvalidArgumentException;
 use CoiSA\ServiceProvider\Extension\MergeConfigExtension;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Container\ContainerInterface;
@@ -45,12 +46,13 @@ final class MergeConfigExtensionTest extends AbstractExtensionTestCase
 
     /**
      * @dataProvider provideNotArrayValues
-     * @expectedException \CoiSA\ServiceProvider\Exception\InvalidArgumentException
      *
      * @param mixed $previous
      */
     public function testInvokeWithNotArrayPreviousWillReturnInvalidArgumentException($previous)
     {
+        $this->expectException(InvalidArgumentException::class);
+
         \call_user_func($this->getExtension(), $this->container->reveal(), $previous);
     }
 

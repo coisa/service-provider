@@ -13,6 +13,8 @@
 
 namespace CoiSA\ServiceProvider\Test\Unit\Factory;
 
+use CoiSA\ServiceProvider\Exception\InvalidArgumentException;
+use CoiSA\ServiceProvider\Exception\ReflectionException;
 use CoiSA\ServiceProvider\Factory\InvokableFactory;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Container\ContainerInterface;
@@ -49,20 +51,20 @@ final class InvokableFactoryTest extends AbstractFactoryTestCase
 
     /**
      * @dataProvider provideNonStringArgument
-     * @expectedException \CoiSA\ServiceProvider\Exception\InvalidArgumentException
      *
      * @param mixed $invokable
      */
     public function testConstructWithNonStringInvokableWillThrowInvalidArgumentException($invokable)
     {
+        $this->expectException(InvalidArgumentException::class);
+
         new InvokableFactory($invokable);
     }
 
-    /**
-     * @expectedException \CoiSA\ServiceProvider\Exception\ReflectionException
-     */
     public function testConstructWithNonExistentClassArgumentWillThrowReflectionException()
     {
+        $this->expectException(ReflectionException::class);
+
         new InvokableFactory(uniqid('invokable', true));
     }
 

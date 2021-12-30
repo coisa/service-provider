@@ -13,6 +13,7 @@
 
 namespace CoiSA\ServiceProvider\Test\Unit\Factory;
 
+use CoiSA\ServiceProvider\Exception\InvalidArgumentException;
 use CoiSA\ServiceProvider\Factory\CallableFactory;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Container\ContainerInterface;
@@ -54,12 +55,13 @@ final class CallableFactoryTest extends AbstractFactoryTestCase
 
     /**
      * @dataProvider provideNonCallableValues
-     * @expectedException \CoiSA\ServiceProvider\Exception\InvalidArgumentException
      *
      * @param mixed $callable
      */
     public function testConstructWithNonCallableArgumentWillThrowInvalidArgumentException($callable)
     {
+        $this->expectException(InvalidArgumentException::class);
+
         new CallableFactory($callable);
     }
 

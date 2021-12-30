@@ -13,6 +13,7 @@
 
 namespace CoiSA\ServiceProvider\Test\Unit\Factory;
 
+use CoiSA\ServiceProvider\Exception\InvalidArgumentException;
 use CoiSA\ServiceProvider\Factory\AliasFactory;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Container\ContainerInterface;
@@ -49,12 +50,13 @@ final class AliasFactoryTest extends AbstractFactoryTestCase
 
     /**
      * @dataProvider provideNonStringValues
-     * @expectedException \CoiSA\ServiceProvider\Exception\InvalidArgumentException
      *
      * @param mixed $service
      */
     public function testConstructWithNonStringArgumentWillThrowInvalidArgumentException($service)
     {
+        $this->expectException(InvalidArgumentException::class);
+
         new AliasFactory($service);
     }
 

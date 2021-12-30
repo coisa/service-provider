@@ -13,6 +13,7 @@
 
 namespace CoiSA\ServiceProvider\Test\Unit\Extension;
 
+use CoiSA\ServiceProvider\Exception\InvalidArgumentException;
 use CoiSA\ServiceProvider\Extension\CallableExtension;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Container\ContainerInterface;
@@ -55,12 +56,12 @@ final class CallableExtensionTest extends AbstractExtensionTestCase
 
     /**
      * @dataProvider provideInvalidConstructorArgument
-     * @expectedException \InvalidArgumentException
      *
      * @param mixed $invalidArgument
      */
     public function testConstructWithInvalidArgumentWillThrowInvalidArgumentException($invalidArgument)
     {
+        $this->expectException(InvalidArgumentException::class);
         new CallableExtension($invalidArgument);
     }
 

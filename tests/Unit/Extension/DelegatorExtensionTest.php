@@ -13,6 +13,7 @@
 
 namespace CoiSA\ServiceProvider\Test\Unit\Extension;
 
+use CoiSA\ServiceProvider\Exception\InvalidArgumentException;
 use CoiSA\ServiceProvider\Extension\DelegatorExtension;
 use PHPUnit\Framework\Assert;
 use Psr\Container\ContainerInterface;
@@ -67,12 +68,13 @@ final class DelegatorExtensionTest extends AbstractExtensionTestCase
 
     /**
      * @dataProvider provideInvalidIdArgument
-     * @expectedException \InvalidArgumentException
      *
      * @param mixed $invalidId
      */
     public function testConstructWithNotStringIdArgumentWillThrowInvalidArgumentException($invalidId)
     {
+        $this->expectException(InvalidArgumentException::class);
+
         new DelegatorExtension($invalidId, function() {
             return true;
         });
@@ -80,12 +82,13 @@ final class DelegatorExtensionTest extends AbstractExtensionTestCase
 
     /**
      * @dataProvider provideInvalidDelegatorArgument
-     * @expectedException \InvalidArgumentException
      *
      * @param mixed $invalidDelegator
      */
     public function testConstructWithNotStringDelegatorArgumentWillThrowInvalidArgumentException($invalidDelegator)
     {
+        $this->expectException(InvalidArgumentException::class);
+
         new DelegatorExtension(uniqid('id', true), $invalidDelegator);
     }
 

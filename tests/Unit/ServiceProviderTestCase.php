@@ -13,6 +13,7 @@
 
 namespace CoiSA\ServiceProvider\Test\Unit;
 
+use CoiSA\ServiceProvider\Exception\UnexpectedValueException;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -27,19 +28,15 @@ abstract class ServiceProviderTestCase extends AbstractServiceProviderTestCase
         self::assertInstanceOf('CoiSA\\ServiceProvider\\ServiceProvider', $this->getServiceProvider());
     }
 
-    /**
-     * @expectedException \UnexpectedValueException
-     */
     public function testGetFactoryWithoutGivenFactoryWillThrowUnexpectedValueException()
     {
+        $this->expectException(UnexpectedValueException::class);
         $this->getServiceProvider()->getFactory(uniqid('test', true));
     }
 
-    /**
-     * @expectedException \UnexpectedValueException
-     */
     public function testGetExtensionWithoutGivenExtensionWillThrowUnexpectedValueException()
     {
+        $this->expectException(UnexpectedValueException::class);
         $this->getServiceProvider()->getExtension(uniqid('test', true));
     }
 
