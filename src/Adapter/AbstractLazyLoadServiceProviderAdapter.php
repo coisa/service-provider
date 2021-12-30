@@ -7,10 +7,10 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
- *
- * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2021 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
+
 namespace CoiSA\ServiceProvider\Adapter;
 
 use CoiSA\ServiceProvider\ServiceProvider;
@@ -27,28 +27,6 @@ abstract class AbstractLazyLoadServiceProviderAdapter extends ServiceProvider
      * @var ServiceProviderInterface
      */
     private $serviceProvider;
-
-    /**
-     * Initialize the adapter.
-     */
-    private function lazyLoadServiceProvider()
-    {
-        if ($this->serviceProvider) {
-            return;
-        }
-
-        $this->serviceProvider = $this->getLazyLoadServiceProvider();
-
-        $this->factories  = array_merge(
-            $this->factories,
-            $this->serviceProvider->getFactories()
-        );
-
-        $this->extensions = array_merge_recursive(
-            $this->extensions,
-            $this->serviceProvider->getExtensions()
-        );
-    }
 
     /**
      * @return {@inheritdoc}
@@ -74,4 +52,26 @@ abstract class AbstractLazyLoadServiceProviderAdapter extends ServiceProvider
      * @return ServiceProviderInterface
      */
     abstract protected function getLazyLoadServiceProvider();
+
+    /**
+     * Initialize the adapter.
+     */
+    private function lazyLoadServiceProvider()
+    {
+        if ($this->serviceProvider) {
+            return;
+        }
+
+        $this->serviceProvider = $this->getLazyLoadServiceProvider();
+
+        $this->factories  = array_merge(
+            $this->factories,
+            $this->serviceProvider->getFactories()
+        );
+
+        $this->extensions = array_merge_recursive(
+            $this->extensions,
+            $this->serviceProvider->getExtensions()
+        );
+    }
 }

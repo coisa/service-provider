@@ -7,10 +7,10 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
- *
- * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2021 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
+
 namespace CoiSA\ServiceProvider\Test\Unit\Factory;
 
 use CoiSA\ServiceProvider\Factory\AliasFactory;
@@ -33,18 +33,18 @@ final class AliasFactoryTest extends AbstractFactoryTestCase
     public function setUp()
     {
         $this->container = $this->prophesize('Psr\\Container\\ContainerInterface');
-        $this->service   = \uniqid('test', true);
+        $this->service   = uniqid('test', true);
     }
 
     public function provideNonStringValues()
     {
-        return array(
-            array(true),
-            array(false),
-            array(array(\uniqid('test', true))),
-            array(\mt_rand(1, 100)),
-            array(new \stdClass()),
-        );
+        return [
+            [true],
+            [false],
+            [[uniqid('test', true)]],
+            [mt_rand(1, 100)],
+            [new \stdClass()],
+        ];
     }
 
     /**
@@ -61,7 +61,7 @@ final class AliasFactoryTest extends AbstractFactoryTestCase
     public function testInvokeWillReturnContainerGetService()
     {
         $object         = new \stdClass();
-        $object->uniqid = \uniqid('uniqid', true);
+        $object->uniqid = uniqid('uniqid', true);
 
         $this->container->get($this->service)->shouldBeCalledOnce()->willReturn($object);
 

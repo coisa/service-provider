@@ -7,10 +7,10 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
- *
- * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2021 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
+
 namespace CoiSA\ServiceProvider\Test\Unit;
 
 use Psr\Container\ContainerInterface;
@@ -32,7 +32,7 @@ abstract class ServiceProviderTestCase extends AbstractServiceProviderTestCase
      */
     public function testGetFactoryWithoutGivenFactoryWillThrowUnexpectedValueException()
     {
-        $this->getServiceProvider()->getFactory(\uniqid('test', true));
+        $this->getServiceProvider()->getFactory(uniqid('test', true));
     }
 
     /**
@@ -40,12 +40,12 @@ abstract class ServiceProviderTestCase extends AbstractServiceProviderTestCase
      */
     public function testGetExtensionWithoutGivenExtensionWillThrowUnexpectedValueException()
     {
-        $this->getServiceProvider()->getExtension(\uniqid('test', true));
+        $this->getServiceProvider()->getExtension(uniqid('test', true));
     }
 
     public function testSetFactoryWithFactoryObjectWillSetSameFactoryInstance()
     {
-        $id      = \uniqid('id', true);
+        $id      = uniqid('id', true);
         $factory = $this->prophesize('CoiSA\\ServiceProvider\\Factory\\ServiceProviderFactoryInterface')->reveal();
 
         $this->getServiceProvider()->setFactory($id, $factory);
@@ -55,7 +55,7 @@ abstract class ServiceProviderTestCase extends AbstractServiceProviderTestCase
 
     public function testSetFactoryWithStringFactoryWillSetFactoryFactoryInstanceForGivenString()
     {
-        $id      = \uniqid('id', true);
+        $id      = uniqid('id', true);
         $factory = 'stdClass';
 
         $this->getServiceProvider()->setFactory($id, $factory);
@@ -68,9 +68,9 @@ abstract class ServiceProviderTestCase extends AbstractServiceProviderTestCase
 
     public function testSetFactoryWithCallableWillSetFactoryFactoryForGivenCallable()
     {
-        $id             = \uniqid('id', true);
+        $id             = uniqid('id', true);
         $object         = new \stdClass();
-        $object->uniqid = \uniqid('test', true);
+        $object->uniqid = uniqid('test', true);
 
         $factory = function(ContainerInterface $container) use ($object) {
             return $object;
@@ -93,10 +93,10 @@ abstract class ServiceProviderTestCase extends AbstractServiceProviderTestCase
 
     public function testSetAliasWillSetAliasForContainerGet()
     {
-        $id             = \uniqid('id', true);
-        $alias          = \uniqid('alias', true);
+        $id             = uniqid('id', true);
+        $alias          = uniqid('alias', true);
         $object         = new \stdClass();
-        $object->uniqid = \uniqid('test', true);
+        $object->uniqid = uniqid('test', true);
 
         $this->getServiceProvider()->setAlias($alias, $id);
 
@@ -111,7 +111,7 @@ abstract class ServiceProviderTestCase extends AbstractServiceProviderTestCase
 
     public function testExtendWithExtensionObjectWillSetExtension()
     {
-        $id        = \uniqid('id', true);
+        $id        = uniqid('id', true);
         $extension = $this->prophesize('CoiSA\\ServiceProvider\\Extension\\ServiceProviderExtensionInterface')->reveal();
 
         $this->getServiceProvider()->extend($id, $extension);
@@ -121,9 +121,9 @@ abstract class ServiceProviderTestCase extends AbstractServiceProviderTestCase
 
     public function testExtendWithCallableWillSetCallableExtensionToGivenId()
     {
-        $id               = \uniqid('id', true);
+        $id               = uniqid('id', true);
         $previous         = new \stdClass();
-        $previous->uniqid = \uniqid('test', true);
+        $previous->uniqid = uniqid('test', true);
         $extension        = function(ContainerInterface $container, $previous = null) {
             return $previous;
         };
@@ -145,12 +145,12 @@ abstract class ServiceProviderTestCase extends AbstractServiceProviderTestCase
 
     public function testExtendWithAlreadySetIdWillExtendExtension()
     {
-        $id         = \uniqid('id', true);
-        $return1    = \uniqid('return1', true);
+        $id         = uniqid('id', true);
+        $return1    = uniqid('return1', true);
         $extension1 = function(ContainerInterface $container, $previous = null) use ($return1) {
             return $previous . $return1;
         };
-        $return2    = \uniqid('return2', true);
+        $return2    = uniqid('return2', true);
         $extension2 = function(ContainerInterface $container, $previous = null) use ($return2) {
             return $previous . $return2;
         };
@@ -173,12 +173,12 @@ abstract class ServiceProviderTestCase extends AbstractServiceProviderTestCase
 
     public function testExtendWithPrependAndAlreadySetIdWillPrependExtendExtension()
     {
-        $id         = \uniqid('id', true);
-        $return1    = \uniqid('return1', true);
+        $id         = uniqid('id', true);
+        $return1    = uniqid('return1', true);
         $extension1 = function(ContainerInterface $container, $previous = null) use ($return1) {
             return $previous . $return1;
         };
-        $return2    = \uniqid('return2', true);
+        $return2    = uniqid('return2', true);
         $extension2 = function(ContainerInterface $container, $previous = null) use ($return2) {
             return $previous . $return2;
         };

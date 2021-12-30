@@ -7,10 +7,10 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
- *
- * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2021 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
+
 namespace CoiSA\ServiceProvider\Test\Unit\Extension;
 
 use CoiSA\ServiceProvider\Extension\ExtendExtension;
@@ -49,8 +49,8 @@ final class ExtendExtensionTest extends AbstractExtensionTestCase
     {
         $container = $this->container->reveal();
 
-        $previous = \uniqid('previous', true);
-        $return   = \uniqid('return', true);
+        $previous = uniqid('previous', true);
+        $return   = uniqid('return', true);
 
         $this->extension->__invoke($container, null)->shouldBeCalledOnce()->willReturn($previous);
         $this->wrapper->__invoke($container, $previous)->shouldBeCalledOnce()->willReturn($return);

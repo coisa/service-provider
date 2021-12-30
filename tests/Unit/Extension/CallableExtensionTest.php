@@ -7,10 +7,10 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
- *
- * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2021 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
+
 namespace CoiSA\ServiceProvider\Test\Unit\Extension;
 
 use CoiSA\ServiceProvider\Extension\CallableExtension;
@@ -35,7 +35,7 @@ final class CallableExtensionTest extends AbstractExtensionTestCase
         $this->container = $this->prophesize('Psr\\Container\\ContainerInterface');
 
         $object         = new \stdClass();
-        $object->uniqid = \uniqid('test', true);
+        $object->uniqid = uniqid('test', true);
 
         $this->callable = function() use ($object) {
             return $object;
@@ -44,13 +44,13 @@ final class CallableExtensionTest extends AbstractExtensionTestCase
 
     public function provideInvalidConstructorArgument()
     {
-        return array(
-            array(null),
-            array(false),
-            array(true),
-            array(\uniqid('string', true)),
-            array(\mt_rand(1, 1000)),
-        );
+        return [
+            [null],
+            [false],
+            [true],
+            [uniqid('string', true)],
+            [mt_rand(1, 1000)],
+        ];
     }
 
     /**

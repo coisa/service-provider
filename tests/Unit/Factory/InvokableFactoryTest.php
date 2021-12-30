@@ -7,10 +7,10 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
- *
- * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2021 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
+
 namespace CoiSA\ServiceProvider\Test\Unit\Factory;
 
 use CoiSA\ServiceProvider\Factory\InvokableFactory;
@@ -38,13 +38,13 @@ final class InvokableFactoryTest extends AbstractFactoryTestCase
 
     public function provideNonStringArgument()
     {
-        return array(
-            array(true),
-            array(false),
-            array(array(\uniqid('test', true))),
-            array(\mt_rand(1, 100)),
-            array(new \stdClass()),
-        );
+        return [
+            [true],
+            [false],
+            [[uniqid('test', true)]],
+            [mt_rand(1, 100)],
+            [new \stdClass()],
+        ];
     }
 
     /**
@@ -63,7 +63,7 @@ final class InvokableFactoryTest extends AbstractFactoryTestCase
      */
     public function testConstructWithNonExistentClassArgumentWillThrowReflectionException()
     {
-        new InvokableFactory(\uniqid('invokable', true));
+        new InvokableFactory(uniqid('invokable', true));
     }
 
     public function testInvokeWillReturnNewInstanceOfGivenInvokableClassNamespace()

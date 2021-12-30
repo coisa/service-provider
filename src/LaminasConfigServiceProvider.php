@@ -7,10 +7,10 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
- *
- * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2021 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
+
 namespace CoiSA\ServiceProvider;
 
 /**
@@ -29,16 +29,16 @@ class LaminasConfigServiceProvider extends ServiceProvider
      */
     public function __construct(array $config)
     {
-        $dependencies = \array_merge_recursive(
-            array(
-                'services'     => array(),
-                'factories'    => array(),
-                'invokables'   => array(),
-                'delegators'   => array(),
-                'initializers' => array(),
-                'aliases'      => array(),
-            ),
-            \array_key_exists('dependencies', $config) ? $config['dependencies'] : array()
+        $dependencies = array_merge_recursive(
+            [
+                'services'     => [],
+                'factories'    => [],
+                'invokables'   => [],
+                'delegators'   => [],
+                'initializers' => [],
+                'aliases'      => [],
+            ],
+            \array_key_exists('dependencies', $config) ? $config['dependencies'] : []
         );
 
         $this->setFactory('config', new Factory\ServiceFactory($config));

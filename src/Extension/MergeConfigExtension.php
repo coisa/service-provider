@@ -7,10 +7,10 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
- *
- * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2021 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
+
 namespace CoiSA\ServiceProvider\Extension;
 
 use CoiSA\ServiceProvider\Exception\InvalidArgumentException;
@@ -32,7 +32,7 @@ final class MergeConfigExtension extends AbstractExtension
     {
         $self            = $this;
         $this->extension = function(ContainerInterface $container, $previous = null) use ($config, $self) {
-            $previous = null === $previous ? array() : $previous;
+            $previous = null === $previous ? [] : $previous;
 
             if (false === \is_array($previous)) {
                 throw InvalidArgumentException::forInvalidArgumentType('previous', 'array');

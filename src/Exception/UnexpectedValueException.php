@@ -7,10 +7,10 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
- *
- * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2021 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
+
 namespace CoiSA\ServiceProvider\Exception;
 
 /**
@@ -36,7 +36,7 @@ final class UnexpectedValueException extends \CoiSA\Exception\Spl\UnexpectedValu
      */
     public static function forFactoryNotFound($id, $code = 0, $previous = null)
     {
-        $message = \sprintf(
+        $message = sprintf(
             self::MESSAGE_FACTORY_NOT_FOUND,
             $id
         );
@@ -53,7 +53,7 @@ final class UnexpectedValueException extends \CoiSA\Exception\Spl\UnexpectedValu
      */
     public static function forExtensionNotFound($id, $code = 0, $previous = null)
     {
-        $message = \sprintf(
+        $message = sprintf(
             self::MESSAGE_EXTENSION_NOT_FOUND,
             $id
         );

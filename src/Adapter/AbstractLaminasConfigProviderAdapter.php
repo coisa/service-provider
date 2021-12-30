@@ -7,10 +7,10 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
- *
- * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2021 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
+
 namespace CoiSA\ServiceProvider\Adapter;
 
 use CoiSA\ServiceProvider\LaminasConfigServiceProvider;
@@ -23,7 +23,7 @@ use CoiSA\ServiceProvider\LaminasConfigServiceProvider;
 abstract class AbstractLaminasConfigProviderAdapter extends AbstractLazyLoadServiceProviderAdapter
 {
     /**
-     * @return callable Laminas ConfigProvider instance.
+     * @return callable laminas ConfigProvider instance
      */
     abstract protected function getConfigProvider();
 

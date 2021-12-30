@@ -7,10 +7,10 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
- *
- * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2021 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
+
 namespace CoiSA\ServiceProvider\Test\Unit\Extension;
 
 use CoiSA\ServiceProvider\Extension\MergeConfigExtension;
@@ -34,13 +34,13 @@ final class MergeConfigExtensionTest extends AbstractExtensionTestCase
 
     public function provideNotArrayValues()
     {
-        return array(
-            array(true),
-            array(false),
-            array(\uniqid('test', true)),
-            array(\mt_rand(1, 100)),
-            array(new \stdClass()),
-        );
+        return [
+            [true],
+            [false],
+            [uniqid('test', true)],
+            [mt_rand(1, 100)],
+            [new \stdClass()],
+        ];
     }
 
     /**
@@ -56,93 +56,93 @@ final class MergeConfigExtensionTest extends AbstractExtensionTestCase
 
     public function providePreviousConfigExpectedValue()
     {
-        return array(
-            'merge-integer-and-string-keys' => array(
-                array(
+        return [
+            'merge-integer-and-string-keys' => [
+                [
                     'foo',
                     3     => 'bar',
                     'baz' => 'baz',
-                    4     => array(
+                    4     => [
                         'a',
                         1 => 'b',
                         'c',
-                    ),
-                ),
-                array(
+                    ],
+                ],
+                [
                     'baz',
-                    4 => array(
+                    4 => [
                         'd' => 'd',
-                    ),
-                ),
-                array(
+                    ],
+                ],
+                [
                     0     => 'foo',
                     3     => 'bar',
                     'baz' => 'baz',
-                    4     => array(
+                    4     => [
                         'a',
                         1 => 'b',
                         'c',
-                    ),
+                    ],
                     5     => 'baz',
-                    6     => array(
+                    6     => [
                         'd' => 'd',
-                    ),
-                ),
-            ),
-            'merge-arrays-recursively' => array(
-                array(
-                    'foo' => array(
+                    ],
+                ],
+            ],
+            'merge-arrays-recursively' => [
+                [
+                    'foo' => [
                         'baz',
-                    ),
-                ),
-                array(
-                    'foo' => array(
+                    ],
+                ],
+                [
+                    'foo' => [
                         'baz',
-                    ),
-                ),
-                array(
-                    'foo' => array(
+                    ],
+                ],
+                [
+                    'foo' => [
                         0 => 'baz',
                         1 => 'baz',
-                    ),
-                ),
-            ),
-            'replace-string-keys' => array(
-                array(
+                    ],
+                ],
+            ],
+            'replace-string-keys' => [
+                [
                     'foo' => 'bar',
-                    'bar' => array(),
-                ),
-                array(
+                    'bar' => [],
+                ],
+                [
                     'foo' => 'baz',
                     'bar' => 'bat',
-                ),
-                array(
+                ],
+                [
                     'foo' => 'baz',
                     'bar' => 'bat',
-                ),
-            ),
-            'merge-with-null' => array(
-                array(
+                ],
+            ],
+            'merge-with-null' => [
+                [
                     'foo' => null,
                     null  => 'rod',
                     'cat' => 'bar',
                     'god' => 'rad',
-                ),
-                array(
+                ],
+                [
                     'foo' => 'baz',
                     null  => 'zad',
                     'god' => null,
                     'dad' => 'bad',
-                ),
-                array(
+                ],
+                [
                     'foo' => 'baz',
                     null  => 'zad',
                     'cat' => 'bar',
                     'god' => null,
                     'dad' => 'bad',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 
     /**
@@ -164,6 +164,6 @@ final class MergeConfigExtensionTest extends AbstractExtensionTestCase
      */
     protected function getExtension()
     {
-        return new MergeConfigExtension(array());
+        return new MergeConfigExtension([]);
     }
 }

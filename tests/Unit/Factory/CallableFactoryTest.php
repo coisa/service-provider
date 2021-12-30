@@ -7,10 +7,10 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
- *
- * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2021 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
+
 namespace CoiSA\ServiceProvider\Test\Unit\Factory;
 
 use CoiSA\ServiceProvider\Factory\CallableFactory;
@@ -34,7 +34,7 @@ final class CallableFactoryTest extends AbstractFactoryTestCase
     {
         $this->container = $this->prophesize('Psr\\Container\\ContainerInterface');
 
-        $result         = \uniqid('callable', true);
+        $result         = uniqid('callable', true);
         $this->callable = function(ContainerInterface $container) use ($result) {
             return $result;
         };
@@ -42,14 +42,14 @@ final class CallableFactoryTest extends AbstractFactoryTestCase
 
     public function provideNonCallableValues()
     {
-        return array(
-            array(true),
-            array(false),
-            array(\uniqid('test', true)),
-            array(array(\uniqid('test', true))),
-            array(\mt_rand(1, 100)),
-            array(new \stdClass()),
-        );
+        return [
+            [true],
+            [false],
+            [uniqid('test', true)],
+            [[uniqid('test', true)]],
+            [mt_rand(1, 100)],
+            [new \stdClass()],
+        ];
     }
 
     /**

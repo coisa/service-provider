@@ -7,10 +7,10 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
- *
- * @copyright Copyright (c) 2020 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2021 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
+
 namespace CoiSA\ServiceProvider\Test\Unit;
 
 use CoiSA\ServiceProvider\AggregateServiceProvider;
@@ -25,13 +25,13 @@ final class AggregateServiceProviderTest extends ServiceProviderTestCase
 {
     public function testGetServiceProvidersWillReturnGivenServiceProviders()
     {
-        $total            = \mt_rand(5, 10);
-        $serviceProviders = array();
+        $total            = mt_rand(5, 10);
+        $serviceProviders = [];
 
         for ($i = 0; $i <= $total; $i++) {
             $serviceProvider = $this->prophesize('CoiSA\\ServiceProvider\\ServiceProvider');
-            $serviceProvider->getFactories()->willReturn(array());
-            $serviceProvider->getExtensions()->willReturn(array());
+            $serviceProvider->getFactories()->willReturn([]);
+            $serviceProvider->getExtensions()->willReturn([]);
 
             $serviceProviders[] = $serviceProvider->reveal();
         }
@@ -43,13 +43,13 @@ final class AggregateServiceProviderTest extends ServiceProviderTestCase
 
     public function testGetIteratorWillReturnIteratorOfGivenServiceProviders()
     {
-        $total            = \mt_rand(5, 10);
-        $serviceProviders = array();
+        $total            = mt_rand(5, 10);
+        $serviceProviders = [];
 
         for ($i = 0; $i <= $total; $i++) {
             $serviceProvider = $this->prophesize('CoiSA\\ServiceProvider\\ServiceProvider');
-            $serviceProvider->getFactories()->willReturn(array());
-            $serviceProvider->getExtensions()->willReturn(array());
+            $serviceProvider->getFactories()->willReturn([]);
+            $serviceProvider->getExtensions()->willReturn([]);
 
             $serviceProviders[] = $serviceProvider->reveal();
         }
@@ -58,28 +58,28 @@ final class AggregateServiceProviderTest extends ServiceProviderTestCase
 
         self::assertEquals(
             $serviceProviders,
-            \iterator_to_array($serviceProviderAggregator->getIterator())
+            iterator_to_array($serviceProviderAggregator->getIterator())
         );
     }
 
     public function testAppendWillAppendServiceProvider()
     {
         $serviceProvider = $this->prophesize('CoiSA\\ServiceProvider\\ServiceProvider');
-        $serviceProvider->getFactories()->willReturn(array());
-        $serviceProvider->getExtensions()->willReturn(array());
+        $serviceProvider->getFactories()->willReturn([]);
+        $serviceProvider->getExtensions()->willReturn([]);
 
         $serviceProviderAggregator = new AggregateServiceProvider();
         $serviceProviderAggregator->append($serviceProvider->reveal());
 
-        self::assertEquals(array($serviceProvider->reveal()), $serviceProviderAggregator->getServiceProviders());
+        self::assertEquals([$serviceProvider->reveal()], $serviceProviderAggregator->getServiceProviders());
     }
 
     public function testAppendWillExtendGivenServiceProviderExtensions()
     {
         $serviceProvider = $this->prophesize('CoiSA\\ServiceProvider\\ServiceProvider');
-        $serviceProvider->getFactories()->willReturn(array());
-        $serviceProvider->getExtensions()->willReturn(array('id' => function() {
-        }));
+        $serviceProvider->getFactories()->willReturn([]);
+        $serviceProvider->getExtensions()->willReturn(['id' => function() {
+        }]);
 
         $serviceProviderAggregator = new AggregateServiceProvider();
         $serviceProviderAggregator->append($serviceProvider->reveal());
@@ -100,12 +100,12 @@ final class AggregateServiceProviderTest extends ServiceProviderTestCase
         });
 
         $serviceProvider1 = $this->prophesize('CoiSA\\ServiceProvider\\ServiceProvider');
-        $serviceProvider1->getFactories()->willReturn(array('test' => $factory1));
-        $serviceProvider1->getExtensions()->willReturn(array());
+        $serviceProvider1->getFactories()->willReturn(['test' => $factory1]);
+        $serviceProvider1->getExtensions()->willReturn([]);
 
         $serviceProvider2 = $this->prophesize('CoiSA\\ServiceProvider\\ServiceProvider');
-        $serviceProvider2->getFactories()->willReturn(array('test' => $factory2));
-        $serviceProvider2->getExtensions()->willReturn(array());
+        $serviceProvider2->getFactories()->willReturn(['test' => $factory2]);
+        $serviceProvider2->getExtensions()->willReturn([]);
 
         $serviceProviderAggregator = new AggregateServiceProvider();
         $serviceProviderAggregator->append($serviceProvider1->reveal());
@@ -120,21 +120,21 @@ final class AggregateServiceProviderTest extends ServiceProviderTestCase
     public function testPrependWillPrependServiceProvider()
     {
         $serviceProviderAppend = $this->prophesize('CoiSA\\ServiceProvider\\ServiceProvider');
-        $serviceProviderAppend->getFactories()->willReturn(array());
-        $serviceProviderAppend->getExtensions()->willReturn(array());
+        $serviceProviderAppend->getFactories()->willReturn([]);
+        $serviceProviderAppend->getExtensions()->willReturn([]);
 
         $serviceProviderPrepend = $this->prophesize('CoiSA\\ServiceProvider\\ServiceProvider');
-        $serviceProviderPrepend->getFactories()->willReturn(array());
-        $serviceProviderPrepend->getExtensions()->willReturn(array());
+        $serviceProviderPrepend->getFactories()->willReturn([]);
+        $serviceProviderPrepend->getExtensions()->willReturn([]);
 
         $serviceProviderAggregator = new AggregateServiceProvider();
         $serviceProviderAggregator->append($serviceProviderAppend->reveal());
         $serviceProviderAggregator->prepend($serviceProviderPrepend->reveal());
 
-        self::assertEquals(array(
+        self::assertEquals([
             $serviceProviderPrepend->reveal(),
             $serviceProviderAppend->reveal(),
-        ), $serviceProviderAggregator->getServiceProviders());
+        ], $serviceProviderAggregator->getServiceProviders());
     }
 
     public function testPrependWillNotOverwriteFactories()
@@ -147,12 +147,12 @@ final class AggregateServiceProviderTest extends ServiceProviderTestCase
         });
 
         $serviceProvider1 = $this->prophesize('CoiSA\\ServiceProvider\\ServiceProvider');
-        $serviceProvider1->getFactories()->willReturn(array('test' => $factory1));
-        $serviceProvider1->getExtensions()->willReturn(array());
+        $serviceProvider1->getFactories()->willReturn(['test' => $factory1]);
+        $serviceProvider1->getExtensions()->willReturn([]);
 
         $serviceProvider2 = $this->prophesize('CoiSA\\ServiceProvider\\ServiceProvider');
-        $serviceProvider2->getFactories()->willReturn(array('test' => $factory2));
-        $serviceProvider2->getExtensions()->willReturn(array());
+        $serviceProvider2->getFactories()->willReturn(['test' => $factory2]);
+        $serviceProvider2->getExtensions()->willReturn([]);
 
         $serviceProviderAggregator = new AggregateServiceProvider();
         $serviceProviderAggregator->append($serviceProvider1->reveal());
@@ -167,9 +167,9 @@ final class AggregateServiceProviderTest extends ServiceProviderTestCase
     public function testPrependWillExtendGivenServiceProviderExtensions()
     {
         $serviceProvider = $this->prophesize('CoiSA\\ServiceProvider\\ServiceProvider');
-        $serviceProvider->getFactories()->willReturn(array());
-        $serviceProvider->getExtensions()->willReturn(array('id' => function() {
-        }));
+        $serviceProvider->getFactories()->willReturn([]);
+        $serviceProvider->getExtensions()->willReturn(['id' => function() {
+        }]);
 
         $serviceProviderAggregator = new AggregateServiceProvider();
         $serviceProviderAggregator->prepend($serviceProvider->reveal());
