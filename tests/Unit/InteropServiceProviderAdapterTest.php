@@ -15,7 +15,7 @@ declare(strict_types=1);
 
 namespace CoiSA\ServiceProvider\Test\Unit;
 
-use CoiSA\ServiceProvider\InteropServiceProviderAdapter;
+use CoiSA\ServiceProvider\Adapter\InteropServiceProviderAdapter;
 use Interop\Container\ServiceProviderInterface;
 use Prophecy\Prophecy\ObjectProphecy;
 
