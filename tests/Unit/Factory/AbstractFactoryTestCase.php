@@ -19,6 +19,7 @@ use CoiSA\ServiceProvider\Factory\AbstractFactory;
 use CoiSA\ServiceProvider\Factory\FactoryInterface;
 use CoiSA\ServiceProvider\Factory\ServiceProviderFactoryInterface;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * Class AbstractFactoryTestCase.
@@ -27,6 +28,8 @@ use PHPUnit\Framework\TestCase;
  */
 abstract class AbstractFactoryTestCase extends TestCase
 {
+    use ProphecyTrait;
+
     public function testFactoryImplementsFactoryInterface(): void
     {
         static::assertInstanceOf(ServiceProviderFactoryInterface::class, $this->getFactory());

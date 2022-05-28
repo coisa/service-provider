@@ -18,6 +18,7 @@ namespace CoiSA\ServiceProvider\Test\Unit\Extension;
 use CoiSA\ServiceProvider\Extension\AbstractExtension;
 use CoiSA\ServiceProvider\Extension\ServiceProviderExtensionInterface;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * Class AbstractExtensionTest.
@@ -26,6 +27,8 @@ use PHPUnit\Framework\TestCase;
  */
 abstract class AbstractExtensionTestCase extends TestCase
 {
+    use ProphecyTrait;
+
     public function testExtensionImplementsExtensionInterface(): void
     {
         static::assertInstanceOf(ServiceProviderExtensionInterface::class, $this->getExtension());

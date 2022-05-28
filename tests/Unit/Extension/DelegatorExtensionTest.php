@@ -87,8 +87,9 @@ final class DelegatorExtensionTest extends AbstractExtensionTestCase
      *
      * @param mixed $invalidDelegator
      */
-    public function testConstructWithNotStringDelegatorArgumentWillThrowInvalidArgumentException($invalidDelegator): void
-    {
+    public function testConstructWithNotStringDelegatorArgumentWillThrowInvalidArgumentException(
+        $invalidDelegator
+    ): void {
         $this->expectException(InvalidArgumentException::class);
 
         new DelegatorExtension(uniqid('id', true), $invalidDelegator);

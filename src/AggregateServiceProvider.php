@@ -54,6 +54,7 @@ class AggregateServiceProvider extends ServiceProvider implements \IteratorAggre
     /**
      * @return \ArrayIterator|\Traversable
      */
+    #[\ReturnTypeWillChange]
     public function getIterator()
     {
         return new \ArrayIterator($this->serviceProviders);

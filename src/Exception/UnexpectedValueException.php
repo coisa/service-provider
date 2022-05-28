@@ -15,12 +15,14 @@ declare(strict_types=1);
 
 namespace CoiSA\ServiceProvider\Exception;
 
+use CoiSA\Exception\Spl\UnexpectedValueException as UnexpectedValueExceptionAlias;
+
 /**
  * Class UnexpectedValueException.
  *
  * @package CoiSA\ServiceProvider\Exception
  */
-final class UnexpectedValueException extends \CoiSA\Exception\Spl\UnexpectedValueException implements ServiceProviderExceptionInterface
+final class UnexpectedValueException extends UnexpectedValueExceptionAlias implements ServiceProviderExceptionInterface
 {
     /** @const string */
     public const MESSAGE_FACTORY_NOT_FOUND = 'Factory "%s" was not found.';

@@ -18,6 +18,7 @@ namespace CoiSA\ServiceProvider\Test\Unit;
 use CoiSA\ServiceProvider\AbstractServiceProvider;
 use CoiSA\ServiceProvider\ServiceProviderInterface;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * Class AbstractServiceProviderTestCase.
@@ -26,6 +27,8 @@ use PHPUnit\Framework\TestCase;
  */
 abstract class AbstractServiceProviderTestCase extends TestCase
 {
+    use ProphecyTrait;
+
     /** @var AbstractServiceProvider */
     private $serviceProvider;
 

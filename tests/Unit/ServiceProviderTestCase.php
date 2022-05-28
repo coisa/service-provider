@@ -22,6 +22,7 @@ use CoiSA\ServiceProvider\Extension\ServiceProviderExtensionInterface;
 use CoiSA\ServiceProvider\Factory\FactoryFactory;
 use CoiSA\ServiceProvider\Factory\ServiceProviderFactoryInterface;
 use CoiSA\ServiceProvider\ServiceProvider;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -31,6 +32,8 @@ use Psr\Container\ContainerInterface;
  */
 abstract class ServiceProviderTestCase extends AbstractServiceProviderTestCase
 {
+    use ProphecyTrait;
+
     public function testServiceProviderExtendServiceProvider(): void
     {
         static::assertInstanceOf(ServiceProvider::class, $this->getServiceProvider());

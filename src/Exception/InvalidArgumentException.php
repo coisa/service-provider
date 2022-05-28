@@ -15,11 +15,13 @@ declare(strict_types=1);
 
 namespace CoiSA\ServiceProvider\Exception;
 
+use CoiSA\Exception\Spl\InvalidArgumentException as CoiSAInvalidArgumentException;
+
 /**
  * Class InvalidArgumentException.
  *
  * @package CoiSA\ServiceProvider\Exception
  */
-final class InvalidArgumentException extends \CoiSA\Exception\Spl\InvalidArgumentException implements ServiceProviderExceptionInterface
+final class InvalidArgumentException extends CoiSAInvalidArgumentException implements ServiceProviderExceptionInterface
 {
 }
