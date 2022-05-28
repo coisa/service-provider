@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of coisa/service-provider.
  *
@@ -7,7 +9,7 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
- * @copyright Copyright (c) 2020-2021 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2022 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
 
@@ -21,6 +23,9 @@ use Psr\Container\ContainerInterface;
  * Class ServiceFactoryTest.
  *
  * @package CoiSA\ServiceProvider\Test\Unit\Factory
+ *
+ * @internal
+ * @coversNothing
  */
 final class ServiceFactoryTest extends AbstractFactoryTestCase
 {
@@ -30,22 +35,22 @@ final class ServiceFactoryTest extends AbstractFactoryTestCase
     /** @var \stdClass */
     private $service;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->container = $this->prophesize(ContainerInterface::class);
         $this->service   = new \stdClass();
     }
 
-    public function testInvokeWillReturnService()
+    public function testInvokeWillReturnService(): void
     {
-        self::assertSame($this->service, \call_user_func($this->getFactory(), $this->container->reveal()));
+        static::assertSame($this->service, \call_user_func($this->getFactory(), $this->container->reveal()));
     }
 
-    public function testInvokeWithoutConstructorArgumentWillReturnNull()
+    public function testInvokeWithoutConstructorArgumentWillReturnNull(): void
     {
         $factory = new ServiceFactory();
 
-        self::assertNull(\call_user_func($factory, $this->container->reveal()));
+        static::assertNull(\call_user_func($factory, $this->container->reveal()));
     }
 
     /**

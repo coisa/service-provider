@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of coisa/service-provider.
  *
@@ -7,7 +9,7 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
- * @copyright Copyright (c) 2020-2021 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2022 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
 
@@ -25,24 +27,24 @@ use PHPUnit\Framework\TestCase;
  */
 abstract class ServiceProviderExceptionTestCase extends TestCase
 {
-    public function testClassImplementsServiceProviderExceptionInterface()
+    public function testClassImplementsServiceProviderExceptionInterface(): void
     {
-        self::assertInstanceOf(ServiceProviderExceptionInterface::class, $this->getException());
+        static::assertInstanceOf(ServiceProviderExceptionInterface::class, $this->getException());
     }
 
-    public function testClassImplementsExceptionInterface()
+    public function testClassImplementsExceptionInterface(): void
     {
-        self::assertInstanceOf(ExceptionInterface::class, $this->getException());
+        static::assertInstanceOf(ExceptionInterface::class, $this->getException());
     }
 
-    public function testClassImplementsThrowableInterface()
+    public function testClassImplementsThrowableInterface(): void
     {
-        self::assertInstanceOf(Throwable::class, $this->getException());
+        static::assertInstanceOf(Throwable::class, $this->getException());
     }
 
-    public function testClassImplementsThrowable()
+    public function testClassImplementsThrowable(): void
     {
-        self::assertInstanceOf(\Throwable::class, $this->getException());
+        static::assertInstanceOf(\Throwable::class, $this->getException());
     }
 
     /**

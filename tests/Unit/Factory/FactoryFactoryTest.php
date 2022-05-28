@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of coisa/service-provider.
  *
@@ -7,7 +9,7 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
- * @copyright Copyright (c) 2020-2021 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2022 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
 
@@ -23,6 +25,9 @@ use Psr\Container\ContainerInterface;
  * Class ServiceFactoryTest.
  *
  * @package CoiSA\ServiceProvider\Test\Unit\Factory
+ *
+ * @internal
+ * @coversNothing
  */
 final class FactoryFactoryTest extends AbstractFactoryTestCase
 {
@@ -32,20 +37,20 @@ final class FactoryFactoryTest extends AbstractFactoryTestCase
     /** @var string */
     private $service;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->container = $this->prophesize(ContainerInterface::class);
         $this->service   = ServiceFactory::class;
     }
 
-    public function testConstructWithStringNonExistentClassWillThrowReflectionException()
+    public function testConstructWithStringNonExistentClassWillThrowReflectionException(): void
     {
         $this->expectException(ReflectionException::class);
 
         new FactoryFactory(uniqid('factory', true));
     }
 
-    public function testInvokeWithFactoryClassInsideContainerWillUseFactoryFromContainer()
+    public function testInvokeWithFactoryClassInsideContainerWillUseFactoryFromContainer(): void
     {
         $instance       = new \stdClass();
         $instance->test = uniqid(__METHOD__, true);
@@ -53,14 +58,14 @@ final class FactoryFactoryTest extends AbstractFactoryTestCase
         $this->container->has($this->service)->willReturn(true);
         $this->container->get($this->service)->willReturn(new ServiceFactory($instance));
 
-        self::assertSame($instance, \call_user_func($this->getFactory(), $this->container->reveal()));
+        static::assertSame($instance, \call_user_func($this->getFactory(), $this->container->reveal()));
     }
 
-    public function testInvokeWithoutFactoryClassInsideContainerWillInvokeIntoNewInstanceOfFactory()
+    public function testInvokeWithoutFactoryClassInsideContainerWillInvokeIntoNewInstanceOfFactory(): void
     {
         $this->container->has($this->service)->willReturn(false);
 
-        self::assertNull(\call_user_func($this->getFactory(), $this->container->reveal()));
+        static::assertNull(\call_user_func($this->getFactory(), $this->container->reveal()));
     }
 
     /**

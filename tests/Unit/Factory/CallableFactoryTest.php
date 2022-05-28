@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of coisa/service-provider.
  *
@@ -7,7 +9,7 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
- * @copyright Copyright (c) 2020-2021 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2022 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
 
@@ -22,6 +24,9 @@ use Psr\Container\ContainerInterface;
  * Class CallableFactoryTest.
  *
  * @package CoiSA\ServiceProvider\Test\Unit\Factory
+ *
+ * @internal
+ * @coversNothing
  */
 final class CallableFactoryTest extends AbstractFactoryTestCase
 {
@@ -31,14 +36,12 @@ final class CallableFactoryTest extends AbstractFactoryTestCase
     /** @var callable */
     private $callable;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->container = $this->prophesize(ContainerInterface::class);
 
         $result         = uniqid('callable', true);
-        $this->callable = function(ContainerInterface $container) use ($result) {
-            return $result;
-        };
+        $this->callable = fn (ContainerInterface $container) => $result;
     }
 
     public function provideNonCallableValues()
@@ -48,7 +51,7 @@ final class CallableFactoryTest extends AbstractFactoryTestCase
             [false],
             [uniqid('test', true)],
             [[uniqid('test', true)]],
-            [mt_rand(1, 100)],
+            [random_int(1, 100)],
             [new \stdClass()],
         ];
     }
@@ -58,18 +61,18 @@ final class CallableFactoryTest extends AbstractFactoryTestCase
      *
      * @param mixed $callable
      */
-    public function testConstructWithNonCallableArgumentWillThrowInvalidArgumentException($callable)
+    public function testConstructWithNonCallableArgumentWillThrowInvalidArgumentException($callable): void
     {
         $this->expectException(InvalidArgumentException::class);
 
         new CallableFactory($callable);
     }
 
-    public function testInvokeWillReturnCallableResult()
+    public function testInvokeWillReturnCallableResult(): void
     {
         $result = \call_user_func($this->callable, $this->container->reveal());
 
-        self::assertEquals($result, \call_user_func($this->getFactory(), $this->container->reveal()));
+        static::assertSame($result, \call_user_func($this->getFactory(), $this->container->reveal()));
     }
 
     /**

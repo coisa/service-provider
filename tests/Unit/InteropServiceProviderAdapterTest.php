@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of coisa/service-provider.
  *
@@ -7,7 +9,7 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
- * @copyright Copyright (c) 2020-2021 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2022 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
 
@@ -21,6 +23,9 @@ use Prophecy\Prophecy\ObjectProphecy;
  * Class InteropServiceProviderAdapterTest.
  *
  * @package CoiSA\ServiceProvider\Test\Unit
+ *
+ * @internal
+ * @coversNothing
  */
 final class InteropServiceProviderAdapterTest extends ServiceProviderTestCase
 {
@@ -33,7 +38,7 @@ final class InteropServiceProviderAdapterTest extends ServiceProviderTestCase
     /** @var mixed[] */
     private $extensions;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->interopServiceProvider = $this->prophesize(ServiceProviderInterface::class);
 
@@ -53,17 +58,17 @@ final class InteropServiceProviderAdapterTest extends ServiceProviderTestCase
         $this->interopServiceProvider->getExtensions()->willReturn($this->extensions);
     }
 
-    public function testGetFactoriesWillReturnSameFactoriesFromGivenInteropServiceProvider()
+    public function testGetFactoriesWillReturnSameFactoriesFromGivenInteropServiceProvider(): void
     {
-        self::assertEquals(
+        static::assertSame(
             $this->factories,
             $this->getServiceProvider()->getFactories()
         );
     }
 
-    public function testGetExtensionsWillReturnSameExtensionsFromGivenInteropServiceProvider()
+    public function testGetExtensionsWillReturnSameExtensionsFromGivenInteropServiceProvider(): void
     {
-        self::assertEquals(
+        static::assertSame(
             $this->extensions,
             $this->getServiceProvider()->getExtensions()
         );

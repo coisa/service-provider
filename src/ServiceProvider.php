@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of coisa/service-provider.
  *
@@ -7,7 +9,7 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
- * @copyright Copyright (c) 2020-2021 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2022 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
 
@@ -31,7 +33,6 @@ use CoiSA\ServiceProvider\Factory\ServiceProviderFactoryInterface;
 class ServiceProvider extends AbstractServiceProvider
 {
     /**
-     * @param string                                          $id
      * @param callable|ServiceProviderFactoryInterface|string $factory
      *
      * @throws ReflectionException      When the string factory class name does not exist
@@ -47,11 +48,7 @@ class ServiceProvider extends AbstractServiceProvider
     }
 
     /**
-     * @param string $id
-     *
      * @throws UnexpectedValueException Not found factory
-     *
-     * @return null|ServiceProviderFactoryInterface
      */
     public function getFactory(string $id): ?ServiceProviderFactoryInterface
     {
@@ -62,19 +59,13 @@ class ServiceProvider extends AbstractServiceProvider
         return $this->factories[$id];
     }
 
-    /**
-     * @param string $alias
-     * @param string $id
-     */
     public function setAlias(string $alias, string $id): void
     {
         $this->factories[$alias] = new AliasFactory($id);
     }
 
     /**
-     * @param string                                     $id
      * @param callable|ServiceProviderExtensionInterface $extension
-     * @param bool                                       $prepend
      *
      * @throws InvalidArgumentException When the extension is not callable
      */
@@ -97,11 +88,7 @@ class ServiceProvider extends AbstractServiceProvider
     }
 
     /**
-     * @param string $id
-     *
      * @throws UnexpectedValueException Not found extension
-     *
-     * @return null|ServiceProviderExtensionInterface
      */
     public function getExtension(string $id): ?ServiceProviderExtensionInterface
     {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of coisa/service-provider.
  *
@@ -7,7 +9,7 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
- * @copyright Copyright (c) 2020-2021 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2022 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
 
@@ -24,14 +26,14 @@ use PHPUnit\Framework\TestCase;
  */
 abstract class AbstractExtensionTestCase extends TestCase
 {
-    public function testExtensionImplementsExtensionInterface()
+    public function testExtensionImplementsExtensionInterface(): void
     {
-        self::assertInstanceOf(ServiceProviderExtensionInterface::class, $this->getExtension());
+        static::assertInstanceOf(ServiceProviderExtensionInterface::class, $this->getExtension());
     }
 
-    public function testExtensionExtendAbstractExtension()
+    public function testExtensionExtendAbstractExtension(): void
     {
-        self::assertInstanceOf(AbstractExtension::class, $this->getExtension());
+        static::assertInstanceOf(AbstractExtension::class, $this->getExtension());
     }
 
     /**

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of coisa/service-provider.
  *
@@ -7,7 +9,7 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
- * @copyright Copyright (c) 2020-2021 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2022 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
 
@@ -22,6 +24,9 @@ use Psr\Container\ContainerInterface;
  * Class CallableExtensionTest.
  *
  * @package CoiSA\ServiceProvider\Test\Unit\Extension
+ *
+ * @internal
+ * @coversNothing
  */
 final class CallableExtensionTest extends AbstractExtensionTestCase
 {
@@ -31,16 +36,14 @@ final class CallableExtensionTest extends AbstractExtensionTestCase
     /** @var callable */
     private $callable;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->container = $this->prophesize(ContainerInterface::class);
 
         $object         = new \stdClass();
         $object->uniqid = uniqid('test', true);
 
-        $this->callable = function() use ($object) {
-            return $object;
-        };
+        $this->callable = fn () => $object;
     }
 
     public function provideInvalidConstructorArgument()
@@ -50,7 +53,7 @@ final class CallableExtensionTest extends AbstractExtensionTestCase
             [false],
             [true],
             [uniqid('string', true)],
-            [mt_rand(1, 1000)],
+            [random_int(1, 1000)],
         ];
     }
 
@@ -59,15 +62,15 @@ final class CallableExtensionTest extends AbstractExtensionTestCase
      *
      * @param mixed $invalidArgument
      */
-    public function testConstructWithInvalidArgumentWillThrowInvalidArgumentException($invalidArgument)
+    public function testConstructWithInvalidArgumentWillThrowInvalidArgumentException($invalidArgument): void
     {
         $this->expectException(InvalidArgumentException::class);
         new CallableExtension($invalidArgument);
     }
 
-    public function testInvokeWillReturnCallableResult()
+    public function testInvokeWillReturnCallableResult(): void
     {
-        self::assertSame(
+        static::assertSame(
             \call_user_func($this->callable),
             \call_user_func($this->getExtension(), $this->container->reveal())
         );
