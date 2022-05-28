@@ -15,13 +15,13 @@ declare(strict_types=1);
 
 namespace CoiSA\ServiceProvider\Exception;
 
-use CoiSA\Exception\Spl\ReflectionException as CoiSAReflectionException;
+use CoiSA\Exception\Spl\ReflectionException as ReflectionExceptionAlias;
 
 /**
  * Class ReflectionException.
  *
  * @package CoiSA\ServiceProvider\Exception
  */
-final class ReflectionException extends CoiSAReflectionException implements ServiceProviderExceptionInterface
+final class ReflectionException extends ReflectionExceptionAlias implements ServiceProviderExceptionInterface
 {
 }
