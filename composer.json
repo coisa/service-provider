@@ -27,10 +27,7 @@
     "autoload": {
         "psr-4": {
             "CoiSA\\ServiceProvider\\": "src/"
-        },
-        "files": [
-            "config/autoload.php"
-        ]
+        }
     },
     "autoload-dev": {
         "psr-4": {
