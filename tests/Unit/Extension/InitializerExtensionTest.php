@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of coisa/service-provider.
  *
@@ -7,7 +9,7 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
- * @copyright Copyright (c) 2020-2021 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2022 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
 
@@ -24,40 +26,49 @@ use Psr\Log\LoggerInterface;
  * Class InitializerExtensionTest.
  *
  * @package CoiSA\ServiceProvider\Test\Unit\Extension
+ *
+ * @internal
+ * @coversDefaultClass \CoiSA\ServiceProvider\Extension\InitializerExtension
  */
 final class InitializerExtensionTest extends AbstractExtensionTestCase
 {
     /** @var ContainerInterface|ObjectProphecy */
     private $container;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->container = $this->prophesize(ContainerInterface::class);
     }
 
     public function createInitializerCallable()
     {
-        return function(ContainerInterface $container, $object) {
+        return function (ContainerInterface $container, $object): void {
             // noop
         };
     }
 
-    public function testConstructWithNotCallableArgumentWillThrowInvalidArgumentException()
+    /**
+     * @covers ::__construct
+     */
+    public function testConstructWithNotCallableArgumentWillThrowInvalidArgumentException(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
         new InitializerExtension(uniqid('test', true));
     }
 
-    public function testInvokeWillCallInitializerCallableAndReturnPreviousInstance()
+    /**
+     * @covers ::__invoke
+     */
+    public function testInvokeWillCallInitializerCallableAndReturnPreviousInstance(): void
     {
         /** @var LoggerInterface $logger */
         $logger = $this->prophesize(LoggerInterface::class)->reveal();
 
-        $initializerCallable = function(
+        $initializerCallable = function (
             ContainerInterface $container,
             LoggerAwareInterface $object
-        ) use ($logger) {
+        ) use ($logger): void {
             $object->setLogger($logger);
         };
 
@@ -73,13 +84,10 @@ final class InitializerExtensionTest extends AbstractExtensionTestCase
 
         $previous = \call_user_func($initializer, $this->container->reveal(), $loggerAware);
 
-        self::assertSame($loggerAware, $previous);
+        static::assertSame($loggerAware, $previous);
     }
 
-    /**
-     * @return InitializerExtension
-     */
-    protected function getExtension()
+    protected function getExtension(): InitializerExtension
     {
         return new InitializerExtension([$this, 'createInitializerCallable']);
     }

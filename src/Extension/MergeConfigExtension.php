@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of coisa/service-provider.
  *
@@ -7,7 +9,7 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
- * @copyright Copyright (c) 2020-2021 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2022 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
 
@@ -25,13 +27,11 @@ final class MergeConfigExtension extends AbstractExtension
 {
     /**
      * MergeConfigExtension constructor.
-     *
-     * @param array $config
      */
     public function __construct(array $config)
     {
         $self            = $this;
-        $this->extension = function(ContainerInterface $container, $previous = null) use ($config, $self) {
+        $this->extension = function (ContainerInterface $container, $previous = null) use ($config, $self) {
             $previous = null === $previous ? [] : $previous;
 
             if (false === \is_array($previous)) {
@@ -43,7 +43,6 @@ final class MergeConfigExtension extends AbstractExtension
     }
 
     /**
-     * @param array $previous
      * @param array $merge
      *
      * @return array

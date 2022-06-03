@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of coisa/service-provider.
  *
@@ -7,7 +9,7 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
- * @copyright Copyright (c) 2020-2021 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2022 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
 
@@ -19,10 +21,13 @@ use CoiSA\ServiceProvider\Exception\UnexpectedValueException;
  * Class UnexpectedValueExceptionTest.
  *
  * @package CoiSA\ServiceProvider\Test\Unit\Exception
+ *
+ * @internal
+ * @coversDefaultClass \CoiSA\ServiceProvider\Exception\UnexpectedValueException
  */
 final class UnexpectedValueExceptionTest extends ServiceProviderExceptionTestCase
 {
-    protected function getException()
+    protected function getException(): UnexpectedValueException
     {
         return new UnexpectedValueException();
     }

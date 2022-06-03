@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of coisa/service-provider.
  *
@@ -7,7 +9,7 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
- * @copyright Copyright (c) 2020-2021 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2022 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
 
@@ -16,6 +18,7 @@ namespace CoiSA\ServiceProvider\Test\Unit\Extension;
 use CoiSA\ServiceProvider\Extension\AbstractExtension;
 use CoiSA\ServiceProvider\Extension\ServiceProviderExtensionInterface;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * Class AbstractExtensionTest.
@@ -24,18 +27,23 @@ use PHPUnit\Framework\TestCase;
  */
 abstract class AbstractExtensionTestCase extends TestCase
 {
-    public function testExtensionImplementsExtensionInterface()
-    {
-        self::assertInstanceOf(ServiceProviderExtensionInterface::class, $this->getExtension());
-    }
+    use ProphecyTrait;
 
-    public function testExtensionExtendAbstractExtension()
+    /**
+     * @coversNothing
+     */
+    public function testExtensionImplementsExtensionInterface(): void
     {
-        self::assertInstanceOf(AbstractExtension::class, $this->getExtension());
+        static::assertInstanceOf(ServiceProviderExtensionInterface::class, $this->getExtension());
     }
 
     /**
-     * @return ServiceProviderExtensionInterface
+     * @coversNothing
      */
-    abstract protected function getExtension();
+    public function testExtensionExtendAbstractExtension(): void
+    {
+        static::assertInstanceOf(AbstractExtension::class, $this->getExtension());
+    }
+
+    abstract protected function getExtension(): ServiceProviderExtensionInterface;
 }

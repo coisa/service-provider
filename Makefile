@@ -1,21 +1,25 @@
 SHELL := sh
-.DEFAULT_GOAL := install
+.DEFAULT_GOAL := test
 
-/usr/local/bin/lando:
-	@echo "You need to install lando first!"
-	@echo "See how-to: https://docs.lando.dev/basics/installation.html"
-	@echo
-	@exit 1
+export UID=`id -u`
+export GID=`id -g`
 
-.PHONY: lando
-lando: /usr/local/bin/lando
+vendor: build
+	docker-compose run --rm --user $(UID):$(GID) php74 install
 
 .PHONY: install
 install: vendor
 
-.PHONY: test
-test: lando
-	lando composer test
+.PHONY: build
+build:
+	docker-compose build
 
-vendor: lando
-	lando composer install
+.PHONY: cs-fix
+cs-fix: install
+	docker-compose run --rm --user $(UID):$(GID) php74 cs-fix
+
+.PHONY: tests
+tests: cs-fix
+	docker-compose run --rm --user $(UID):$(GID) php74 test
+	docker-compose run --rm php80 test
+	docker-compose run --rm php81 test

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of coisa/service-provider.
  *
@@ -7,7 +9,7 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
- * @copyright Copyright (c) 2020-2021 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2022 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
 
@@ -25,28 +27,37 @@ use PHPUnit\Framework\TestCase;
  */
 abstract class ServiceProviderExceptionTestCase extends TestCase
 {
-    public function testClassImplementsServiceProviderExceptionInterface()
+    /**
+     * @coversNothing
+     */
+    public function testClassImplementsServiceProviderExceptionInterface(): void
     {
-        self::assertInstanceOf(ServiceProviderExceptionInterface::class, $this->getException());
-    }
-
-    public function testClassImplementsExceptionInterface()
-    {
-        self::assertInstanceOf(ExceptionInterface::class, $this->getException());
-    }
-
-    public function testClassImplementsThrowableInterface()
-    {
-        self::assertInstanceOf(Throwable::class, $this->getException());
-    }
-
-    public function testClassImplementsThrowable()
-    {
-        self::assertInstanceOf(\Throwable::class, $this->getException());
+        static::assertInstanceOf(ServiceProviderExceptionInterface::class, $this->getException());
     }
 
     /**
-     * @return ServiceProviderExceptionInterface
+     * @coversNothing
      */
-    abstract protected function getException();
+    public function testClassImplementsExceptionInterface(): void
+    {
+        static::assertInstanceOf(ExceptionInterface::class, $this->getException());
+    }
+
+    /**
+     * @coversNothing
+     */
+    public function testClassImplementsThrowableInterface(): void
+    {
+        static::assertInstanceOf(Throwable::class, $this->getException());
+    }
+
+    /**
+     * @coversNothing
+     */
+    public function testClassImplementsThrowable(): void
+    {
+        static::assertInstanceOf(\Throwable::class, $this->getException());
+    }
+
+    abstract protected function getException(): ServiceProviderExceptionInterface;
 }

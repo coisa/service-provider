@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of coisa/service-provider.
  *
@@ -7,7 +9,7 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
- * @copyright Copyright (c) 2020-2021 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2022 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
 
@@ -22,15 +24,21 @@ use CoiSA\ServiceProvider\ServiceProvider;
  * Class AggregateServiceProviderTest.
  *
  * @package CoiSA\ServiceProvider\Test\Unit
+ *
+ * @internal
+ * @coversDefaultClass \CoiSA\ServiceProvider\AggregateServiceProvider
  */
 final class AggregateServiceProviderTest extends ServiceProviderTestCase
 {
-    public function testGetServiceProvidersWillReturnGivenServiceProviders()
+    /**
+     * @covers ::getServiceProviders
+     */
+    public function testGetServiceProvidersWillReturnGivenServiceProviders(): void
     {
-        $total            = mt_rand(5, 10);
+        $total            = random_int(5, 10);
         $serviceProviders = [];
 
-        for ($i = 0; $i <= $total; $i++) {
+        for ($i = 0; $i <= $total; ++$i) {
             $serviceProvider = $this->prophesize(ServiceProvider::class);
             $serviceProvider->getFactories()->willReturn([]);
             $serviceProvider->getExtensions()->willReturn([]);
@@ -40,15 +48,18 @@ final class AggregateServiceProviderTest extends ServiceProviderTestCase
 
         $serviceProviderAggregator = new AggregateServiceProvider($serviceProviders);
 
-        self::assertEquals($serviceProviders, $serviceProviderAggregator->getServiceProviders());
+        static::assertSame($serviceProviders, $serviceProviderAggregator->getServiceProviders());
     }
 
-    public function testGetIteratorWillReturnIteratorOfGivenServiceProviders()
+    /**
+     * @covers ::getIterator
+     */
+    public function testGetIteratorWillReturnIteratorOfGivenServiceProviders(): void
     {
-        $total            = mt_rand(5, 10);
+        $total            = random_int(5, 10);
         $serviceProviders = [];
 
-        for ($i = 0; $i <= $total; $i++) {
+        for ($i = 0; $i <= $total; ++$i) {
             $serviceProvider = $this->prophesize(ServiceProvider::class);
             $serviceProvider->getFactories()->willReturn([]);
             $serviceProvider->getExtensions()->willReturn([]);
@@ -58,13 +69,16 @@ final class AggregateServiceProviderTest extends ServiceProviderTestCase
 
         $serviceProviderAggregator = new AggregateServiceProvider($serviceProviders);
 
-        self::assertEquals(
+        static::assertSame(
             $serviceProviders,
             iterator_to_array($serviceProviderAggregator->getIterator())
         );
     }
 
-    public function testAppendWillAppendServiceProvider()
+    /**
+     * @covers ::append
+     */
+    public function testAppendWillAppendServiceProvider(): void
     {
         $serviceProvider = $this->prophesize(ServiceProvider::class);
         $serviceProvider->getFactories()->willReturn([]);
@@ -73,33 +87,35 @@ final class AggregateServiceProviderTest extends ServiceProviderTestCase
         $serviceProviderAggregator = new AggregateServiceProvider();
         $serviceProviderAggregator->append($serviceProvider->reveal());
 
-        self::assertEquals([$serviceProvider->reveal()], $serviceProviderAggregator->getServiceProviders());
+        static::assertSame([$serviceProvider->reveal()], $serviceProviderAggregator->getServiceProviders());
     }
 
-    public function testAppendWillExtendGivenServiceProviderExtensions()
+    /**
+     * @covers ::append
+     */
+    public function testAppendWillExtendGivenServiceProviderExtensions(): void
     {
         $serviceProvider = $this->prophesize(ServiceProvider::class);
         $serviceProvider->getFactories()->willReturn([]);
-        $serviceProvider->getExtensions()->willReturn(['id' => function() {
+        $serviceProvider->getExtensions()->willReturn(['id' => function (): void {
         }]);
 
         $serviceProviderAggregator = new AggregateServiceProvider();
         $serviceProviderAggregator->append($serviceProvider->reveal());
 
-        self::assertInstanceOf(
+        static::assertInstanceOf(
             ServiceProviderExtensionInterface::class,
             $serviceProviderAggregator->getExtension('id')
         );
     }
 
-    public function testAppendWillSetServiceProviderFactories()
+    /**
+     * @covers ::append
+     */
+    public function testAppendWillSetServiceProviderFactories(): void
     {
-        $factory1 = new CallableFactory(function() {
-            return 1;
-        });
-        $factory2 = new CallableFactory(function() {
-            return 2;
-        });
+        $factory1 = new CallableFactory(fn () => 1);
+        $factory2 = new CallableFactory(fn () => 2);
 
         $serviceProvider1 = $this->prophesize(ServiceProvider::class);
         $serviceProvider1->getFactories()->willReturn(['test' => $factory1]);
@@ -112,14 +128,17 @@ final class AggregateServiceProviderTest extends ServiceProviderTestCase
         $serviceProviderAggregator = new AggregateServiceProvider();
         $serviceProviderAggregator->append($serviceProvider1->reveal());
 
-        self::assertSame($factory1, $serviceProviderAggregator->getFactory('test'));
+        static::assertSame($factory1, $serviceProviderAggregator->getFactory('test'));
 
         $serviceProviderAggregator->append($serviceProvider2->reveal());
 
-        self::assertSame($factory2, $serviceProviderAggregator->getFactory('test'));
+        static::assertSame($factory2, $serviceProviderAggregator->getFactory('test'));
     }
 
-    public function testPrependWillPrependServiceProvider()
+    /**
+     * @covers ::prepend
+     */
+    public function testPrependWillPrependServiceProvider(): void
     {
         $serviceProviderAppend = $this->prophesize(ServiceProvider::class);
         $serviceProviderAppend->getFactories()->willReturn([]);
@@ -133,20 +152,19 @@ final class AggregateServiceProviderTest extends ServiceProviderTestCase
         $serviceProviderAggregator->append($serviceProviderAppend->reveal());
         $serviceProviderAggregator->prepend($serviceProviderPrepend->reveal());
 
-        self::assertEquals([
+        static::assertSame([
             $serviceProviderPrepend->reveal(),
             $serviceProviderAppend->reveal(),
         ], $serviceProviderAggregator->getServiceProviders());
     }
 
-    public function testPrependWillNotOverwriteFactories()
+    /**
+     * @covers ::prepend
+     */
+    public function testPrependWillNotOverwriteFactories(): void
     {
-        $factory1 = new CallableFactory(function() {
-            return 1;
-        });
-        $factory2 = new CallableFactory(function() {
-            return 2;
-        });
+        $factory1 = new CallableFactory(fn () => 1);
+        $factory2 = new CallableFactory(fn () => 2);
 
         $serviceProvider1 = $this->prophesize(ServiceProvider::class);
         $serviceProvider1->getFactories()->willReturn(['test' => $factory1]);
@@ -159,30 +177,33 @@ final class AggregateServiceProviderTest extends ServiceProviderTestCase
         $serviceProviderAggregator = new AggregateServiceProvider();
         $serviceProviderAggregator->append($serviceProvider1->reveal());
 
-        self::assertSame($factory1, $serviceProviderAggregator->getFactory('test'));
+        static::assertSame($factory1, $serviceProviderAggregator->getFactory('test'));
 
         $serviceProviderAggregator->prepend($serviceProvider2->reveal());
 
-        self::assertSame($factory1, $serviceProviderAggregator->getFactory('test'));
+        static::assertSame($factory1, $serviceProviderAggregator->getFactory('test'));
     }
 
-    public function testPrependWillExtendGivenServiceProviderExtensions()
+    /**
+     * @covers ::prepend
+     */
+    public function testPrependWillExtendGivenServiceProviderExtensions(): void
     {
         $serviceProvider = $this->prophesize(ServiceProvider::class);
         $serviceProvider->getFactories()->willReturn([]);
-        $serviceProvider->getExtensions()->willReturn(['id' => function() {
+        $serviceProvider->getExtensions()->willReturn(['id' => function (): void {
         }]);
 
         $serviceProviderAggregator = new AggregateServiceProvider();
         $serviceProviderAggregator->prepend($serviceProvider->reveal());
 
-        self::assertInstanceOf(
+        static::assertInstanceOf(
             ServiceProviderExtensionInterface::class,
             $serviceProviderAggregator->getExtension('id')
         );
     }
 
-    protected function createServiceProvider()
+    protected function createServiceProvider(): AggregateServiceProvider
     {
         return new AggregateServiceProvider();
     }

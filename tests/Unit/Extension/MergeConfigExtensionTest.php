@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of coisa/service-provider.
  *
@@ -7,7 +9,7 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
- * @copyright Copyright (c) 2020-2021 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2022 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
 
@@ -22,13 +24,16 @@ use Psr\Container\ContainerInterface;
  * Class MergeConfigExtensionTest.
  *
  * @package CoiSA\ServiceProvider\Test\Unit\Extension
+ *
+ * @internal
+ * @coversDefaultClass \CoiSA\ServiceProvider\Extension\MergeConfigExtension
  */
 final class MergeConfigExtensionTest extends AbstractExtensionTestCase
 {
     /** @var ContainerInterface|ObjectProphecy */
     private $container;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->container = $this->prophesize(ContainerInterface::class);
     }
@@ -39,17 +44,18 @@ final class MergeConfigExtensionTest extends AbstractExtensionTestCase
             [true],
             [false],
             [uniqid('test', true)],
-            [mt_rand(1, 100)],
+            [random_int(1, 100)],
             [new \stdClass()],
         ];
     }
 
     /**
-     * @dataProvider provideNotArrayValues
-     *
      * @param mixed $previous
+     *
+     * @dataProvider provideNotArrayValues
+     * @covers ::__invoke
      */
-    public function testInvokeWithNotArrayPreviousWillReturnInvalidArgumentException($previous)
+    public function testInvokeWithNotArrayPreviousWillReturnInvalidArgumentException($previous): void
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -85,8 +91,8 @@ final class MergeConfigExtensionTest extends AbstractExtensionTestCase
                         1 => 'b',
                         'c',
                     ],
-                    5     => 'baz',
-                    6     => [
+                    5 => 'baz',
+                    6 => [
                         'd' => 'd',
                     ],
                 ],
@@ -149,22 +155,16 @@ final class MergeConfigExtensionTest extends AbstractExtensionTestCase
 
     /**
      * @dataProvider providePreviousConfigExpectedValue
-     *
-     * @param array $previous
-     * @param array $config
-     * @param array $expected
+     * @covers ::__invoke
      */
-    public function testInvokeWillMergeConfigToPrevious(array $previous, array $config, array $expected)
+    public function testInvokeWillMergeConfigToPrevious(array $previous, array $config, array $expected): void
     {
         $extension = new MergeConfigExtension($config);
 
-        self::assertEquals($expected, $extension($this->container->reveal(), $previous));
+        static::assertSame($expected, $extension($this->container->reveal(), $previous));
     }
 
-    /**
-     * @return MergeConfigExtension
-     */
-    protected function getExtension()
+    protected function getExtension(): MergeConfigExtension
     {
         return new MergeConfigExtension([]);
     }
