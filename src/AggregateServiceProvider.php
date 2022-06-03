@@ -87,7 +87,7 @@ class AggregateServiceProvider extends ServiceProvider implements \IteratorAggre
     /**
      * {@inheritdoc}
      */
-    public function getFactory(string $id): ?ServiceProviderFactoryInterface
+    public function getFactory(string $id): ServiceProviderFactoryInterface
     {
         $serviceProvider = $this->resolveServiceProvider();
 
@@ -107,7 +107,7 @@ class AggregateServiceProvider extends ServiceProvider implements \IteratorAggre
     /**
      * {@inheritdoc}
      */
-    public function getExtension(string $id): ?ServiceProviderExtensionInterface
+    public function getExtension(string $id): ServiceProviderExtensionInterface
     {
         $serviceProvider = $this->resolveServiceProvider();
 

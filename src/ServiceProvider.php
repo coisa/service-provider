@@ -50,7 +50,7 @@ class ServiceProvider extends AbstractServiceProvider
     /**
      * @throws UnexpectedValueException Not found factory
      */
-    public function getFactory(string $id): ?ServiceProviderFactoryInterface
+    public function getFactory(string $id): ServiceProviderFactoryInterface
     {
         if (false === \array_key_exists($id, $this->factories)) {
             throw UnexpectedValueException::forFactoryNotFound($id);
@@ -90,7 +90,7 @@ class ServiceProvider extends AbstractServiceProvider
     /**
      * @throws UnexpectedValueException Not found extension
      */
-    public function getExtension(string $id): ?ServiceProviderExtensionInterface
+    public function getExtension(string $id): ServiceProviderExtensionInterface
     {
         if (false === \array_key_exists($id, $this->extensions)) {
             throw UnexpectedValueException::forExtensionNotFound($id);
