@@ -28,7 +28,7 @@ use Psr\Log\LoggerInterface;
  * @package CoiSA\ServiceProvider\Test\Unit\Extension
  *
  * @internal
- * @coversNothing
+ * @coversDefaultClass \CoiSA\ServiceProvider\Extension\InitializerExtension
  */
 final class InitializerExtensionTest extends AbstractExtensionTestCase
 {
@@ -47,6 +47,9 @@ final class InitializerExtensionTest extends AbstractExtensionTestCase
         };
     }
 
+    /**
+     * @covers ::__construct
+     */
     public function testConstructWithNotCallableArgumentWillThrowInvalidArgumentException(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -54,6 +57,9 @@ final class InitializerExtensionTest extends AbstractExtensionTestCase
         new InitializerExtension(uniqid('test', true));
     }
 
+    /**
+     * @covers ::__invoke
+     */
     public function testInvokeWillCallInitializerCallableAndReturnPreviousInstance(): void
     {
         /** @var LoggerInterface $logger */
@@ -81,10 +87,7 @@ final class InitializerExtensionTest extends AbstractExtensionTestCase
         static::assertSame($loggerAware, $previous);
     }
 
-    /**
-     * @return InitializerExtension
-     */
-    protected function getExtension()
+    protected function getExtension(): InitializerExtension
     {
         return new InitializerExtension([$this, 'createInitializerCallable']);
     }

@@ -27,7 +27,7 @@ use Psr\Container\ContainerInterface;
  * @package CoiSA\ServiceProvider\Test\Unit\Factory
  *
  * @internal
- * @coversNothing
+ * @coversDefaultClass \CoiSA\ServiceProvider\Factory\FactoryFactory
  */
 final class FactoryFactoryTest extends AbstractFactoryTestCase
 {
@@ -43,6 +43,9 @@ final class FactoryFactoryTest extends AbstractFactoryTestCase
         $this->service   = ServiceFactory::class;
     }
 
+    /**
+     * @covers ::__construct
+     */
     public function testConstructWithStringNonExistentClassWillThrowReflectionException(): void
     {
         $this->expectException(ReflectionException::class);
@@ -50,6 +53,9 @@ final class FactoryFactoryTest extends AbstractFactoryTestCase
         new FactoryFactory(uniqid('factory', true));
     }
 
+    /**
+     * @covers ::__invoke
+     */
     public function testInvokeWithFactoryClassInsideContainerWillUseFactoryFromContainer(): void
     {
         $instance       = new \stdClass();
@@ -61,6 +67,9 @@ final class FactoryFactoryTest extends AbstractFactoryTestCase
         static::assertSame($instance, \call_user_func($this->getFactory(), $this->container->reveal()));
     }
 
+    /**
+     * @covers ::__invoke
+     */
     public function testInvokeWithoutFactoryClassInsideContainerWillInvokeIntoNewInstanceOfFactory(): void
     {
         $this->container->has($this->service)->willReturn(false);
@@ -70,10 +79,8 @@ final class FactoryFactoryTest extends AbstractFactoryTestCase
 
     /**
      * @throws \CoiSA\ServiceProvider\Exception\ReflectionException
-     *
-     * @return FactoryFactory
      */
-    protected function getFactory()
+    protected function getFactory(): FactoryFactory
     {
         return new FactoryFactory($this->service);
     }

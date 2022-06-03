@@ -16,7 +16,6 @@ declare(strict_types=1);
 namespace CoiSA\ServiceProvider\Test\Unit\Factory;
 
 use CoiSA\ServiceProvider\Factory\AbstractFactory;
-use CoiSA\ServiceProvider\Factory\FactoryInterface;
 use CoiSA\ServiceProvider\Factory\ServiceProviderFactoryInterface;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -30,18 +29,21 @@ abstract class AbstractFactoryTestCase extends TestCase
 {
     use ProphecyTrait;
 
+    /**
+     * @coversNothing
+     */
     public function testFactoryImplementsFactoryInterface(): void
     {
         static::assertInstanceOf(ServiceProviderFactoryInterface::class, $this->getFactory());
     }
 
+    /**
+     * @coversNothing
+     */
     public function testFactoryExtendAbstractFactory(): void
     {
         static::assertInstanceOf(AbstractFactory::class, $this->getFactory());
     }
 
-    /**
-     * @return FactoryInterface
-     */
-    abstract protected function getFactory();
+    abstract protected function getFactory(): ServiceProviderFactoryInterface;
 }

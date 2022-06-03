@@ -23,11 +23,11 @@ use CoiSA\ServiceProvider\Exception\UnexpectedValueException;
  * @package CoiSA\ServiceProvider\Test\Unit\Exception
  *
  * @internal
- * @coversNothing
+ * @coversDefaultClass \CoiSA\ServiceProvider\Exception\UnexpectedValueException
  */
 final class UnexpectedValueExceptionTest extends ServiceProviderExceptionTestCase
 {
-    protected function getException()
+    protected function getException(): UnexpectedValueException
     {
         return new UnexpectedValueException();
     }

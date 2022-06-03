@@ -26,7 +26,7 @@ use Psr\Container\ContainerInterface;
  * @package CoiSA\ServiceProvider\Test\Unit\Extension
  *
  * @internal
- * @coversNothing
+ * @coversDefaultClass \CoiSA\ServiceProvider\Extension\CallableExtension
  */
 final class CallableExtensionTest extends AbstractExtensionTestCase
 {
@@ -58,9 +58,10 @@ final class CallableExtensionTest extends AbstractExtensionTestCase
     }
 
     /**
-     * @dataProvider provideInvalidConstructorArgument
-     *
      * @param mixed $invalidArgument
+     *
+     * @dataProvider provideInvalidConstructorArgument
+     * @covers ::__construct
      */
     public function testConstructWithInvalidArgumentWillThrowInvalidArgumentException($invalidArgument): void
     {
@@ -68,6 +69,9 @@ final class CallableExtensionTest extends AbstractExtensionTestCase
         new CallableExtension($invalidArgument);
     }
 
+    /**
+     * @covers ::__invoke
+     */
     public function testInvokeWillReturnCallableResult(): void
     {
         static::assertSame(
@@ -76,10 +80,7 @@ final class CallableExtensionTest extends AbstractExtensionTestCase
         );
     }
 
-    /**
-     * @return CallableExtension
-     */
-    protected function getExtension()
+    protected function getExtension(): CallableExtension
     {
         return new CallableExtension($this->callable);
     }

@@ -25,7 +25,7 @@ use Prophecy\Prophecy\ObjectProphecy;
  * @package CoiSA\ServiceProvider\Test\Unit
  *
  * @internal
- * @coversNothing
+ * @coversDefaultClass \CoiSA\ServiceProvider\Adapter\InteropServiceProviderAdapter
  */
 final class InteropServiceProviderAdapterTest extends ServiceProviderTestCase
 {
@@ -58,6 +58,9 @@ final class InteropServiceProviderAdapterTest extends ServiceProviderTestCase
         $this->interopServiceProvider->getExtensions()->willReturn($this->extensions);
     }
 
+    /**
+     * @covers ::getFactories
+     */
     public function testGetFactoriesWillReturnSameFactoriesFromGivenInteropServiceProvider(): void
     {
         static::assertSame(
@@ -66,6 +69,9 @@ final class InteropServiceProviderAdapterTest extends ServiceProviderTestCase
         );
     }
 
+    /**
+     * @covers ::getExtensions
+     */
     public function testGetExtensionsWillReturnSameExtensionsFromGivenInteropServiceProvider(): void
     {
         static::assertSame(
@@ -74,10 +80,7 @@ final class InteropServiceProviderAdapterTest extends ServiceProviderTestCase
         );
     }
 
-    /**
-     * @return InteropServiceProviderAdapter
-     */
-    protected function createServiceProvider()
+    protected function createServiceProvider(): InteropServiceProviderAdapter
     {
         return new InteropServiceProviderAdapter($this->interopServiceProvider->reveal());
     }

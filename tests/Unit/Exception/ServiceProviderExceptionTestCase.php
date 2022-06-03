@@ -27,28 +27,37 @@ use PHPUnit\Framework\TestCase;
  */
 abstract class ServiceProviderExceptionTestCase extends TestCase
 {
+    /**
+     * @coversNothing
+     */
     public function testClassImplementsServiceProviderExceptionInterface(): void
     {
         static::assertInstanceOf(ServiceProviderExceptionInterface::class, $this->getException());
     }
 
+    /**
+     * @coversNothing
+     */
     public function testClassImplementsExceptionInterface(): void
     {
         static::assertInstanceOf(ExceptionInterface::class, $this->getException());
     }
 
+    /**
+     * @coversNothing
+     */
     public function testClassImplementsThrowableInterface(): void
     {
         static::assertInstanceOf(Throwable::class, $this->getException());
     }
 
+    /**
+     * @coversNothing
+     */
     public function testClassImplementsThrowable(): void
     {
         static::assertInstanceOf(\Throwable::class, $this->getException());
     }
 
-    /**
-     * @return ServiceProviderExceptionInterface
-     */
-    abstract protected function getException();
+    abstract protected function getException(): ServiceProviderExceptionInterface;
 }

@@ -31,10 +31,13 @@ use Psr\Container\ContainerInterface;
  * @package CoiSA\ServiceProvider\Test\Unit
  *
  * @internal
- * @coversNothing
+ * @coversDefaultClass \CoiSA\ServiceProvider\LaminasConfigServiceProvider
  */
 final class LaminasConfigServiceProviderTest extends ServiceProviderTestCase
 {
+    /**
+     * @covers ::__construct
+     */
     public function testConstructWillAddConfigToFactories(): void
     {
         $config          = [uniqid('config', true)];
@@ -50,6 +53,9 @@ final class LaminasConfigServiceProviderTest extends ServiceProviderTestCase
         );
     }
 
+    /**
+     * @covers ::__construct
+     */
     public function testConstructWillAddConfigToExtensions(): void
     {
         $previous        = [
@@ -70,6 +76,9 @@ final class LaminasConfigServiceProviderTest extends ServiceProviderTestCase
         );
     }
 
+    /**
+     * @covers ::__construct
+     */
     public function testConstructWithServicesDependenciesWillAddServiceFactoryForEachGivenService(): void
     {
         $config = [
@@ -96,6 +105,9 @@ final class LaminasConfigServiceProviderTest extends ServiceProviderTestCase
         }
     }
 
+    /**
+     * @covers ::__construct
+     */
     public function testConstructWithFactoriesDependenciesWillAddFactoryFactoryForEachGivenFactory(): void
     {
         $config = [
@@ -122,6 +134,9 @@ final class LaminasConfigServiceProviderTest extends ServiceProviderTestCase
         }
     }
 
+    /**
+     * @covers ::__construct
+     */
     public function testConstructWithInvokablesDependenciesWillAddInvokableFactoryForEachGivenInvokable(): void
     {
         $config = [
@@ -148,6 +163,9 @@ final class LaminasConfigServiceProviderTest extends ServiceProviderTestCase
         }
     }
 
+    /**
+     * @covers ::__construct
+     */
     public function testConstructWithDelegatorsDependenciesWillAddDelegatorExtensionForEachGivenDelegator(): void
     {
         $config = [
@@ -176,6 +194,9 @@ final class LaminasConfigServiceProviderTest extends ServiceProviderTestCase
         }
     }
 
+    /**
+     * @covers ::__construct
+     */
     public function testConstructWithInitializersDependenciesWillAddInitializerExtensionForEveryFactory(): void
     {
         $config = [
@@ -204,6 +225,9 @@ final class LaminasConfigServiceProviderTest extends ServiceProviderTestCase
         }
     }
 
+    /**
+     * @covers ::__construct
+     */
     public function testConstructWithAliasesDependenciesWillAddAliasFactoryForEachGivenAlias(): void
     {
         $config = [
@@ -235,10 +259,8 @@ final class LaminasConfigServiceProviderTest extends ServiceProviderTestCase
 
     /**
      * @throws \CoiSA\ServiceProvider\Exception\ReflectionException
-     *
-     * @return LaminasConfigServiceProvider
      */
-    protected function createServiceProvider()
+    protected function createServiceProvider(): LaminasConfigServiceProvider
     {
         return new LaminasConfigServiceProvider([]);
     }

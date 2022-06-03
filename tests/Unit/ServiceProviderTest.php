@@ -23,14 +23,11 @@ use CoiSA\ServiceProvider\ServiceProvider;
  * @package CoiSA\ServiceProvider\Test\Unit
  *
  * @internal
- * @coversNothing
+ * @coversDefaultClass \CoiSA\ServiceProvider\ServiceProvider
  */
 final class ServiceProviderTest extends ServiceProviderTestCase
 {
-    /**
-     * @return ServiceProvider
-     */
-    protected function createServiceProvider()
+    protected function createServiceProvider(): ServiceProvider
     {
         return new ServiceProvider();
     }

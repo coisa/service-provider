@@ -32,20 +32,23 @@ abstract class AbstractServiceProviderTestCase extends TestCase
     /** @var AbstractServiceProvider */
     private $serviceProvider;
 
+    /**
+     * @coversNothing
+     */
     public function testServiceProviderImplementsServiceProviderInterface(): void
     {
         static::assertInstanceOf(ServiceProviderInterface::class, $this->getServiceProvider());
     }
 
+    /**
+     * @coversNothing
+     */
     public function testServiceProviderExtendAbstractServiceProvider(): void
     {
         static::assertInstanceOf(AbstractServiceProvider::class, $this->getServiceProvider());
     }
 
-    /**
-     * @return AbstractServiceProvider
-     */
-    protected function getServiceProvider()
+    protected function getServiceProvider(): AbstractServiceProvider
     {
         if (!$this->serviceProvider) {
             $this->serviceProvider = $this->createServiceProvider();
@@ -54,8 +57,5 @@ abstract class AbstractServiceProviderTestCase extends TestCase
         return $this->serviceProvider;
     }
 
-    /**
-     * @return AbstractServiceProvider
-     */
-    abstract protected function createServiceProvider();
+    abstract protected function createServiceProvider(): AbstractServiceProvider;
 }

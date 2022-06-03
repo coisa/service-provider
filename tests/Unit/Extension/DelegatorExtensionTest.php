@@ -27,7 +27,7 @@ use Psr\Container\ContainerInterface;
  * @package CoiSA\ServiceProvider\Test\Unit\Extension
  *
  * @internal
- * @coversNothing
+ * @coversDefaultClass \CoiSA\ServiceProvider\Extension\DelegatorExtension
  */
 final class DelegatorExtensionTest extends AbstractExtensionTestCase
 {
@@ -71,9 +71,10 @@ final class DelegatorExtensionTest extends AbstractExtensionTestCase
     }
 
     /**
-     * @dataProvider provideInvalidIdArgument
-     *
      * @param mixed $invalidId
+     *
+     * @dataProvider provideInvalidIdArgument
+     * @covers ::__construct
      */
     public function testConstructWithNotStringIdArgumentWillThrowInvalidArgumentException($invalidId): void
     {
@@ -83,9 +84,10 @@ final class DelegatorExtensionTest extends AbstractExtensionTestCase
     }
 
     /**
-     * @dataProvider provideInvalidDelegatorArgument
-     *
      * @param mixed $invalidDelegator
+     *
+     * @dataProvider provideInvalidDelegatorArgument
+     * @covers ::__construct
      */
     public function testConstructWithNotStringDelegatorArgumentWillThrowInvalidArgumentException(
         $invalidDelegator
@@ -95,6 +97,9 @@ final class DelegatorExtensionTest extends AbstractExtensionTestCase
         new DelegatorExtension(uniqid('id', true), $invalidDelegator);
     }
 
+    /**
+     * @covers ::__invoke
+     */
     public function testInvokeWillCallDelegatorWithGivenIdAndCallableServiceFactory(): void
     {
         $container = $this->prophesize(ContainerInterface::class)->reveal();
@@ -102,10 +107,7 @@ final class DelegatorExtensionTest extends AbstractExtensionTestCase
         \call_user_func($this->getExtension(), $container);
     }
 
-    /**
-     * @return DelegatorExtension
-     */
-    protected function getExtension()
+    protected function getExtension(): DelegatorExtension
     {
         return new DelegatorExtension($this->id, $this->delegator);
     }

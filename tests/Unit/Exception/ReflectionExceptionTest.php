@@ -23,11 +23,11 @@ use CoiSA\ServiceProvider\Exception\ReflectionException;
  * @package CoiSA\ServiceProvider\Test\Unit\Exception
  *
  * @internal
- * @coversNothing
+ * @coversDefaultClass \CoiSA\ServiceProvider\Exception\ReflectionException
  */
 final class ReflectionExceptionTest extends ServiceProviderExceptionTestCase
 {
-    protected function getException()
+    protected function getException(): ReflectionException
     {
         return new ReflectionException();
     }

@@ -34,23 +34,35 @@ abstract class ServiceProviderTestCase extends AbstractServiceProviderTestCase
 {
     use ProphecyTrait;
 
+    /**
+     * @coversNothing
+     */
     public function testServiceProviderExtendServiceProvider(): void
     {
         static::assertInstanceOf(ServiceProvider::class, $this->getServiceProvider());
     }
 
+    /**
+     * @covers ::getFactory
+     */
     public function testGetFactoryWithoutGivenFactoryWillThrowUnexpectedValueException(): void
     {
         $this->expectException(UnexpectedValueException::class);
         $this->getServiceProvider()->getFactory(uniqid('test', true));
     }
 
+    /**
+     * @covers ::getExtension
+     */
     public function testGetExtensionWithoutGivenExtensionWillThrowUnexpectedValueException(): void
     {
         $this->expectException(UnexpectedValueException::class);
         $this->getServiceProvider()->getExtension(uniqid('test', true));
     }
 
+    /**
+     * @covers ::setFactory
+     */
     public function testSetFactoryWithFactoryObjectWillSetSameFactoryInstance(): void
     {
         $id      = uniqid('id', true);
@@ -61,6 +73,9 @@ abstract class ServiceProviderTestCase extends AbstractServiceProviderTestCase
         static::assertSame($factory, $this->getServiceProvider()->getFactory($id));
     }
 
+    /**
+     * @covers ::setFactory
+     */
     public function testSetFactoryWithStringFactoryWillSetFactoryFactoryInstanceForGivenString(): void
     {
         $id      = uniqid('id', true);
@@ -71,6 +86,9 @@ abstract class ServiceProviderTestCase extends AbstractServiceProviderTestCase
         static::assertInstanceOf(FactoryFactory::class, $this->getServiceProvider()->getFactory($id));
     }
 
+    /**
+     * @covers ::setFactory
+     */
     public function testSetFactoryWithCallableWillSetFactoryFactoryForGivenCallable(): void
     {
         $id             = uniqid('id', true);
@@ -91,6 +109,9 @@ abstract class ServiceProviderTestCase extends AbstractServiceProviderTestCase
         );
     }
 
+    /**
+     * @covers ::setAlias
+     */
     public function testSetAliasWillSetAliasForContainerGet(): void
     {
         $id             = uniqid('id', true);
@@ -109,6 +130,9 @@ abstract class ServiceProviderTestCase extends AbstractServiceProviderTestCase
         );
     }
 
+    /**
+     * @covers ::extend
+     */
     public function testExtendWithExtensionObjectWillSetExtension(): void
     {
         $id        = uniqid('id', true);
@@ -119,6 +143,9 @@ abstract class ServiceProviderTestCase extends AbstractServiceProviderTestCase
         static::assertSame($extension, $this->getServiceProvider()->getExtension($id));
     }
 
+    /**
+     * @covers ::extend
+     */
     public function testExtendWithCallableWillSetCallableExtensionToGivenId(): void
     {
         $id               = uniqid('id', true);
@@ -138,6 +165,9 @@ abstract class ServiceProviderTestCase extends AbstractServiceProviderTestCase
         );
     }
 
+    /**
+     * @covers ::extend
+     */
     public function testExtendWithAlreadySetIdWillExtendExtension(): void
     {
         $id         = uniqid('id', true);
@@ -159,6 +189,9 @@ abstract class ServiceProviderTestCase extends AbstractServiceProviderTestCase
         );
     }
 
+    /**
+     * @covers ::extend
+     */
     public function testExtendWithPrependAndAlreadySetIdWillPrependExtendExtension(): void
     {
         $id         = uniqid('id', true);

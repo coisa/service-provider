@@ -26,7 +26,7 @@ use Psr\Container\ContainerInterface;
  * @package CoiSA\ServiceProvider\Test\Unit\Extension
  *
  * @internal
- * @coversNothing
+ * @coversDefaultClass \CoiSA\ServiceProvider\Extension\MergeConfigExtension
  */
 final class MergeConfigExtensionTest extends AbstractExtensionTestCase
 {
@@ -50,9 +50,10 @@ final class MergeConfigExtensionTest extends AbstractExtensionTestCase
     }
 
     /**
-     * @dataProvider provideNotArrayValues
-     *
      * @param mixed $previous
+     *
+     * @dataProvider provideNotArrayValues
+     * @covers ::__invoke
      */
     public function testInvokeWithNotArrayPreviousWillReturnInvalidArgumentException($previous): void
     {
@@ -154,6 +155,7 @@ final class MergeConfigExtensionTest extends AbstractExtensionTestCase
 
     /**
      * @dataProvider providePreviousConfigExpectedValue
+     * @covers ::__invoke
      */
     public function testInvokeWillMergeConfigToPrevious(array $previous, array $config, array $expected): void
     {
@@ -162,10 +164,7 @@ final class MergeConfigExtensionTest extends AbstractExtensionTestCase
         static::assertSame($expected, $extension($this->container->reveal(), $previous));
     }
 
-    /**
-     * @return MergeConfigExtension
-     */
-    protected function getExtension()
+    protected function getExtension(): MergeConfigExtension
     {
         return new MergeConfigExtension([]);
     }

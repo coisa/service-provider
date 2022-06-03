@@ -25,7 +25,7 @@ use Psr\Container\ContainerInterface;
  * @package CoiSA\ServiceProvider\Test\Unit\Factory
  *
  * @internal
- * @coversNothing
+ * @coversDefaultClass \CoiSA\ServiceProvider\Factory\ServiceFactory
  */
 final class ServiceFactoryTest extends AbstractFactoryTestCase
 {
@@ -41,11 +41,17 @@ final class ServiceFactoryTest extends AbstractFactoryTestCase
         $this->service   = new \stdClass();
     }
 
+    /**
+     * @covers ::__invoke
+     */
     public function testInvokeWillReturnService(): void
     {
         static::assertSame($this->service, \call_user_func($this->getFactory(), $this->container->reveal()));
     }
 
+    /**
+     * @covers ::__invoke
+     */
     public function testInvokeWithoutConstructorArgumentWillReturnNull(): void
     {
         $factory = new ServiceFactory();
@@ -53,10 +59,7 @@ final class ServiceFactoryTest extends AbstractFactoryTestCase
         static::assertNull(\call_user_func($factory, $this->container->reveal()));
     }
 
-    /**
-     * @return ServiceFactory
-     */
-    protected function getFactory()
+    protected function getFactory(): ServiceFactory
     {
         return new ServiceFactory($this->service);
     }

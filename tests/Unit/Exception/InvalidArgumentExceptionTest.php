@@ -23,11 +23,11 @@ use CoiSA\ServiceProvider\Exception\InvalidArgumentException;
  * @package CoiSA\ServiceProvider\Test\Unit\Exception
  *
  * @internal
- * @coversNothing
+ * @coversDefaultClass \CoiSA\ServiceProvider\Exception\InvalidArgumentException
  */
 final class InvalidArgumentExceptionTest extends ServiceProviderExceptionTestCase
 {
-    protected function getException()
+    protected function getException(): InvalidArgumentException
     {
         return new InvalidArgumentException();
     }

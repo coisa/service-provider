@@ -29,18 +29,21 @@ abstract class AbstractExtensionTestCase extends TestCase
 {
     use ProphecyTrait;
 
+    /**
+     * @coversNothing
+     */
     public function testExtensionImplementsExtensionInterface(): void
     {
         static::assertInstanceOf(ServiceProviderExtensionInterface::class, $this->getExtension());
     }
 
+    /**
+     * @coversNothing
+     */
     public function testExtensionExtendAbstractExtension(): void
     {
         static::assertInstanceOf(AbstractExtension::class, $this->getExtension());
     }
 
-    /**
-     * @return ServiceProviderExtensionInterface
-     */
-    abstract protected function getExtension();
+    abstract protected function getExtension(): ServiceProviderExtensionInterface;
 }

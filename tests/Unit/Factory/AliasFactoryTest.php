@@ -26,7 +26,7 @@ use Psr\Container\ContainerInterface;
  * @package CoiSA\ServiceProvider\Test\Unit\Factory
  *
  * @internal
- * @coversNothing
+ * @coversDefaultClass \CoiSA\ServiceProvider\Factory\AliasFactory
  */
 final class AliasFactoryTest extends AbstractFactoryTestCase
 {
@@ -54,9 +54,10 @@ final class AliasFactoryTest extends AbstractFactoryTestCase
     }
 
     /**
-     * @dataProvider provideNonStringValues
-     *
      * @param mixed $service
+     *
+     * @dataProvider provideNonStringValues
+     * @covers ::__construct
      */
     public function testConstructWithNonStringArgumentWillThrowInvalidArgumentException($service): void
     {
@@ -65,6 +66,9 @@ final class AliasFactoryTest extends AbstractFactoryTestCase
         new AliasFactory($service);
     }
 
+    /**
+     * @covers ::__invoke
+     */
     public function testInvokeWillReturnContainerGetService(): void
     {
         $object         = new \stdClass();
@@ -75,10 +79,7 @@ final class AliasFactoryTest extends AbstractFactoryTestCase
         static::assertSame($object, \call_user_func($this->getFactory(), $this->container->reveal()));
     }
 
-    /**
-     * @return AliasFactory
-     */
-    protected function getFactory()
+    protected function getFactory(): AliasFactory
     {
         return new AliasFactory($this->service);
     }

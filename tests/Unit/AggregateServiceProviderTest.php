@@ -26,10 +26,13 @@ use CoiSA\ServiceProvider\ServiceProvider;
  * @package CoiSA\ServiceProvider\Test\Unit
  *
  * @internal
- * @coversNothing
+ * @coversDefaultClass \CoiSA\ServiceProvider\AggregateServiceProvider
  */
 final class AggregateServiceProviderTest extends ServiceProviderTestCase
 {
+    /**
+     * @covers ::getServiceProviders
+     */
     public function testGetServiceProvidersWillReturnGivenServiceProviders(): void
     {
         $total            = random_int(5, 10);
@@ -48,6 +51,9 @@ final class AggregateServiceProviderTest extends ServiceProviderTestCase
         static::assertSame($serviceProviders, $serviceProviderAggregator->getServiceProviders());
     }
 
+    /**
+     * @covers ::getIterator
+     */
     public function testGetIteratorWillReturnIteratorOfGivenServiceProviders(): void
     {
         $total            = random_int(5, 10);
@@ -69,6 +75,9 @@ final class AggregateServiceProviderTest extends ServiceProviderTestCase
         );
     }
 
+    /**
+     * @covers ::append
+     */
     public function testAppendWillAppendServiceProvider(): void
     {
         $serviceProvider = $this->prophesize(ServiceProvider::class);
@@ -81,6 +90,9 @@ final class AggregateServiceProviderTest extends ServiceProviderTestCase
         static::assertSame([$serviceProvider->reveal()], $serviceProviderAggregator->getServiceProviders());
     }
 
+    /**
+     * @covers ::append
+     */
     public function testAppendWillExtendGivenServiceProviderExtensions(): void
     {
         $serviceProvider = $this->prophesize(ServiceProvider::class);
@@ -97,6 +109,9 @@ final class AggregateServiceProviderTest extends ServiceProviderTestCase
         );
     }
 
+    /**
+     * @covers ::append
+     */
     public function testAppendWillSetServiceProviderFactories(): void
     {
         $factory1 = new CallableFactory(fn () => 1);
@@ -120,6 +135,9 @@ final class AggregateServiceProviderTest extends ServiceProviderTestCase
         static::assertSame($factory2, $serviceProviderAggregator->getFactory('test'));
     }
 
+    /**
+     * @covers ::prepend
+     */
     public function testPrependWillPrependServiceProvider(): void
     {
         $serviceProviderAppend = $this->prophesize(ServiceProvider::class);
@@ -140,6 +158,9 @@ final class AggregateServiceProviderTest extends ServiceProviderTestCase
         ], $serviceProviderAggregator->getServiceProviders());
     }
 
+    /**
+     * @covers ::prepend
+     */
     public function testPrependWillNotOverwriteFactories(): void
     {
         $factory1 = new CallableFactory(fn () => 1);
@@ -163,6 +184,9 @@ final class AggregateServiceProviderTest extends ServiceProviderTestCase
         static::assertSame($factory1, $serviceProviderAggregator->getFactory('test'));
     }
 
+    /**
+     * @covers ::prepend
+     */
     public function testPrependWillExtendGivenServiceProviderExtensions(): void
     {
         $serviceProvider = $this->prophesize(ServiceProvider::class);
@@ -179,7 +203,7 @@ final class AggregateServiceProviderTest extends ServiceProviderTestCase
         );
     }
 
-    protected function createServiceProvider()
+    protected function createServiceProvider(): AggregateServiceProvider
     {
         return new AggregateServiceProvider();
     }

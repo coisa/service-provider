@@ -19,6 +19,8 @@ namespace CoiSA\ServiceProvider;
  * Class LaminasConfigServiceProvider.
  *
  * @package CoiSA\ServiceProvider
+ *
+ * @TODO Add "abstract_factories" support
  */
 class LaminasConfigServiceProvider extends ServiceProvider
 {

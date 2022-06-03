@@ -26,7 +26,7 @@ use Psr\Container\ContainerInterface;
  * @package CoiSA\ServiceProvider\Test\Unit\Extension
  *
  * @internal
- * @coversNothing
+ * @coversDefaultClass \CoiSA\ServiceProvider\Extension\ExtendExtension
  */
 final class ExtendExtensionTest extends AbstractExtensionTestCase
 {
@@ -46,6 +46,9 @@ final class ExtendExtensionTest extends AbstractExtensionTestCase
         $this->wrapper   = $this->prophesize(ServiceProviderExtensionInterface::class);
     }
 
+    /**
+     * @covers ::__invoke
+     */
     public function testInvokeWithContainerWillResolveBothExtensions(): void
     {
         $container = $this->container->reveal();
@@ -62,10 +65,7 @@ final class ExtendExtensionTest extends AbstractExtensionTestCase
         );
     }
 
-    /**
-     * @return ExtendExtension
-     */
-    protected function getExtension()
+    protected function getExtension(): ExtendExtension
     {
         return new ExtendExtension(
             $this->extension->reveal(),

@@ -26,7 +26,7 @@ use Psr\Container\ContainerInterface;
  * @package CoiSA\ServiceProvider\Test\Unit\Factory
  *
  * @internal
- * @coversNothing
+ * @coversDefaultClass \CoiSA\ServiceProvider\Factory\CallableFactory
  */
 final class CallableFactoryTest extends AbstractFactoryTestCase
 {
@@ -57,9 +57,10 @@ final class CallableFactoryTest extends AbstractFactoryTestCase
     }
 
     /**
-     * @dataProvider provideNonCallableValues
-     *
      * @param mixed $callable
+     *
+     * @dataProvider provideNonCallableValues
+     * @covers ::__construct
      */
     public function testConstructWithNonCallableArgumentWillThrowInvalidArgumentException($callable): void
     {
@@ -68,6 +69,9 @@ final class CallableFactoryTest extends AbstractFactoryTestCase
         new CallableFactory($callable);
     }
 
+    /**
+     * @covers ::__invoke
+     */
     public function testInvokeWillReturnCallableResult(): void
     {
         $result = \call_user_func($this->callable, $this->container->reveal());
@@ -75,10 +79,7 @@ final class CallableFactoryTest extends AbstractFactoryTestCase
         static::assertSame($result, \call_user_func($this->getFactory(), $this->container->reveal()));
     }
 
-    /**
-     * @return CallableFactory
-     */
-    protected function getFactory()
+    protected function getFactory(): CallableFactory
     {
         return new CallableFactory($this->callable);
     }

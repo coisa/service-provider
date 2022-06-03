@@ -27,7 +27,7 @@ use Psr\Container\ContainerInterface;
  * @package CoiSA\ServiceProvider\Test\Unit\Factory
  *
  * @internal
- * @coversNothing
+ * @coversDefaultClass \CoiSA\ServiceProvider\Factory\InvokableFactory
  */
 final class InvokableFactoryTest extends AbstractFactoryTestCase
 {
@@ -43,7 +43,7 @@ final class InvokableFactoryTest extends AbstractFactoryTestCase
         $this->invokable = 'stdClass';
     }
 
-    public function provideNonStringArgument()
+    public function provideNonStringArgument(): array
     {
         return [
             [true],
@@ -55,9 +55,10 @@ final class InvokableFactoryTest extends AbstractFactoryTestCase
     }
 
     /**
-     * @dataProvider provideNonStringArgument
-     *
      * @param mixed $invokable
+     *
+     * @dataProvider provideNonStringArgument
+     * @covers ::__construct
      */
     public function testConstructWithNonStringInvokableWillThrowInvalidArgumentException($invokable): void
     {
@@ -66,6 +67,9 @@ final class InvokableFactoryTest extends AbstractFactoryTestCase
         new InvokableFactory($invokable);
     }
 
+    /**
+     * @covers ::__construct
+     */
     public function testConstructWithNonExistentClassArgumentWillThrowReflectionException(): void
     {
         $this->expectException(ReflectionException::class);
@@ -73,6 +77,9 @@ final class InvokableFactoryTest extends AbstractFactoryTestCase
         new InvokableFactory(uniqid('invokable', true));
     }
 
+    /**
+     * @covers ::__invoke
+     */
     public function testInvokeWillReturnNewInstanceOfGivenInvokableClassNamespace(): void
     {
         static::assertInstanceOf(
@@ -82,11 +89,9 @@ final class InvokableFactoryTest extends AbstractFactoryTestCase
     }
 
     /**
-     * @throws \CoiSA\ServiceProvider\Exception\ReflectionException
-     *
-     * @return InvokableFactory
+     * @throws \CoiSA\ServiceProvider\Exception\InvalidArgumentException
      */
-    protected function getFactory()
+    protected function getFactory(): InvokableFactory
     {
         return new InvokableFactory($this->invokable);
     }
