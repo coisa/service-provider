@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of coisa/service-provider.
  *
@@ -7,7 +9,7 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
- * @copyright Copyright (c) 2020-2021 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2022 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
 
@@ -16,6 +18,7 @@ namespace CoiSA\ServiceProvider\Test\Unit;
 use CoiSA\ServiceProvider\AbstractServiceProvider;
 use CoiSA\ServiceProvider\ServiceProviderInterface;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * Class AbstractServiceProviderTestCase.
@@ -24,23 +27,28 @@ use PHPUnit\Framework\TestCase;
  */
 abstract class AbstractServiceProviderTestCase extends TestCase
 {
+    use ProphecyTrait;
+
     /** @var AbstractServiceProvider */
     private $serviceProvider;
 
-    public function testServiceProviderImplementsServiceProviderInterface()
+    /**
+     * @coversNothing
+     */
+    public function testServiceProviderImplementsServiceProviderInterface(): void
     {
-        self::assertInstanceOf(ServiceProviderInterface::class, $this->getServiceProvider());
-    }
-
-    public function testServiceProviderExtendAbstractServiceProvider()
-    {
-        self::assertInstanceOf(AbstractServiceProvider::class, $this->getServiceProvider());
+        static::assertInstanceOf(ServiceProviderInterface::class, $this->getServiceProvider());
     }
 
     /**
-     * @return AbstractServiceProvider
+     * @coversNothing
      */
-    protected function getServiceProvider()
+    public function testServiceProviderExtendAbstractServiceProvider(): void
+    {
+        static::assertInstanceOf(AbstractServiceProvider::class, $this->getServiceProvider());
+    }
+
+    protected function getServiceProvider(): AbstractServiceProvider
     {
         if (!$this->serviceProvider) {
             $this->serviceProvider = $this->createServiceProvider();
@@ -49,8 +57,5 @@ abstract class AbstractServiceProviderTestCase extends TestCase
         return $this->serviceProvider;
     }
 
-    /**
-     * @return AbstractServiceProvider
-     */
-    abstract protected function createServiceProvider();
+    abstract protected function createServiceProvider(): AbstractServiceProvider;
 }

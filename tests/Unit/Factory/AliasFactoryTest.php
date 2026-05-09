@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of coisa/service-provider.
  *
@@ -7,7 +9,7 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
- * @copyright Copyright (c) 2020-2021 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2022 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
 
@@ -22,6 +24,9 @@ use Psr\Container\ContainerInterface;
  * Class AliasFactoryTest.
  *
  * @package CoiSA\ServiceProvider\Test\Unit\Factory
+ *
+ * @internal
+ * @coversDefaultClass \CoiSA\ServiceProvider\Factory\AliasFactory
  */
 final class AliasFactoryTest extends AbstractFactoryTestCase
 {
@@ -31,7 +36,7 @@ final class AliasFactoryTest extends AbstractFactoryTestCase
     /** @var string */
     private $service;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->container = $this->prophesize(ContainerInterface::class);
         $this->service   = uniqid('test', true);
@@ -43,37 +48,38 @@ final class AliasFactoryTest extends AbstractFactoryTestCase
             [true],
             [false],
             [[uniqid('test', true)]],
-            [mt_rand(1, 100)],
+            [random_int(1, 100)],
             [new \stdClass()],
         ];
     }
 
     /**
-     * @dataProvider provideNonStringValues
-     *
      * @param mixed $service
+     *
+     * @dataProvider provideNonStringValues
+     * @covers ::__construct
      */
-    public function testConstructWithNonStringArgumentWillThrowInvalidArgumentException($service)
+    public function testConstructWithNonStringArgumentWillThrowInvalidArgumentException($service): void
     {
         $this->expectException(InvalidArgumentException::class);
 
         new AliasFactory($service);
     }
 
-    public function testInvokeWillReturnContainerGetService()
+    /**
+     * @covers ::__invoke
+     */
+    public function testInvokeWillReturnContainerGetService(): void
     {
         $object         = new \stdClass();
         $object->uniqid = uniqid('uniqid', true);
 
         $this->container->get($this->service)->shouldBeCalledOnce()->willReturn($object);
 
-        self::assertSame($object, \call_user_func($this->getFactory(), $this->container->reveal()));
+        static::assertSame($object, \call_user_func($this->getFactory(), $this->container->reveal()));
     }
 
-    /**
-     * @return AliasFactory
-     */
-    protected function getFactory()
+    protected function getFactory(): AliasFactory
     {
         return new AliasFactory($this->service);
     }

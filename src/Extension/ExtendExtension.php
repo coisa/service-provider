@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of coisa/service-provider.
  *
@@ -7,7 +9,7 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
- * @copyright Copyright (c) 2020-2021 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2022 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
 
@@ -24,13 +26,10 @@ final class ExtendExtension extends AbstractExtension
 {
     /**
      * ExtendExtension constructor.
-     *
-     * @param ServiceProviderExtensionInterface $extension
-     * @param ServiceProviderExtensionInterface $next
      */
     public function __construct(ServiceProviderExtensionInterface $extension, ServiceProviderExtensionInterface $next)
     {
-        $this->extension = function(ContainerInterface $container, $previous = null) use ($extension, $next) {
+        $this->extension = function (ContainerInterface $container, $previous = null) use ($extension, $next) {
             return $next(
                 $container,
                 $extension($container, $previous)

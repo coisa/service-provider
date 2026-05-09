@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of coisa/service-provider.
  *
@@ -7,7 +9,7 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
- * @copyright Copyright (c) 2020-2021 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2022 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
 
@@ -36,8 +38,6 @@ final class AliasFactory extends AbstractFactory
             throw InvalidArgumentException::forInvalidArgumentType('service', 'string');
         }
 
-        $this->factory = function(ContainerInterface $container) use ($service) {
-            return $container->get($service);
-        };
+        $this->factory = fn (ContainerInterface $container) => $container->get($service);
     }
 }

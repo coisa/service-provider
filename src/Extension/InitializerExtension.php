@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of coisa/service-provider.
  *
@@ -7,7 +9,7 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
- * @copyright Copyright (c) 2020-2021 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2022 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
 
@@ -36,7 +38,7 @@ final class InitializerExtension extends AbstractExtension
             throw InvalidArgumentException::forInvalidArgumentType('initializer', 'callable');
         }
 
-        $this->extension = function(ContainerInterface $container, $previous = null) use ($initializer) {
+        $this->extension = function (ContainerInterface $container, $previous = null) use ($initializer) {
             \call_user_func($initializer, $container, $previous);
 
             return $previous;

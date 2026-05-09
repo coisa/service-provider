@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of coisa/service-provider.
  *
@@ -7,7 +9,7 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
- * @copyright Copyright (c) 2020-2021 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2022 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
 
@@ -23,6 +25,9 @@ use Psr\Container\ContainerInterface;
  * Class InvokableFactoryTest.
  *
  * @package CoiSA\ServiceProvider\Test\Unit\Factory
+ *
+ * @internal
+ * @coversDefaultClass \CoiSA\ServiceProvider\Factory\InvokableFactory
  */
 final class InvokableFactoryTest extends AbstractFactoryTestCase
 {
@@ -32,56 +37,61 @@ final class InvokableFactoryTest extends AbstractFactoryTestCase
     /** @var string */
     private $invokable;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->container = $this->prophesize(ContainerInterface::class);
         $this->invokable = 'stdClass';
     }
 
-    public function provideNonStringArgument()
+    public function provideNonStringArgument(): array
     {
         return [
             [true],
             [false],
             [[uniqid('test', true)]],
-            [mt_rand(1, 100)],
+            [random_int(1, 100)],
             [new \stdClass()],
         ];
     }
 
     /**
-     * @dataProvider provideNonStringArgument
-     *
      * @param mixed $invokable
+     *
+     * @dataProvider provideNonStringArgument
+     * @covers ::__construct
      */
-    public function testConstructWithNonStringInvokableWillThrowInvalidArgumentException($invokable)
+    public function testConstructWithNonStringInvokableWillThrowInvalidArgumentException($invokable): void
     {
         $this->expectException(InvalidArgumentException::class);
 
         new InvokableFactory($invokable);
     }
 
-    public function testConstructWithNonExistentClassArgumentWillThrowReflectionException()
+    /**
+     * @covers ::__construct
+     */
+    public function testConstructWithNonExistentClassArgumentWillThrowReflectionException(): void
     {
         $this->expectException(ReflectionException::class);
 
         new InvokableFactory(uniqid('invokable', true));
     }
 
-    public function testInvokeWillReturnNewInstanceOfGivenInvokableClassNamespace()
+    /**
+     * @covers ::__invoke
+     */
+    public function testInvokeWillReturnNewInstanceOfGivenInvokableClassNamespace(): void
     {
-        self::assertInstanceOf(
+        static::assertInstanceOf(
             \stdClass::class,
             \call_user_func($this->getFactory(), $this->container->reveal())
         );
     }
 
     /**
-     * @throws \CoiSA\ServiceProvider\Exception\ReflectionException
-     *
-     * @return InvokableFactory
+     * @throws \CoiSA\ServiceProvider\Exception\InvalidArgumentException
      */
-    protected function getFactory()
+    protected function getFactory(): InvokableFactory
     {
         return new InvokableFactory($this->invokable);
     }

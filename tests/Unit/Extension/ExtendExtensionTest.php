@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of coisa/service-provider.
  *
@@ -7,7 +9,7 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
- * @copyright Copyright (c) 2020-2021 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2022 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
 
@@ -22,6 +24,9 @@ use Psr\Container\ContainerInterface;
  * Class ExtendExtensionTest.
  *
  * @package CoiSA\ServiceProvider\Test\Unit\Extension
+ *
+ * @internal
+ * @coversDefaultClass \CoiSA\ServiceProvider\Extension\ExtendExtension
  */
 final class ExtendExtensionTest extends AbstractExtensionTestCase
 {
@@ -34,14 +39,17 @@ final class ExtendExtensionTest extends AbstractExtensionTestCase
     /** @var ObjectProphecy|ServiceProviderExtensionInterface */
     private $wrapper;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->container = $this->prophesize(ContainerInterface::class);
         $this->extension = $this->prophesize(ServiceProviderExtensionInterface::class);
         $this->wrapper   = $this->prophesize(ServiceProviderExtensionInterface::class);
     }
 
-    public function testInvokeWithContainerWillResolveBothExtensions()
+    /**
+     * @covers ::__invoke
+     */
+    public function testInvokeWithContainerWillResolveBothExtensions(): void
     {
         $container = $this->container->reveal();
 
@@ -51,16 +59,13 @@ final class ExtendExtensionTest extends AbstractExtensionTestCase
         $this->extension->__invoke($container, null)->shouldBeCalledOnce()->willReturn($previous);
         $this->wrapper->__invoke($container, $previous)->shouldBeCalledOnce()->willReturn($return);
 
-        self::assertEquals(
+        static::assertSame(
             $return,
             \call_user_func($this->getExtension(), $container)
         );
     }
 
-    /**
-     * @return ExtendExtension
-     */
-    protected function getExtension()
+    protected function getExtension(): ExtendExtension
     {
         return new ExtendExtension(
             $this->extension->reveal(),

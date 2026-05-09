@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of coisa/service-provider.
  *
@@ -7,25 +9,26 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
- * @copyright Copyright (c) 2020-2021 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2022 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
 
 namespace CoiSA\ServiceProvider\Exception;
+
+use CoiSA\Exception\Spl\UnexpectedValueException as CoiSAUnexpectedValueException;
 
 /**
  * Class UnexpectedValueException.
  *
  * @package CoiSA\ServiceProvider\Exception
  */
-final class UnexpectedValueException extends \CoiSA\Exception\Spl\UnexpectedValueException implements
-    ServiceProviderExceptionInterface
+final class UnexpectedValueException extends CoiSAUnexpectedValueException implements ServiceProviderExceptionInterface
 {
     /** @const string */
-    const MESSAGE_FACTORY_NOT_FOUND = 'Factory "%s" was not found.';
+    public const MESSAGE_FACTORY_NOT_FOUND = 'Factory "%s" was not found.';
 
     /** @const string */
-    const MESSAGE_EXTENSION_NOT_FOUND = 'Extension "%s" was not found.';
+    public const MESSAGE_EXTENSION_NOT_FOUND = 'Extension "%s" was not found.';
 
     /**
      * @param string          $id

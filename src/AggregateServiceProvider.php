@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of coisa/service-provider.
  *
@@ -7,7 +9,7 @@
  * with this source code in the file LICENSE.
  *
  * @link      https://github.com/coisa/service-provider
- * @copyright Copyright (c) 2020-2021 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
+ * @copyright Copyright (c) 2020-2022 Felipe Sayão Lobato Abreu <github@felipeabreu.com.br>
  * @license   https://opensource.org/licenses/MIT MIT License
  */
 
@@ -52,16 +54,12 @@ class AggregateServiceProvider extends ServiceProvider implements \IteratorAggre
     /**
      * @return \ArrayIterator|\Traversable
      */
+    #[\ReturnTypeWillChange]
     public function getIterator()
     {
         return new \ArrayIterator($this->serviceProviders);
     }
 
-    /**
-     * @param InteropServiceProvider $serviceProvider
-     *
-     * @return self
-     */
     public function prepend(InteropServiceProvider $serviceProvider): self
     {
         array_unshift($this->serviceProviders, $serviceProvider);
@@ -69,11 +67,6 @@ class AggregateServiceProvider extends ServiceProvider implements \IteratorAggre
         return $this;
     }
 
-    /**
-     * @param InteropServiceProvider $serviceProvider
-     *
-     * @return self
-     */
     public function append(InteropServiceProvider $serviceProvider): self
     {
         $this->serviceProviders[] = $serviceProvider;
@@ -94,7 +87,7 @@ class AggregateServiceProvider extends ServiceProvider implements \IteratorAggre
     /**
      * {@inheritdoc}
      */
-    public function getFactory(string $id): ?ServiceProviderFactoryInterface
+    public function getFactory(string $id): ServiceProviderFactoryInterface
     {
         $serviceProvider = $this->resolveServiceProvider();
 
@@ -114,23 +107,20 @@ class AggregateServiceProvider extends ServiceProvider implements \IteratorAggre
     /**
      * {@inheritdoc}
      */
-    public function getExtension(string $id): ?ServiceProviderExtensionInterface
+    public function getExtension(string $id): ServiceProviderExtensionInterface
     {
         $serviceProvider = $this->resolveServiceProvider();
 
         return $serviceProvider->getExtension($id);
     }
 
-    /**
-     * @return ServiceProvider
-     */
     private function resolveServiceProvider(): ServiceProvider
     {
         $serviceProvider  = new ServiceProvider();
 
         [$factories, $extensions] = array_reduce(
             $this->serviceProviders,
-            function($carry, $serviceProvider) {
+            function ($carry, $serviceProvider) {
                 return [
                     array_merge($carry[0], $serviceProvider->getFactories()),
                     array_merge($carry[1], $serviceProvider->getExtensions()),
