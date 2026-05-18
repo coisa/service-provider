@@ -21,7 +21,7 @@
         "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/phpunit": "^9.5",
         "sensiolabs/security-checker": "^6.0",
-        "squizlabs/php_codesniffer": "^3.6"
+        "squizlabs/php_codesniffer": "^3.6 || ^4.0"
     },
     "minimum-stability": "stable",
     "autoload": {
