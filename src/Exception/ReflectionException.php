@@ -24,4 +24,10 @@ use CoiSA\Exception\Spl\ReflectionException as CoiSAReflectionException;
  */
 final class ReflectionException extends CoiSAReflectionException implements ServiceProviderExceptionInterface
 {
+    public static function forClassNotFound(string $class, int $code = 0, \Throwable $previous = null): CoiSAReflectionException
+    {
+        $message = sprintf(self::MESSAGE_CLASS_NOT_FOUND, $class);
+
+        return new self($message, $code, $previous);
+    }
 }
