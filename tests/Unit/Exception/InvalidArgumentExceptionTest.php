@@ -27,6 +27,20 @@ use CoiSA\ServiceProvider\Exception\InvalidArgumentException;
  */
 final class InvalidArgumentExceptionTest extends ServiceProviderExceptionTestCase
 {
+    /**
+     * @covers ::forInvalidArgumentType
+     */
+    public function testLookupFactoryPreservesExceptionTypeAndContext(): void
+    {
+        $previous = new \RuntimeException('Previous failure');
+        $exception = InvalidArgumentException::forInvalidArgumentType('extension', 'callable', 42, $previous);
+
+        static::assertInstanceOf(InvalidArgumentException::class, $exception);
+        static::assertSame('Given argument "extension" should be of type "callable".', $exception->getMessage());
+        static::assertSame(42, $exception->getCode());
+        static::assertSame($previous, $exception->getPrevious());
+    }
+
     protected function getException(): InvalidArgumentException
     {
         return new InvalidArgumentException();
