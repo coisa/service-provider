@@ -27,6 +27,34 @@ use CoiSA\ServiceProvider\Exception\UnexpectedValueException;
  */
 final class UnexpectedValueExceptionTest extends ServiceProviderExceptionTestCase
 {
+    /**
+     * @covers ::forFactoryNotFound
+     */
+    public function testForFactoryNotFoundPreservesExceptionTypeAndContext(): void
+    {
+        $previous = new \RuntimeException('Previous failure');
+        $exception = UnexpectedValueException::forFactoryNotFound('service.id', 42, $previous);
+
+        static::assertInstanceOf(UnexpectedValueException::class, $exception);
+        static::assertSame('Factory "service.id" was not found.', $exception->getMessage());
+        static::assertSame(42, $exception->getCode());
+        static::assertSame($previous, $exception->getPrevious());
+    }
+
+    /**
+     * @covers ::forExtensionNotFound
+     */
+    public function testForExtensionNotFoundPreservesExceptionTypeAndContext(): void
+    {
+        $previous = new \RuntimeException('Previous failure');
+        $exception = UnexpectedValueException::forExtensionNotFound('service.id', 42, $previous);
+
+        static::assertInstanceOf(UnexpectedValueException::class, $exception);
+        static::assertSame('Extension "service.id" was not found.', $exception->getMessage());
+        static::assertSame(42, $exception->getCode());
+        static::assertSame($previous, $exception->getPrevious());
+    }
+
     protected function getException(): UnexpectedValueException
     {
         return new UnexpectedValueException();

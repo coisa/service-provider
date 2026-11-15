@@ -27,6 +27,20 @@ use CoiSA\ServiceProvider\Exception\ReflectionException;
  */
 final class ReflectionExceptionTest extends ServiceProviderExceptionTestCase
 {
+    /**
+     * @covers ::forClassNotFound
+     */
+    public function testLookupFactoryPreservesExceptionTypeAndContext(): void
+    {
+        $previous = new \RuntimeException('Previous failure');
+        $exception = ReflectionException::forClassNotFound('MissingClass', 42, $previous);
+
+        static::assertInstanceOf(ReflectionException::class, $exception);
+        static::assertSame('Class "MissingClass" not found!', $exception->getMessage());
+        static::assertSame(42, $exception->getCode());
+        static::assertSame($previous, $exception->getPrevious());
+    }
+
     protected function getException(): ReflectionException
     {
         return new ReflectionException();

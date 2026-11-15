@@ -44,7 +44,7 @@ final class UnexpectedValueException extends CoiSAUnexpectedValueException imple
             $id
         );
 
-        return self::create($message, $code, $previous);
+        return new self($message, $code, $previous);
     }
 
     /**
@@ -61,6 +61,6 @@ final class UnexpectedValueException extends CoiSAUnexpectedValueException imple
             $id
         );
 
-        return self::create($message, $code, $previous);
+        return new self($message, $code, $previous);
     }
 }

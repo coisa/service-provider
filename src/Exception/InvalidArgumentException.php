@@ -24,4 +24,14 @@ use CoiSA\Exception\Spl\InvalidArgumentException as CoiSAInvalidArgumentExceptio
  */
 final class InvalidArgumentException extends CoiSAInvalidArgumentException implements ServiceProviderExceptionInterface
 {
+    public static function forInvalidArgumentType(
+        $argumentName,
+        $expectedType,
+        $code = 0,
+        $previous = null
+    ): CoiSAInvalidArgumentException {
+        $message = sprintf(self::MESSAGE_INVALID_ARGUMENT_TYPE, $argumentName, $expectedType);
+
+        return new self($message, $code, $previous);
+    }
 }
