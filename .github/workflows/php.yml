@@ -6,6 +6,7 @@ jobs:
       matrix:
         operating-system: [ubuntu-latest]
         php-versions: ['7.4', '8.0', '8.1']
+        exceptions-version: ['^1.0', '^2.0']
     runs-on: ${{ matrix.operating-system }}
     steps:
       - name: Checkout
@@ -35,6 +36,12 @@ jobs:
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
+
+      - name: Resolve supported exception dependency
+        run: composer update --with 'coisa/exceptions:${{ matrix.exceptions-version }}' --with-all-dependencies --no-interaction --no-progress
+
+      - name: Lint PHP
+        run: composer run-script lint
 
       - name: Run test suite
         run: composer run-script test
